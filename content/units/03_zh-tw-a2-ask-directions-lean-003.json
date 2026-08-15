@@ -1,0 +1,685 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-tw-a2-ask-directions-lean-003",
+  "level": "A2",
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 3,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "functionKo": "장소의 위치와 가는 방법을 묻는다",
+  "situationKo": "역·건물·거리에서 필요한 장소를 찾고 위치를 확인한다",
+  "targets": [
+    {
+      "targetId": "zh03-where",
+      "kind": "pragmaticFrame",
+      "traditional": "請問，{place}在哪裡？",
+      "simplified": "请问，{place}在哪里？",
+      "pinyinMarked": "Qǐngwèn, {placePinyin} zài nǎlǐ?",
+      "meaningKo": "실례합니다, {place}은 어디에 있나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "請問",
+        "{place}",
+        "在哪裡"
+      ],
+      "pinyinSegments": [
+        "qǐngwèn",
+        "{placePinyin}",
+        "zài nǎlǐ"
+      ],
+      "usageNoteKo": "낯선 사람에게 정중하게 장소 위치를 묻는다."
+    },
+    {
+      "targetId": "zh03-how",
+      "kind": "pragmaticFrame",
+      "traditional": "去{place}要怎麼走？",
+      "simplified": "去{place}要怎么走？",
+      "pinyinMarked": "Qù {placePinyin} yào zěnme zǒu?",
+      "meaningKo": "{place}에 가려면 어떻게 가나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "去",
+        "{place}",
+        "要怎麼走"
+      ],
+      "pinyinSegments": [
+        "qù",
+        "{placePinyin}",
+        "yào zěnme zǒu"
+      ],
+      "usageNoteKo": "목적지로 가는 길을 묻는다."
+    },
+    {
+      "targetId": "zh03-near",
+      "kind": "pragmaticFrame",
+      "traditional": "是在{landmark}旁邊嗎？",
+      "simplified": "是在{landmark}旁边吗？",
+      "pinyinMarked": "Shì zài {landmarkPinyin} pángbiān ma?",
+      "meaningKo": "{landmark} 옆에 있나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "是",
+        "在",
+        "{landmark}",
+        "旁邊",
+        "嗎"
+      ],
+      "pinyinSegments": [
+        "shì",
+        "zài",
+        "{landmarkPinyin}",
+        "pángbiān",
+        "ma"
+      ],
+      "usageNoteKo": "기준 장소 옆인지 확인한다."
+    }
+  ],
+  "model": {
+    "lines": [
+      {
+        "speaker": "旅客",
+        "traditional": "請問，服務台在哪裡？",
+        "simplified": "请问，服务台在哪里？",
+        "pinyinMarked": "Qǐngwèn, fúwùtái zài nǎlǐ?",
+        "translationKo": "실례합니다, 안내 데스크는 어디에 있나요?"
+      },
+      {
+        "speaker": "站務員",
+        "traditional": "直走，在大門旁邊。",
+        "simplified": "直走，在大门旁边。",
+        "pinyinMarked": "Zhí zǒu, zài dàmén pángbiān.",
+        "translationKo": "곧장 가세요. 정문 옆에 있습니다."
+      }
+    ]
+  },
+  "slotBanks": {
+    "place": [
+      {
+        "traditional": "廁所",
+        "simplified": "厕所",
+        "pinyinMarked": "cèsuǒ",
+        "meaningKo": "화장실"
+      },
+      {
+        "traditional": "藥局",
+        "simplified": "药局",
+        "pinyinMarked": "yàojú",
+        "meaningKo": "약국"
+      },
+      {
+        "traditional": "服務台",
+        "simplified": "服务台",
+        "pinyinMarked": "fúwùtái",
+        "meaningKo": "안내 데스크"
+      },
+      {
+        "traditional": "四號月台",
+        "simplified": "四号月台",
+        "pinyinMarked": "sì hào yuètái",
+        "meaningKo": "4번 플랫폼"
+      }
+    ],
+    "landmark": [
+      {
+        "traditional": "電梯",
+        "simplified": "电梯",
+        "pinyinMarked": "diàntī",
+        "meaningKo": "엘리베이터"
+      },
+      {
+        "traditional": "銀行",
+        "simplified": "银行",
+        "pinyinMarked": "yínháng",
+        "meaningKo": "은행"
+      },
+      {
+        "traditional": "大門",
+        "simplified": "大门",
+        "pinyinMarked": "dàmén",
+        "meaningKo": "정문"
+      },
+      {
+        "traditional": "公車站",
+        "simplified": "公车站",
+        "pinyinMarked": "gōngchē zhàn",
+        "meaningKo": "버스 정류장"
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh03-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "service-desk-intent",
+      "promptKo": "여행자가 묻는 것을 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "旅客",
+          "traditional": "請問，服務台在哪裡？",
+          "simplified": "请问，服务台在哪里？",
+          "pinyinMarked": "Qǐngwèn, fúwùtái zài nǎlǐ?",
+          "translationKo": "실례합니다, 안내 데스크는 어디에 있나요?"
+        },
+        {
+          "speaker": "站務員",
+          "traditional": "直走，在大門旁邊。",
+          "simplified": "直走，在大门旁边。",
+          "pinyinMarked": "Zhí zǒu, zài dàmén pángbiān.",
+          "translationKo": "곧장 가세요. 정문 옆에 있습니다."
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "안내 데스크의 위치",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "표의 가격",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "출발 시간",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "在哪裡는 어디에 있는지 묻습니다."
+      ],
+      "feedback": {
+        "correctAnswer": "안내 데스크의 위치",
+        "contrastKo": "在哪裡 = 어디에",
+        "explanationKo": "장소 위치를 묻는 기능을 확인한다.",
+        "errorCode": "zh03.comprehension"
+      }
+    },
+    {
+      "taskId": "zh03-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "bank-left-listen",
+      "promptKo": "문장을 듣고 어디에서 왼쪽으로 도는지 고르세요.",
+      "ttsTraditional": "直走，到銀行左轉。",
+      "ttsSimplified": "直走，到银行左转。",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "은행",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "정문",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "버스 정류장",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "銀行 뒤의 左轉을 들으세요."
+      ],
+      "feedback": {
+        "correctAnswer": "銀行",
+        "contrastKo": "到銀行左轉",
+        "explanationKo": "방향 지시의 기준 장소를 듣는다.",
+        "errorCode": "zh03.listening"
+      }
+    },
+    {
+      "taskId": "zh03-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "where-cloze",
+      "promptKo": "빈칸에 알맞은 번체 표현을 입력하세요.",
+      "clozeText": "請問，藥局在____？",
+      "acceptedSet": [
+        "哪裡"
+      ],
+      "hints": [
+        "어디라는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "哪裡",
+        "contrastKo": "在哪裡 = 어디에 있다",
+        "explanationKo": "위치 질문의 핵심 의문사를 쓴다.",
+        "errorCode": "zh03.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh03-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "service-order",
+      "promptKo": "안내 데스크 위치를 묻도록 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "請問"
+        },
+        {
+          "tokenId": "t2",
+          "text": "服務台"
+        },
+        {
+          "tokenId": "t3",
+          "text": "在哪裡"
+        },
+        {
+          "tokenId": "t4",
+          "text": "？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "請問을 먼저 둡니다.",
+        "在哪裡를 끝에 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "請問，服務台在哪裡？",
+        "contrastKo": "請問 + 장소 + 在哪裡？",
+        "explanationKo": "정중한 위치 질문 어순을 확인한다.",
+        "errorCode": "zh03.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh03-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "museum-how-transform",
+      "promptKo": "위치 질문을 길 묻기 문장으로 바꾸세요.",
+      "contextKo": "기본 문장: 博物館在哪裡？",
+      "acceptedSet": [
+        "去博物館要怎麼走？"
+      ],
+      "hints": [
+        "去로 시작하고 要怎麼走를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "去博物館要怎麼走？",
+        "contrastKo": "在哪裡 → 要怎麼走",
+        "explanationKo": "위치 질문을 이동 경로 요청으로 바꾼다.",
+        "errorCode": "zh03.transform"
+      },
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh03-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "pharmacy-guided",
+      "promptKo": "번체 중국어 한 문장으로 위치를 물으세요.",
+      "contextKo": "실례한다고 말한 뒤 약국 藥局(yàojú)이 어디인지 묻습니다.",
+      "acceptedVariants": [
+        "請問，藥局在哪裡？",
+        "請問藥局在哪裡？"
+      ],
+      "hints": [
+        "請問과 在哪裡를 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "請問，藥局在哪裡？",
+        "contrastKo": "請問 + 장소 + 在哪裡？",
+        "explanationKo": "실제 장소 이름을 넣어 위치를 묻는다.",
+        "errorCode": "zh03.production"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh03-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "near-bank-repair",
+      "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+      "clozeText": "是在銀行____嗎？",
+      "acceptedSet": [
+        "旁邊"
+      ],
+      "hints": [
+        "옆이라는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "旁邊",
+        "contrastKo": "在 + 장소 + 旁邊",
+        "explanationKo": "상대 위치를 확인한다.",
+        "errorCode": "zh03.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh03-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "bus-stop-repair",
+      "promptKo": "버스 정류장 가는 길을 묻도록 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "去"
+        },
+        {
+          "tokenId": "t2",
+          "text": "公車站"
+        },
+        {
+          "tokenId": "t3",
+          "text": "要怎麼走"
+        },
+        {
+          "tokenId": "t4",
+          "text": "？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "去 뒤에 목적지를 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "去公車站要怎麼走？",
+        "contrastKo": "去 + 목적지 + 要怎麼走？",
+        "explanationKo": "다른 장소로 길 질문 어순을 반복한다.",
+        "errorCode": "zh03.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh03-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "elevator-near-repair",
+      "promptKo": "번체 중국어로 위치를 확인하세요.",
+      "contextKo": "그곳이 엘리베이터 옆인지 묻습니다.",
+      "acceptedVariants": [
+        "是在電梯旁邊嗎？",
+        "在電梯旁邊嗎？"
+      ],
+      "hints": [
+        "電梯와 旁邊을 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "是在電梯旁邊嗎？",
+        "contrastKo": "在 + 기준 장소 + 旁邊嗎？",
+        "explanationKo": "기준 장소를 바꾸어 상대 위치를 확인한다.",
+        "errorCode": "zh03.production"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh03.comprehension",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-form"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    },
+    {
+      "errorCode": "zh03.listening",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-order"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    },
+    {
+      "errorCode": "zh03.form",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-form"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    },
+    {
+      "errorCode": "zh03.order",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-order"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    },
+    {
+      "errorCode": "zh03.transform",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-order"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    },
+    {
+      "errorCode": "zh03.production",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "repairTaskRefs": [
+        "zh03-repair-guided"
+      ],
+      "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+    }
+  ],
+  "baselineItems": [
+    {
+      "taskId": "zh03-baseline-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "atm-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "실례한다고 말한 뒤 ATM 提款機(tíkuǎnjī)의 위치를 묻습니다.",
+      "acceptedVariants": [
+        "請問，提款機在哪裡？",
+        "請問提款機在哪裡？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh03-baseline",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.directions.ask-location"
+    }
+  ],
+  "transferItems": [
+    {
+      "taskId": "zh03-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "platform-four-location-transfer",
+      "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+      "contextKo": "실례한다고 말한 뒤 4번 플랫폼 四號月台(sì hào yuètái)의 위치를 묻습니다.",
+      "acceptedVariants": [
+        "請問，四號月台在哪裡？",
+        "請問四號月台在哪裡？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "請問，四號月台在哪裡？",
+        "contrastKo": "請問 + 새 장소 + 在哪裡？",
+        "explanationKo": "새 장소에도 같은 위치 질문을 적용한다.",
+        "errorCode": "zh03.production"
+      },
+      "benchmarkId": "zh03-transfer",
+      "transferId": "zh03-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "measurementKey": "zh.directions.ask-location"
+    },
+    {
+      "taskId": "zh03-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh03-where",
+        "zh03-how",
+        "zh03-near"
+      ],
+      "variantKey": "restroom-location-retention",
+      "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+      "contextKo": "실례한다고 말한 뒤 화장실의 위치를 묻습니다.",
+      "acceptedVariants": [
+        "請問，廁所在哪裡？",
+        "請問廁所在哪裡？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "請問，廁所在哪裡？",
+        "contrastKo": "請問 + 새 장소 + 在哪裡？",
+        "explanationKo": "시간이 지난 뒤에도 같은 위치 질문을 독립적으로 만든다.",
+        "errorCode": "zh03.production"
+      },
+      "benchmarkId": "zh03-retention",
+      "transferId": "zh03-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "measurementKey": "zh.directions.ask-location"
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "parallelConstructChecked": true
+  },
+  "prerequisiteUnitIds": [
+    "zh-tw-a2-clarify-repeat-lean-002"
+  ]
+}

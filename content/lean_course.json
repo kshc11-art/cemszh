@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "cems-lean-course-1",
+  "version": 1,
+  "language": "zh",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "titleKo": "대만 중국어 일상 문제 해결 8단원",
+  "descriptionKo": "일상에서 자주 필요한 8개 기능을 이해→형태 회상→짧은 산출→3일 전이→14일 유지 순서로 훈련하는 소규모 파일럿 코스입니다.",
+  "expectedWeeks": 4,
+  "newUnitsPerDayMax": 1,
+  "sequencePolicy": "linear",
+  "unitFiles": [
+    "units/01_zh-a2-restaurant-remove-ingredient-lean-001.json",
+    "units/02_zh-tw-a2-clarify-repeat-lean-002.json",
+    "units/03_zh-tw-a2-ask-directions-lean-003.json",
+    "units/04_zh-tw-a2-schedule-change-lean-004.json",
+    "units/05_zh-tw-a2-report-problem-lean-005.json",
+    "units/06_zh-tw-a2-compare-choose-lean-006.json",
+    "units/07_zh-tw-a2-delay-update-lean-007.json",
+    "units/08_zh-tw-a2-confirm-details-lean-008.json"
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "nativeLanguageReviewed": false,
+    "parallelFormLeakChecked": true
+  }
+}

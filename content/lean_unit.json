@@ -1,0 +1,608 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-a2-restaurant-remove-ingredient-lean-001",
+  "level": "A2",
+  "functionKo": "음식에서 특정 재료를 빼 달라고 정중하게 요청한다",
+  "situationKo": "대만 식당에서 주문하며 원하지 않는 재료를 제외해 달라고 말한다",
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "machineAudited": true,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "machineValidated": true,
+    "parallelConstructChecked": true
+  },
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "targets": [
+    {
+      "targetId": "zh-u1-frame",
+      "kind": "pragmaticFrame",
+      "traditional": "可以幫我把{ingredient}拿掉嗎？",
+      "simplified": "可以帮我把{ingredient}拿掉吗？",
+      "pinyinMarked": "Kěyǐ bāng wǒ bǎ {ingredientPinyin} nádiào ma?",
+      "meaningKo": "{ingredient}을 빼 주실 수 있나요?",
+      "segmentation": [
+        "可以幫我把{ingredient}拿掉嗎？"
+      ],
+      "pinyinSegments": [
+        "kěyǐ bāng wǒ bǎ {ingredientpinyin} nádiào ma?"
+      ],
+      "usageNoteKo": "대만에서 음식 재료를 빼 달라고 할 때 자연스러운 요청이다."
+    },
+    {
+      "targetId": "zh-u1-ba",
+      "kind": "chunk",
+      "traditional": "把{ingredient}拿掉",
+      "simplified": "把{ingredient}拿掉",
+      "pinyinMarked": "Bǎ {ingredientPinyin} nádiào",
+      "meaningKo": "{ingredient}을 대상으로 삼아 빼다",
+      "segmentation": [
+        "把{ingredient}拿掉"
+      ],
+      "pinyinSegments": [
+        "bǎ {ingredientpinyin} nádiào"
+      ]
+    },
+    {
+      "targetId": "zh-u1-polite",
+      "kind": "chunk",
+      "traditional": "不好意思",
+      "simplified": "不好意思",
+      "pinyinMarked": "Bù hǎoyìsi",
+      "meaningKo": "실례하지만, 죄송하지만",
+      "segmentation": [
+        "不好意思"
+      ],
+      "pinyinSegments": [
+        "bù hǎoyìsi"
+      ]
+    }
+  ],
+  "slotBanks": {
+    "ingredient": [
+      {
+        "traditional": "花生",
+        "simplified": "花生",
+        "pinyinMarked": "huāshēng",
+        "meaningKo": "땅콩"
+      },
+      {
+        "traditional": "香菜",
+        "simplified": "香菜",
+        "pinyinMarked": "xiāngcài",
+        "meaningKo": "고수"
+      },
+      {
+        "traditional": "辣椒",
+        "simplified": "辣椒",
+        "pinyinMarked": "làjiāo",
+        "meaningKo": "고추"
+      },
+      {
+        "traditional": "蔥",
+        "simplified": "葱",
+        "pinyinMarked": "cōng",
+        "meaningKo": "파"
+      },
+      {
+        "traditional": "橄欖",
+        "simplified": "橄榄",
+        "pinyinMarked": "gǎnlǎn",
+        "meaningKo": "올리브"
+      }
+    ]
+  },
+  "model": {
+    "lines": [
+      {
+        "speaker": "客人",
+        "traditional": "不好意思，可以幫我把花生拿掉嗎？",
+        "simplified": "不好意思，可以帮我把花生拿掉吗？",
+        "pinyinMarked": "Bù hǎoyìsi, kěyǐ bāng wǒ bǎ huāshēng nádiào ma?",
+        "translationKo": "실례하지만 땅콩을 빼 주실 수 있나요?"
+      },
+      {
+        "speaker": "店員",
+        "traditional": "可以，沒問題。",
+        "simplified": "可以，没问题。",
+        "pinyinMarked": "Kěyǐ, méi wèntí.",
+        "translationKo": "네, 문제없습니다."
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh-u1-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "peanut-intent",
+      "promptKo": "손님의 의도를 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "客人",
+          "traditional": "不好意思，可以幫我把花生拿掉嗎？",
+          "simplified": "不好意思，可以帮我把花生拿掉吗？",
+          "pinyinMarked": "Bù hǎoyìsi, kěyǐ bāng wǒ bǎ huāshēng nádiào ma?",
+          "translationKo": "땅콩을 빼 달라고 합니다."
+        },
+        {
+          "speaker": "店員",
+          "traditional": "可以。",
+          "simplified": "可以。",
+          "pinyinMarked": "Kěyǐ.",
+          "translationKo": "네."
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "땅콩을 빼 달라고 요청한다.",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "땅콩을 더 달라고 요청한다.",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "가격을 묻는다.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "拿掉는 제거를 뜻합니다."
+      ],
+      "feedback": {
+        "correctAnswer": "땅콩을 빼 달라고 요청한다.",
+        "contrastKo": "拿掉 ↔ 加進去",
+        "explanationKo": "把 뒤의 대상을 제거해 달라는 요청이다.",
+        "errorCode": "zh.u1.comprehension"
+      }
+    },
+    {
+      "taskId": "zh-u1-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "cilantro-listen",
+      "promptKo": "문장을 듣고 빼 달라고 한 재료를 고르세요.",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "고수",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "땅콩",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "고추",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "把 뒤의 재료 이름을 들으세요."
+      ],
+      "feedback": {
+        "correctAnswer": "香菜 · 고수",
+        "contrastKo": "香菜 xiāngcài",
+        "explanationKo": "把 뒤의 명사가 제거 대상이다.",
+        "errorCode": "zh.u1.listening"
+      },
+      "ttsTraditional": "可以幫我把香菜拿掉嗎？",
+      "ttsSimplified": "可以帮我把香菜拿掉吗？"
+    },
+    {
+      "taskId": "zh-u1-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-ba"
+      ],
+      "variantKey": "nadiao-cloze",
+      "promptKo": "빈칸에 “빼다”에 해당하는 번체 표현을 입력하세요.",
+      "clozeText": "可以幫我把辣椒____嗎？",
+      "acceptedSet": [
+        "拿掉"
+      ],
+      "stripPunctuation": true,
+      "hints": [
+        "拿로 시작합니다."
+      ],
+      "feedback": {
+        "correctAnswer": "拿掉",
+        "contrastKo": "拿掉 = 빼다",
+        "explanationKo": "把 + 대상 + 拿掉 순서를 사용한다.",
+        "errorCode": "zh.u1.form"
+      }
+    },
+    {
+      "taskId": "zh-u1-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "cilantro-order",
+      "promptKo": "고수를 빼 달라는 문장이 되도록 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "可以幫我"
+        },
+        {
+          "tokenId": "t2",
+          "text": "把"
+        },
+        {
+          "tokenId": "t3",
+          "text": "香菜"
+        },
+        {
+          "tokenId": "t4",
+          "text": "拿掉"
+        },
+        {
+          "tokenId": "t5",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
+      "joinWithoutSpace": true,
+      "hints": [
+        "把 뒤에 香菜를 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我把香菜拿掉嗎？",
+        "contrastKo": "可以幫我 → 把 → 재료 → 拿掉 → 嗎",
+        "explanationKo": "把 구조의 대상과 동작 순서를 지킨다.",
+        "errorCode": "zh.u1.order"
+      }
+    },
+    {
+      "taskId": "zh-u1-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "chili-transform",
+      "promptKo": "재료를 고추로 바꾸어 번체 문장을 입력하세요.",
+      "contextKo": "기본 문장: 可以幫我把花生拿掉嗎？",
+      "acceptedSet": [
+        "可以幫我把辣椒拿掉嗎？"
+      ],
+      "stripPunctuation": true,
+      "hints": [
+        "把 뒤의 재료만 辣椒로 바꿉니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我把辣椒拿掉嗎？",
+        "contrastKo": "花生 → 辣椒",
+        "explanationKo": "문형은 유지하고 대상 슬롯만 바꾼다.",
+        "errorCode": "zh.u1.transform"
+      }
+    },
+    {
+      "taskId": "zh-u1-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "peanut-guided",
+      "promptKo": "땅콩을 빼 달라고 번체 중국어 한 문장으로 정중하게 요청하세요.",
+      "acceptedVariants": [
+        "不好意思，可以幫我把花生拿掉嗎？",
+        "可以幫我把花生拿掉嗎？"
+      ],
+      "stripPunctuation": true,
+      "hints": [
+        "可以幫我…嗎？를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "不好意思，可以幫我把花生拿掉嗎？",
+        "contrastKo": "把 + 花生 + 拿掉",
+        "explanationKo": "요청 틀 안에서 대상과 동작의 순서를 유지한다.",
+        "errorCode": "zh.u1.guided"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh-u1-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "scallion-repair",
+      "promptKo": "파를 빼 달라고 번체 중국어로 요청하세요.",
+      "acceptedVariants": [
+        "可以幫我把蔥拿掉嗎？",
+        "不好意思，可以幫我把蔥拿掉嗎？"
+      ],
+      "stripPunctuation": true,
+      "hints": [
+        "把蔥拿掉를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我把蔥拿掉嗎？",
+        "contrastKo": "재료만 바꾸기",
+        "explanationKo": "다른 재료에도 같은 요청 틀을 적용한다.",
+        "errorCode": "zh.u1.guided"
+      }
+    },
+    {
+      "taskId": "zh-u1-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "chili-repair-order",
+      "promptKo": "고추를 빼 달라는 문장을 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "可以幫我"
+        },
+        {
+          "tokenId": "t2",
+          "text": "把"
+        },
+        {
+          "tokenId": "t3",
+          "text": "辣椒"
+        },
+        {
+          "tokenId": "t4",
+          "text": "拿掉"
+        },
+        {
+          "tokenId": "t5",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
+      "joinWithoutSpace": true,
+      "hints": [
+        "把 뒤에 辣椒를 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我把辣椒拿掉嗎？",
+        "contrastKo": "把 + 대상 + 동작",
+        "explanationKo": "어순을 다른 재료로 다시 확인한다.",
+        "errorCode": "zh.u1.order"
+      }
+    },
+    {
+      "taskId": "zh-u1-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh-u1-ba"
+      ],
+      "variantKey": "scallion-repair-cloze",
+      "promptKo": "빈칸에 제거 동작을 입력하세요.",
+      "clozeText": "可以幫我把蔥____嗎？",
+      "acceptedSet": [
+        "拿掉"
+      ],
+      "stripPunctuation": true,
+      "hints": [
+        "두 글자입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "拿掉",
+        "contrastKo": "拿掉 = 빼다",
+        "explanationKo": "동작 표현의 한자를 회상한다.",
+        "errorCode": "zh.u1.form"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh.u1.comprehension",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-form"
+      ]
+    },
+    {
+      "errorCode": "zh.u1.listening",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-order"
+      ]
+    },
+    {
+      "errorCode": "zh.u1.form",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-form"
+      ]
+    },
+    {
+      "errorCode": "zh.u1.order",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-order"
+      ]
+    },
+    {
+      "errorCode": "zh.u1.transform",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-guided"
+      ]
+    },
+    {
+      "errorCode": "zh.u1.guided",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "repairTaskRefs": [
+        "zh-u1-repair-guided"
+      ]
+    }
+  ],
+  "transferItems": [
+    {
+      "benchmarkId": "zh-u1-transfer",
+      "transferId": "zh-u1-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "taskId": "zh-u1-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "celery-transfer",
+      "promptKo": "새 재료 상황입니다. 번체 중국어로 요청하세요.",
+      "contextKo": "샐러리 芹菜(qíncài)를 빼 달라고 합니다.",
+      "acceptedVariants": [
+        "可以幫我把芹菜拿掉嗎？"
+      ],
+      "stripPunctuation": true,
+      "hints": [],
+      "feedback": {
+        "correctAnswer": "可以幫我把芹菜拿掉嗎？",
+        "contrastKo": "把 + 芹菜 + 拿掉",
+        "explanationKo": "새 재료에도 같은 把 어순을 적용한다.",
+        "errorCode": "zh.u1.guided"
+      },
+      "measurementKey": "zh.order.remove-ingredient"
+    },
+    {
+      "benchmarkId": "zh-u1-retention",
+      "transferId": "zh-u1-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "taskId": "zh-u1-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "garlic-retention",
+      "promptKo": "유지 확인입니다. 번체 중국어로 요청하세요.",
+      "contextKo": "마늘 蒜(suàn)을 빼 달라고 합니다.",
+      "acceptedVariants": [
+        "可以幫我把蒜拿掉嗎？"
+      ],
+      "stripPunctuation": true,
+      "hints": [],
+      "feedback": {
+        "correctAnswer": "可以幫我把蒜拿掉嗎？",
+        "contrastKo": "把 + 蒜 + 拿掉",
+        "explanationKo": "시간이 지난 뒤 새로운 재료에 적용한다.",
+        "errorCode": "zh.u1.guided"
+      },
+      "measurementKey": "zh.order.remove-ingredient"
+    }
+  ],
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 1,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "baselineItems": [
+    {
+      "taskId": "zh-baseline-remove-01",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh-u1-frame",
+        "zh-u1-ba",
+        "zh-u1-polite"
+      ],
+      "variantKey": "olive-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "올리브 橄欖(gǎnlǎn)을 음식에서 빼 달라고 요청합니다.",
+      "acceptedVariants": [
+        "可以幫我把橄欖拿掉嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh-remove-baseline-01",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.order.remove-ingredient"
+    }
+  ],
+  "prerequisiteUnitIds": []
+}

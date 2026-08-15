@@ -1,0 +1,764 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-tw-a2-compare-choose-lean-006",
+  "level": "A2",
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 6,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "functionKo": "두 선택지를 비교하고 이유와 함께 고른다",
+  "situationKo": "상품·경로 선택에서 필요한 특성을 비교한다",
+  "targets": [
+    {
+      "targetId": "zh06-which",
+      "kind": "pragmaticFrame",
+      "traditional": "哪一個比較{adjective}？",
+      "simplified": "哪一个比较{adjective}？",
+      "pinyinMarked": "Nǎ yí ge bǐjiào {adjectivePinyin}?",
+      "meaningKo": "어느 것이 더 {adjective}한가요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "哪一個",
+        "比較",
+        "{adjective}"
+      ],
+      "pinyinSegments": [
+        "nǎ yí ge",
+        "bǐjiào",
+        "{adjectivePinyin}"
+      ],
+      "usageNoteKo": "두 선택지의 한 특성을 비교해 묻는다."
+    },
+    {
+      "targetId": "zh06-than",
+      "kind": "construction",
+      "traditional": "{choiceA}比{choiceB}{adjective}。",
+      "simplified": "{choiceA}比{choiceB}{adjective}。",
+      "pinyinMarked": "{choiceAPinyin} bǐ {choiceBPinyin} {adjectivePinyin}.",
+      "meaningKo": "{choiceA}가 {choiceB}보다 {adjective}합니다.",
+      "region": "zh-TW",
+      "segmentation": [
+        "{choiceA}",
+        "比",
+        "{choiceB}",
+        "{adjective}"
+      ],
+      "pinyinSegments": [
+        "{choiceAPinyin}",
+        "bǐ",
+        "{choiceBPinyin}",
+        "{adjectivePinyin}"
+      ],
+      "usageNoteKo": "A比B+형용사 어순으로 비교한다.",
+      "patternTokens": [
+        {
+          "slot": "choiceA"
+        },
+        {
+          "traditional": "比",
+          "simplified": "比"
+        },
+        {
+          "slot": "choiceB"
+        },
+        {
+          "slot": "adjective"
+        }
+      ]
+    },
+    {
+      "targetId": "zh06-prefer",
+      "kind": "pragmaticFrame",
+      "traditional": "我想要{choice}，因為比較{reason}。",
+      "simplified": "我想要{choice}，因为比较{reason}。",
+      "pinyinMarked": "Wǒ xiǎng yào {choicePinyin}, yīnwèi bǐjiào {reasonPinyin}.",
+      "meaningKo": "더 {reason}해서 {choice}을 원해요.",
+      "region": "zh-TW",
+      "segmentation": [
+        "我想要",
+        "{choice}",
+        "因為",
+        "比較",
+        "{reason}"
+      ],
+      "pinyinSegments": [
+        "wǒ xiǎng yào",
+        "{choicePinyin}",
+        "yīnwèi",
+        "bǐjiào",
+        "{reasonPinyin}"
+      ],
+      "usageNoteKo": "선택과 간단한 비교 이유를 함께 말한다."
+    }
+  ],
+  "model": {
+    "lines": [
+      {
+        "speaker": "甲",
+        "traditional": "哪一個比較輕？",
+        "simplified": "哪一个比较轻？",
+        "pinyinMarked": "Nǎ yí ge bǐjiào qīng?",
+        "translationKo": "어느 것이 더 가벼워요?"
+      },
+      {
+        "speaker": "乙",
+        "traditional": "藍色的包包比黑色的包包輕。",
+        "simplified": "蓝色的包包比黑色的包包轻。",
+        "pinyinMarked": "Lánsè de bāobāo bǐ hēisè de bāobāo qīng.",
+        "translationKo": "파란 가방이 검은 가방보다 가벼워요."
+      },
+      {
+        "speaker": "甲",
+        "traditional": "我想要藍色的，因為比較輕。",
+        "simplified": "我想要蓝色的，因为比较轻。",
+        "pinyinMarked": "Wǒ xiǎng yào lánsè de, yīnwèi bǐjiào qīng.",
+        "translationKo": "더 가벼워서 파란 것을 원해요."
+      }
+    ]
+  },
+  "slotBanks": {
+    "adjective": [
+      {
+        "traditional": "便宜",
+        "simplified": "便宜",
+        "pinyinMarked": "piányi",
+        "meaningKo": "싸다"
+      },
+      {
+        "traditional": "輕",
+        "simplified": "轻",
+        "pinyinMarked": "qīng",
+        "meaningKo": "가볍다"
+      },
+      {
+        "traditional": "快",
+        "simplified": "快",
+        "pinyinMarked": "kuài",
+        "meaningKo": "빠르다"
+      },
+      {
+        "traditional": "近",
+        "simplified": "近",
+        "pinyinMarked": "jìn",
+        "meaningKo": "가깝다"
+      }
+    ],
+    "choiceA": [
+      {
+        "traditional": "藍色的包包",
+        "simplified": "蓝色的包包",
+        "pinyinMarked": "lánsè de bāobāo",
+        "meaningKo": "파란 가방"
+      },
+      {
+        "traditional": "這條路",
+        "simplified": "这条路",
+        "pinyinMarked": "zhè tiáo lù",
+        "meaningKo": "이 길"
+      },
+      {
+        "traditional": "這台電腦",
+        "simplified": "这台电脑",
+        "pinyinMarked": "zhè tái diànnǎo",
+        "meaningKo": "이 컴퓨터"
+      }
+    ],
+    "choiceB": [
+      {
+        "traditional": "黑色的包包",
+        "simplified": "黑色的包包",
+        "pinyinMarked": "hēisè de bāobāo",
+        "meaningKo": "검은 가방"
+      },
+      {
+        "traditional": "那條路",
+        "simplified": "那条路",
+        "pinyinMarked": "nà tiáo lù",
+        "meaningKo": "저 길"
+      },
+      {
+        "traditional": "那台電腦",
+        "simplified": "那台电脑",
+        "pinyinMarked": "nà tái diànnǎo",
+        "meaningKo": "저 컴퓨터"
+      }
+    ],
+    "choice": [
+      {
+        "traditional": "藍色的外套",
+        "simplified": "蓝色的外套",
+        "pinyinMarked": "lánsè de wàitào",
+        "meaningKo": "파란 재킷"
+      },
+      {
+        "traditional": "這條路",
+        "simplified": "这条路",
+        "pinyinMarked": "zhè tiáo lù",
+        "meaningKo": "이 길"
+      },
+      {
+        "traditional": "小一點的",
+        "simplified": "小一点的",
+        "pinyinMarked": "xiǎo yìdiǎn de",
+        "meaningKo": "조금 작은 것"
+      }
+    ],
+    "reason": [
+      {
+        "traditional": "便宜",
+        "simplified": "便宜",
+        "pinyinMarked": "piányi",
+        "meaningKo": "싸다"
+      },
+      {
+        "traditional": "快",
+        "simplified": "快",
+        "pinyinMarked": "kuài",
+        "meaningKo": "빠르다"
+      },
+      {
+        "traditional": "輕",
+        "simplified": "轻",
+        "pinyinMarked": "qīng",
+        "meaningKo": "가볍다"
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh06-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "blue-bag-intent",
+      "promptKo": "첫 번째 사람이 묻는 것을 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "甲",
+          "traditional": "哪一個比較輕？",
+          "simplified": "哪一个比较轻？",
+          "pinyinMarked": "Nǎ yí ge bǐjiào qīng?",
+          "translationKo": "어느 것이 더 가벼워요?"
+        },
+        {
+          "speaker": "乙",
+          "traditional": "藍色的包包比黑色的包包輕。",
+          "simplified": "蓝色的包包比黑色的包包轻。",
+          "pinyinMarked": "Lánsè de bāobāo bǐ hēisè de bāobāo qīng.",
+          "translationKo": "파란 가방이 검은 가방보다 가벼워요."
+        },
+        {
+          "speaker": "甲",
+          "traditional": "我想要藍色的，因為比較輕。",
+          "simplified": "我想要蓝色的，因为比较轻。",
+          "pinyinMarked": "Wǒ xiǎng yào lánsè de, yīnwèi bǐjiào qīng.",
+          "translationKo": "더 가벼워서 파란 것을 원해요."
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "어느 가방이 더 가벼운지",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "가방이 어디 있는지",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "가방을 바꿀 수 있는지",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "比較輕은 더 가볍다는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "어느 가방이 더 가벼운지",
+        "contrastKo": "哪一個比較 + 형용사",
+        "explanationKo": "비교할 특성을 질문한다.",
+        "errorCode": "zh06.comprehension"
+      }
+    },
+    {
+      "taskId": "zh06-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "route-faster-listen",
+      "promptKo": "문장을 듣고 선택 이유를 고르세요.",
+      "ttsTraditional": "我想要這條路，因為比較快。",
+      "ttsSimplified": "我想要这条路，因为比较快。",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "더 빠르기 때문",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "더 싸기 때문",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "더 가볍기 때문",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "因為 뒤의 형용사를 들으세요."
+      ],
+      "feedback": {
+        "correctAnswer": "더 빠르기 때문",
+        "contrastKo": "快 / 便宜",
+        "explanationKo": "선택 이유와 비교 특성을 연결해 듣는다.",
+        "errorCode": "zh06.listening"
+      }
+    },
+    {
+      "taskId": "zh06-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "than-cloze",
+      "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+      "clozeText": "這條路____那條路快。",
+      "acceptedSet": [
+        "比"
+      ],
+      "hints": [
+        "A와 B 사이에 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "比",
+        "contrastKo": "A比B+형용사",
+        "explanationKo": "비교 대상 사이에 比를 둔다.",
+        "errorCode": "zh06.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh06-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "cheaper-order",
+      "promptKo": "어느 것이 더 싼지 묻도록 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "哪一個"
+        },
+        {
+          "tokenId": "t2",
+          "text": "比較"
+        },
+        {
+          "tokenId": "t3",
+          "text": "便宜"
+        },
+        {
+          "tokenId": "t4",
+          "text": "？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "哪一個을 먼저 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "哪一個比較便宜？",
+        "contrastKo": "哪一個 + 比較 + 형용사?",
+        "explanationKo": "비교 질문 어순을 확인한다.",
+        "errorCode": "zh06.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh06-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "lighter-question-transform",
+      "promptKo": "비교 문장을 질문으로 바꾸세요.",
+      "contextKo": "기본 문장: 藍色的包包比黑色的包包輕。",
+      "acceptedSet": [
+        "哪一個比較輕？"
+      ],
+      "hints": [
+        "哪一個와 比較를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "哪一個比較輕？",
+        "contrastKo": "A比B輕 → 哪一個比較輕？",
+        "explanationKo": "비교 정보를 묻는 질문으로 전환한다.",
+        "errorCode": "zh06.transform"
+      },
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh06-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "blue-jacket-guided",
+      "promptKo": "번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+      "contextKo": "파란 재킷이 더 싸기 때문에 그것을 원합니다.",
+      "acceptedVariants": [
+        "我想要藍色的外套，因為比較便宜。"
+      ],
+      "hints": [
+        "我想要와 因為比較를 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "我想要藍色的外套，因為比較便宜。",
+        "contrastKo": "선택 + 因為比較 + 이유",
+        "explanationKo": "선택과 이유를 한 문장으로 연결한다.",
+        "errorCode": "zh06.production"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh06-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "computer-than-repair",
+      "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+      "clozeText": "這台電腦____那台電腦輕。",
+      "acceptedSet": [
+        "比"
+      ],
+      "hints": [
+        "비교 표지입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "比",
+        "contrastKo": "A比B+형용사",
+        "explanationKo": "다른 물건으로 비교 구조를 확인한다.",
+        "errorCode": "zh06.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh06-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "closer-repair",
+      "promptKo": "더 가까운 것을 묻도록 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "哪一個"
+        },
+        {
+          "tokenId": "t2",
+          "text": "比較"
+        },
+        {
+          "tokenId": "t3",
+          "text": "近"
+        },
+        {
+          "tokenId": "t4",
+          "text": "？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "比較 뒤에 近을 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "哪一個比較近？",
+        "contrastKo": "哪一個比較 + 형용사?",
+        "explanationKo": "다른 특성으로 질문 어순을 반복한다.",
+        "errorCode": "zh06.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh06-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "route-prefer-repair",
+      "promptKo": "번체 중국어로 선택과 이유를 말하세요.",
+      "contextKo": "이 길이 더 빠르기 때문에 이 길을 원합니다.",
+      "acceptedVariants": [
+        "我想要走這條路，因為比較快。"
+      ],
+      "hints": [
+        "這條路와 因為比較快를 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "我想要走這條路，因為比較快。",
+        "contrastKo": "선택 + 因為 + 비교 이유",
+        "explanationKo": "다른 선택지에도 이유를 연결한다.",
+        "errorCode": "zh06.production"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh06.comprehension",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-order"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    },
+    {
+      "errorCode": "zh06.listening",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-guided"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    },
+    {
+      "errorCode": "zh06.form",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-form"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    },
+    {
+      "errorCode": "zh06.order",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-order"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    },
+    {
+      "errorCode": "zh06.transform",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-order"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    },
+    {
+      "errorCode": "zh06.production",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "repairTaskRefs": [
+        "zh06-repair-guided"
+      ],
+      "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+    }
+  ],
+  "baselineItems": [
+    {
+      "taskId": "zh06-baseline-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "silver-laptop-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "은색 노트북이 더 가벼워서 그것을 원합니다.",
+      "acceptedVariants": [
+        "我想要銀色的筆電，因為比較輕。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh06-baseline",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.compare.state-preference-reason"
+    }
+  ],
+  "transferItems": [
+    {
+      "taskId": "zh06-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "red-umbrella-transfer",
+      "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+      "contextKo": "빨간 우산이 더 작기 때문에 그것을 원합니다.",
+      "acceptedVariants": [
+        "我想要紅色的雨傘，因為比較小。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "我想要紅色的雨傘，因為比較小。",
+        "contrastKo": "選擇 + 因為比較 + 이유",
+        "explanationKo": "새 물건과 특성에도 선택 이유를 적용한다.",
+        "errorCode": "zh06.production"
+      },
+      "benchmarkId": "zh06-transfer",
+      "transferId": "zh06-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "measurementKey": "zh.compare.state-preference-reason"
+    },
+    {
+      "taskId": "zh06-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh06-which",
+        "zh06-than",
+        "zh06-prefer"
+      ],
+      "variantKey": "quiet-room-retention",
+      "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+      "contextKo": "안쪽 방이 더 조용해서 그 방을 원합니다.",
+      "acceptedVariants": [
+        "我想要裡面那間房，因為比較安靜。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "我想要裡面那間房，因為比較安靜。",
+        "contrastKo": "選擇 + 因為比較 + 이유",
+        "explanationKo": "시간이 지난 뒤에도 같은 선택·이유 틀을 새 상황에 적용한다.",
+        "errorCode": "zh06.production"
+      },
+      "benchmarkId": "zh06-retention",
+      "transferId": "zh06-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "measurementKey": "zh.compare.state-preference-reason"
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "parallelConstructChecked": true
+  },
+  "prerequisiteUnitIds": [
+    "zh-tw-a2-report-problem-lean-005"
+  ]
+}

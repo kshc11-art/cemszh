@@ -1,0 +1,697 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-tw-a2-clarify-repeat-lean-002",
+  "level": "A2",
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 2,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "functionKo": "잘 듣지 못한 정보를 다시 묻고 확인한다",
+  "situationKo": "회의·전화·예약에서 놓친 정보를 번체 중국어로 확인한다",
+  "targets": [
+    {
+      "targetId": "zh02-repeat",
+      "kind": "pragmaticFrame",
+      "traditional": "可以再說一次{part}嗎？",
+      "simplified": "可以再说一次{part}吗？",
+      "pinyinMarked": "Kěyǐ zài shuō yí cì {partPinyin} ma?",
+      "meaningKo": "{part}을 다시 한 번 말해 주실 수 있나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "可以",
+        "再說一次",
+        "{part}",
+        "嗎"
+      ],
+      "pinyinSegments": [
+        "kěyǐ",
+        "zài shuō yí cì",
+        "{partPinyin}",
+        "ma"
+      ],
+      "usageNoteKo": "못 들은 정보의 범위를 넣어 반복을 요청한다."
+    },
+    {
+      "targetId": "zh02-mean",
+      "kind": "pragmaticFrame",
+      "traditional": "你的意思是{detail}嗎？",
+      "simplified": "你的意思是{detail}吗？",
+      "pinyinMarked": "Nǐ de yìsi shì {detailPinyin} ma?",
+      "meaningKo": "말씀하신 뜻이 {detail}인가요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "你的意思",
+        "是",
+        "{detail}",
+        "嗎"
+      ],
+      "pinyinSegments": [
+        "nǐ de yìsi",
+        "shì",
+        "{detailPinyin}",
+        "ma"
+      ],
+      "usageNoteKo": "들은 내용을 자신의 말로 확인한다."
+    },
+    {
+      "targetId": "zh02-clear",
+      "kind": "construction",
+      "traditional": "我沒聽清楚{part}。",
+      "simplified": "我没听清楚{part}。",
+      "pinyinMarked": "Wǒ méi tīng qīngchǔ {partPinyin}.",
+      "meaningKo": "{part}을 똑똑히 듣지 못했어요.",
+      "region": "zh-TW",
+      "segmentation": [
+        "我",
+        "沒聽清楚",
+        "{part}"
+      ],
+      "pinyinSegments": [
+        "wǒ",
+        "méi tīng qīngchǔ",
+        "{partPinyin}"
+      ],
+      "usageNoteKo": "놓친 정보 부분을 구체적으로 말한다.",
+      "patternTokens": [
+        {
+          "traditional": "我",
+          "simplified": "我"
+        },
+        {
+          "traditional": "沒聽清楚",
+          "simplified": "没听清楚"
+        },
+        {
+          "slot": "part"
+        }
+      ]
+    }
+  ],
+  "model": {
+    "lines": [
+      {
+        "speaker": "甲",
+        "traditional": "會議在二〇五號房。",
+        "simplified": "会议在二〇五号房。",
+        "pinyinMarked": "Huìyì zài èr líng wǔ hào fáng.",
+        "translationKo": "회의는 205호에서 열립니다."
+      },
+      {
+        "speaker": "乙",
+        "traditional": "不好意思，我沒聽清楚房間號碼。可以再說一次嗎？",
+        "simplified": "不好意思，我没听清楚房间号码。可以再说一次吗？",
+        "pinyinMarked": "Bù hǎoyìsi, wǒ méi tīng qīngchǔ fángjiān hàomǎ. Kěyǐ zài shuō yí cì ma?",
+        "translationKo": "죄송하지만 방 번호를 잘 못 들었어요. 다시 말해 주실 수 있나요?"
+      }
+    ]
+  },
+  "slotBanks": {
+    "part": [
+      {
+        "traditional": "那個地址",
+        "simplified": "那个地址",
+        "pinyinMarked": "nàge dìzhǐ",
+        "meaningKo": "그 주소"
+      },
+      {
+        "traditional": "房間號碼",
+        "simplified": "房间号码",
+        "pinyinMarked": "fángjiān hàomǎ",
+        "meaningKo": "방 번호"
+      },
+      {
+        "traditional": "最後一個數字",
+        "simplified": "最后一个数字",
+        "pinyinMarked": "zuìhòu yí ge shùzì",
+        "meaningKo": "마지막 숫자"
+      },
+      {
+        "traditional": "登機門號碼",
+        "simplified": "登机门号码",
+        "pinyinMarked": "dēngjīmén hàomǎ",
+        "meaningKo": "탑승구 번호"
+      }
+    ],
+    "detail": [
+      {
+        "traditional": "星期五早上",
+        "simplified": "星期五早上",
+        "pinyinMarked": "xīngqíwǔ zǎoshang",
+        "meaningKo": "금요일 오전"
+      },
+      {
+        "traditional": "二〇五號房",
+        "simplified": "二〇五号房",
+        "pinyinMarked": "èr líng wǔ hào fáng",
+        "meaningKo": "205호"
+      },
+      {
+        "traditional": "下午三點",
+        "simplified": "下午三点",
+        "pinyinMarked": "xiàwǔ sān diǎn",
+        "meaningKo": "오후 3시"
+      },
+      {
+        "traditional": "B登機門",
+        "simplified": "B登机门",
+        "pinyinMarked": "B dēngjīmén",
+        "meaningKo": "B 탑승구"
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh02-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "room-number-intent",
+      "promptKo": "두 번째 사람의 의도를 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "甲",
+          "traditional": "會議在二〇五號房。",
+          "simplified": "会议在二〇五号房。",
+          "pinyinMarked": "Huìyì zài èr líng wǔ hào fáng.",
+          "translationKo": "회의는 205호에서 열립니다."
+        },
+        {
+          "speaker": "乙",
+          "traditional": "不好意思，我沒聽清楚房間號碼。可以再說一次嗎？",
+          "simplified": "不好意思，我没听清楚房间号码。可以再说一次吗？",
+          "pinyinMarked": "Bù hǎoyìsi, wǒ méi tīng qīngchǔ fángjiān hàomǎ. Kěyǐ zài shuō yí cì ma?",
+          "translationKo": "죄송하지만 방 번호를 잘 못 들었어요. 다시 말해 주실 수 있나요?"
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "방 번호를 다시 말해 달라고 요청한다.",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "회의를 취소한다.",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "회의 시간을 바꾼다.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "沒聽清楚는 잘 듣지 못했다는 뜻입니다.",
+        "再說一次는 다시 말하다는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "방 번호를 다시 말해 달라고 요청한다.",
+        "contrastKo": "沒聽清楚 / 再說一次",
+        "explanationKo": "놓친 부분을 밝히고 반복을 요청한다.",
+        "errorCode": "zh02.comprehension"
+      }
+    },
+    {
+      "taskId": "zh02-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "gate-b-listen",
+      "promptKo": "문장을 듣고 확인해야 할 정보를 고르세요.",
+      "ttsTraditional": "集合地點是B登機門。",
+      "ttsSimplified": "集合地点是B登机门。",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "탑승구",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "날짜",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "가격",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "B登機門을 들으세요."
+      ],
+      "feedback": {
+        "correctAnswer": "B登機門",
+        "contrastKo": "登機門 = 탑승구",
+        "explanationKo": "핵심 장소 정보를 듣고 구별한다.",
+        "errorCode": "zh02.listening"
+      }
+    },
+    {
+      "taskId": "zh02-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "again-cloze",
+      "promptKo": "빈칸에 알맞은 번체 표현을 입력하세요.",
+      "clozeText": "可以再說____嗎？",
+      "acceptedSet": [
+        "一次"
+      ],
+      "hints": [
+        "한 번이라는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "一次",
+        "contrastKo": "再說一次 = 다시 한 번 말하다",
+        "explanationKo": "반복 요청에서 次를 사용한다.",
+        "errorCode": "zh02.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh02-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "friday-mean-order",
+      "promptKo": "금요일 오전인지 확인하는 문장으로 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "你的意思"
+        },
+        {
+          "tokenId": "t2",
+          "text": "是"
+        },
+        {
+          "tokenId": "t3",
+          "text": "星期五早上"
+        },
+        {
+          "tokenId": "t4",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "你的意思를 먼저 둡니다.",
+        "嗎를 끝에 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "你的意思是星期五早上嗎？",
+        "contrastKo": "你的意思是 + 확인 내용 + 嗎？",
+        "explanationKo": "들은 내용을 질문으로 되짚는다.",
+        "errorCode": "zh02.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh02-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "address-repeat-transform",
+      "promptKo": "같은 의미를 반복 요청 문장으로 바꾸세요.",
+      "contextKo": "기본 의미: 我沒聽清楚那個地址。",
+      "acceptedSet": [
+        "可以再說一次那個地址嗎？",
+        "可以再說一次地址嗎？"
+      ],
+      "hints": [
+        "可以로 시작하세요.",
+        "再說一次를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "可以再說一次那個地址嗎？",
+        "contrastKo": "沒聽清楚 → 再說一次",
+        "explanationKo": "놓친 정보를 반복 요청으로 바꾼다.",
+        "errorCode": "zh02.transform"
+      },
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh02-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "last-number-guided",
+      "promptKo": "번체 중국어 한 문장으로 요청하세요.",
+      "contextKo": "마지막 숫자를 다시 말해 달라고 요청합니다.",
+      "acceptedVariants": [
+        "可以再說一次最後一個數字嗎？"
+      ],
+      "hints": [
+        "可以와 再說一次를 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "可以再說一次最後一個數字嗎？",
+        "contrastKo": "再說一次 + 정보",
+        "explanationKo": "정보 범위를 넣어 반복을 요청한다.",
+        "errorCode": "zh02.production"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh02-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "clear-room-repair",
+      "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+      "clozeText": "我沒聽____房間號碼。",
+      "acceptedSet": [
+        "清楚"
+      ],
+      "hints": [
+        "똑똑히라는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "清楚",
+        "contrastKo": "沒聽清楚 = 똑똑히 못 들음",
+        "explanationKo": "놓친 상태를 정확히 표현한다.",
+        "errorCode": "zh02.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh02-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "address-order-repair",
+      "promptKo": "주소를 다시 말해 달라는 문장으로 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "可以"
+        },
+        {
+          "tokenId": "t2",
+          "text": "再說一次"
+        },
+        {
+          "tokenId": "t3",
+          "text": "那個地址"
+        },
+        {
+          "tokenId": "t4",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "可以를 먼저 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以再說一次那個地址嗎？",
+        "contrastKo": "可以 + 再說一次 + 정보 + 嗎",
+        "explanationKo": "반복 요청 어순을 다른 정보로 확인한다.",
+        "errorCode": "zh02.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh02-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "three-mean-repair",
+      "promptKo": "번체 중국어로 확인하세요.",
+      "contextKo": "회의가 오후 3시라는 뜻인지 묻습니다.",
+      "acceptedVariants": [
+        "你的意思是會議在下午三點嗎？",
+        "你的意思是下午三點嗎？"
+      ],
+      "hints": [
+        "你的意思是로 시작하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "你的意思是會議在下午三點嗎？",
+        "contrastKo": "你的意思是 + 내용 + 嗎",
+        "explanationKo": "시간 정보를 질문으로 되짚는다.",
+        "errorCode": "zh02.production"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh02.comprehension",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-form"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    },
+    {
+      "errorCode": "zh02.listening",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-form"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    },
+    {
+      "errorCode": "zh02.form",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-form"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    },
+    {
+      "errorCode": "zh02.order",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-order"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    },
+    {
+      "errorCode": "zh02.transform",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-guided"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    },
+    {
+      "errorCode": "zh02.production",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "repairTaskRefs": [
+        "zh02-repair-guided"
+      ],
+      "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+    }
+  ],
+  "baselineItems": [
+    {
+      "taskId": "zh02-baseline-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "delivery-address-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "배송 주소를 다시 말해 달라고 요청합니다.",
+      "acceptedVariants": [
+        "可以再說一次送貨地址嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh02-baseline",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.clarify.repeat-information"
+    }
+  ],
+  "transferItems": [
+    {
+      "taskId": "zh02-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "gate-number-transfer",
+      "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+      "contextKo": "탑승구 번호를 다시 말해 달라고 요청합니다.",
+      "acceptedVariants": [
+        "可以再說一次登機門號碼嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "可以再說一次登機門號碼嗎？",
+        "contrastKo": "再說一次 + 새 정보",
+        "explanationKo": "다른 장소 정보에도 반복 요청을 적용한다.",
+        "errorCode": "zh02.production"
+      },
+      "benchmarkId": "zh02-transfer",
+      "transferId": "zh02-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "measurementKey": "zh.clarify.repeat-information"
+    },
+    {
+      "taskId": "zh02-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh02-repeat",
+        "zh02-mean",
+        "zh02-clear"
+      ],
+      "variantKey": "reservation-time-retention",
+      "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+      "contextKo": "예약 시간을 다시 말해 달라고 요청합니다.",
+      "acceptedVariants": [
+        "可以再說一次訂位時間嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "可以再說一次訂位時間嗎？",
+        "contrastKo": "再說一次 + 새 정보",
+        "explanationKo": "시간이 지난 뒤에도 같은 반복 요청을 새 정보에 적용한다.",
+        "errorCode": "zh02.production"
+      },
+      "benchmarkId": "zh02-retention",
+      "transferId": "zh02-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "measurementKey": "zh.clarify.repeat-information"
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "parallelConstructChecked": true
+  },
+  "prerequisiteUnitIds": [
+    "zh-a2-restaurant-remove-ingredient-lean-001"
+  ]
+}

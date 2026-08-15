@@ -1,0 +1,106 @@
+{
+  "id": "./",
+  "name": "CEMS Chinese · v9.2.7 Learning-first",
+  "short_name": "中文學習",
+  "description": "오프라인 중국어 학습 — 오늘의 목표를 중심으로 문맥 이해, 짧은 무힌트 산출, 오류 보완, 3일 전이와 14일 유지를 연결하고 카드 기억 통계와 수행 근거를 분리한 v9.2.7",
+  "lang": "ko-KR",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#0d0f12",
+  "theme_color": "#0d0f12",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "오늘의 목표 시작",
+      "short_name": "오늘 목표",
+      "url": "./index.html#lean",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "학습 콘텐츠 추가",
+      "short_name": "콘텐츠 추가",
+      "url": "./index.html#lean-studio",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "복습 시작",
+      "short_name": "복습",
+      "url": "./index.html#study",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "통계 보기",
+      "short_name": "통계",
+      "url": "./index.html#stats",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "데이터 관리",
+      "short_name": "데이터",
+      "url": "./index.html#data",
+      "icons": [
+        {
+          "src": "./icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

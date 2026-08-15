@@ -1,0 +1,685 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-tw-a2-report-problem-lean-005",
+  "level": "A2",
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 5,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "functionKo": "문제를 설명하고 도움이나 교체를 요청한다",
+  "situationKo": "호텔·역·가게에서 기기나 물건의 문제를 알린다",
+  "targets": [
+    {
+      "targetId": "zh05-not-work",
+      "kind": "construction",
+      "traditional": "{item}不能用。",
+      "simplified": "{item}不能用。",
+      "pinyinMarked": "{itemPinyin} bù néng yòng.",
+      "meaningKo": "{item}을 사용할 수 없어요.",
+      "region": "zh-TW",
+      "segmentation": [
+        "{item}",
+        "不能用"
+      ],
+      "pinyinSegments": [
+        "{itemPinyin}",
+        "bù néng yòng"
+      ],
+      "usageNoteKo": "문제 대상을 먼저 짧게 설명한다.",
+      "patternTokens": [
+        {
+          "slot": "item"
+        },
+        {
+          "traditional": "不能用",
+          "simplified": "不能用"
+        }
+      ]
+    },
+    {
+      "targetId": "zh05-help",
+      "kind": "pragmaticFrame",
+      "traditional": "可以幫我看一下嗎？",
+      "simplified": "可以帮我看一下吗？",
+      "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+      "meaningKo": "좀 봐주실 수 있나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "可以",
+        "幫我",
+        "看一下",
+        "嗎"
+      ],
+      "pinyinSegments": [
+        "kěyǐ",
+        "bāng wǒ",
+        "kàn yíxià",
+        "ma"
+      ],
+      "usageNoteKo": "상대에게 문제를 확인해 달라고 정중하게 요청한다."
+    },
+    {
+      "targetId": "zh05-replace",
+      "kind": "pragmaticFrame",
+      "traditional": "可以換一個嗎？",
+      "simplified": "可以换一个吗？",
+      "pinyinMarked": "Kěyǐ huàn yí ge ma?",
+      "meaningKo": "하나 바꿔 주실 수 있나요?",
+      "region": "zh-TW",
+      "segmentation": [
+        "可以",
+        "換一個",
+        "嗎"
+      ],
+      "pinyinSegments": [
+        "kěyǐ",
+        "huàn yí ge",
+        "ma"
+      ],
+      "usageNoteKo": "고장 난 물건의 교체를 요청한다."
+    }
+  ],
+  "model": {
+    "lines": [
+      {
+        "speaker": "客人",
+        "traditional": "房卡不能用。",
+        "simplified": "房卡不能用。",
+        "pinyinMarked": "Fángkǎ bù néng yòng.",
+        "translationKo": "키 카드를 사용할 수 없어요."
+      },
+      {
+        "speaker": "櫃台",
+        "traditional": "不好意思。",
+        "simplified": "不好意思。",
+        "pinyinMarked": "Bù hǎoyìsi.",
+        "translationKo": "죄송합니다."
+      },
+      {
+        "speaker": "客人",
+        "traditional": "可以幫我看一下嗎？",
+        "simplified": "可以帮我看一下吗？",
+        "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+        "translationKo": "좀 봐주실 수 있나요?"
+      }
+    ]
+  },
+  "slotBanks": {
+    "item": [
+      {
+        "traditional": "房卡",
+        "simplified": "房卡",
+        "pinyinMarked": "fángkǎ",
+        "meaningKo": "호텔 키 카드"
+      },
+      {
+        "traditional": "售票機",
+        "simplified": "售票机",
+        "pinyinMarked": "shòupiàojī",
+        "meaningKo": "매표기"
+      },
+      {
+        "traditional": "充電器",
+        "simplified": "充电器",
+        "pinyinMarked": "chōngdiànqì",
+        "meaningKo": "충전기"
+      },
+      {
+        "traditional": "冷氣",
+        "simplified": "冷气",
+        "pinyinMarked": "lěngqì",
+        "meaningKo": "에어컨"
+      },
+      {
+        "traditional": "印表機",
+        "simplified": "印表机",
+        "pinyinMarked": "yìnbiǎojī",
+        "meaningKo": "프린터"
+      },
+      {
+        "traditional": "遙控器",
+        "simplified": "遥控器",
+        "pinyinMarked": "yáokòngqì",
+        "meaningKo": "리모컨"
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh05-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "key-card-intent",
+      "promptKo": "손님이 원하는 것을 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "客人",
+          "traditional": "房卡不能用。",
+          "simplified": "房卡不能用。",
+          "pinyinMarked": "Fángkǎ bù néng yòng.",
+          "translationKo": "키 카드를 사용할 수 없어요."
+        },
+        {
+          "speaker": "櫃台",
+          "traditional": "不好意思。",
+          "simplified": "不好意思。",
+          "pinyinMarked": "Bù hǎoyìsi.",
+          "translationKo": "죄송합니다."
+        },
+        {
+          "speaker": "客人",
+          "traditional": "可以幫我看一下嗎？",
+          "simplified": "可以帮我看一下吗？",
+          "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+          "translationKo": "좀 봐주실 수 있나요?"
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "작동하지 않는 키 카드에 대한 도움",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "새 방 예약",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "체크아웃 시간 확인",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "不能用는 사용할 수 없다는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "작동하지 않는 키 카드에 대한 도움",
+        "contrastKo": "不能用 / 幫我看一下",
+        "explanationKo": "문제를 말한 뒤 도움을 요청한다.",
+        "errorCode": "zh05.comprehension"
+      }
+    },
+    {
+      "taskId": "zh05-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "printer-listen",
+      "promptKo": "문장을 듣고 문제가 있는 물건을 고르세요.",
+      "ttsTraditional": "印表機不能用。",
+      "ttsSimplified": "打印机不能用。",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "프린터",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "충전기",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "리모컨",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "문장 앞의 물건 이름을 들으세요."
+      ],
+      "feedback": {
+        "correctAnswer": "印表機",
+        "contrastKo": "印表機 / 充電器",
+        "explanationKo": "문제 대상을 듣고 상태와 연결한다.",
+        "errorCode": "zh05.listening"
+      }
+    },
+    {
+      "taskId": "zh05-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "not-use-cloze",
+      "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+      "clozeText": "冷氣不能____。",
+      "acceptedSet": [
+        "用"
+      ],
+      "hints": [
+        "사용하다는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "用",
+        "contrastKo": "能用 / 不能用",
+        "explanationKo": "사용 가능 여부를 표현한다.",
+        "errorCode": "zh05.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh05-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "help-order",
+      "promptKo": "도움을 요청하는 문장으로 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "可以"
+        },
+        {
+          "tokenId": "t2",
+          "text": "幫我"
+        },
+        {
+          "tokenId": "t3",
+          "text": "看一下"
+        },
+        {
+          "tokenId": "t4",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "可以를 먼저 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我看一下嗎？",
+        "contrastKo": "可以 + 幫我 + 看一下 + 嗎",
+        "explanationKo": "정중한 도움 요청 어순을 확인한다.",
+        "errorCode": "zh05.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh05-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "remote-replace-transform",
+      "promptKo": "문제 상황에서 교체 요청으로 바꾸세요.",
+      "contextKo": "기본 상황: 遙控器不能用。",
+      "acceptedSet": [
+        "可以換一個嗎？"
+      ],
+      "hints": [
+        "可以와 換一個를 사용하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "可以換一個嗎？",
+        "contrastKo": "不能用 → 換一個",
+        "explanationKo": "해결책으로 교체를 요청한다.",
+        "errorCode": "zh05.transform"
+      },
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh05-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "air-conditioner-guided",
+      "promptKo": "번체 중국어 두 문장으로 문제와 요청을 입력하세요.",
+      "contextKo": "에어컨을 사용할 수 없다고 말하고 봐 달라고 요청합니다.",
+      "acceptedVariants": [
+        "冷氣不能用。可以幫我看一下嗎？"
+      ],
+      "hints": [
+        "冷氣不能用을 먼저 쓰세요.",
+        "幫我看一下을 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "冷氣不能用。可以幫我看一下嗎？",
+        "contrastKo": "문제 설명 + 도움 요청",
+        "explanationKo": "상대가 문제와 원하는 행동을 바로 알 수 있게 한다.",
+        "errorCode": "zh05.production"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh05-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "charger-use-repair",
+      "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+      "clozeText": "充電器不能____。",
+      "acceptedSet": [
+        "用"
+      ],
+      "hints": [
+        "한 글자입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "用",
+        "contrastKo": "不能用 = 사용할 수 없음",
+        "explanationKo": "다른 기기로 상태 표현을 확인한다.",
+        "errorCode": "zh05.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh05-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "help-repair",
+      "promptKo": "도움 요청을 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "可以"
+        },
+        {
+          "tokenId": "t2",
+          "text": "幫我"
+        },
+        {
+          "tokenId": "t3",
+          "text": "看一下"
+        },
+        {
+          "tokenId": "t4",
+          "text": "嗎？"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "hints": [
+        "幫我 뒤에 看一下을 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "可以幫我看一下嗎？",
+        "contrastKo": "幫我 + 看一下",
+        "explanationKo": "도움 요청의 어순을 반복한다.",
+        "errorCode": "zh05.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh05-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "charger-replace-repair",
+      "promptKo": "번체 중국어로 문제와 교체 요청을 말하세요.",
+      "contextKo": "충전기를 사용할 수 없어 하나 바꿔 달라고 요청합니다.",
+      "acceptedVariants": [
+        "充電器不能用。可以換一個嗎？"
+      ],
+      "hints": [
+        "不能用과 換一個를 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "充電器不能用。可以換一個嗎？",
+        "contrastKo": "문제 + 교체 요청",
+        "explanationKo": "다른 기기에도 교체 요청을 적용한다.",
+        "errorCode": "zh05.production"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh05.comprehension",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-form"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    },
+    {
+      "errorCode": "zh05.listening",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-form"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    },
+    {
+      "errorCode": "zh05.form",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-form"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    },
+    {
+      "errorCode": "zh05.order",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-order"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    },
+    {
+      "errorCode": "zh05.transform",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-guided"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    },
+    {
+      "errorCode": "zh05.production",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "repairTaskRefs": [
+        "zh05-repair-guided"
+      ],
+      "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+    }
+  ],
+  "baselineItems": [
+    {
+      "taskId": "zh05-baseline-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "key-card-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어로 문제와 요청을 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "호텔 키 카드를 사용할 수 없다고 말하고 도움을 요청합니다.",
+      "acceptedVariants": [
+        "房卡不能用。可以幫我看一下嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh05-baseline",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.problem.report-and-request-help"
+    }
+  ],
+  "transferItems": [
+    {
+      "taskId": "zh05-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "ticket-machine-transfer",
+      "promptKo": "3일 전이 확인입니다. 번체 중국어로 문제와 요청을 입력하세요.",
+      "contextKo": "매표기를 사용할 수 없다고 말하고 도움을 요청합니다.",
+      "acceptedVariants": [
+        "售票機不能用。可以幫我看一下嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "售票機不能用。可以幫我看一下嗎？",
+        "contrastKo": "문제 + 幫我看一下",
+        "explanationKo": "새 기기 문제에도 도움 요청을 적용한다.",
+        "errorCode": "zh05.production"
+      },
+      "benchmarkId": "zh05-transfer",
+      "transferId": "zh05-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "measurementKey": "zh.problem.report-and-request-help"
+    },
+    {
+      "taskId": "zh05-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh05-not-work",
+        "zh05-help",
+        "zh05-replace"
+      ],
+      "variantKey": "remote-help-retention",
+      "promptKo": "14일 유지 확인입니다. 번체 중국어로 문제와 요청을 입력하세요.",
+      "contextKo": "리모컨을 사용할 수 없다고 말하고 도움을 요청합니다.",
+      "acceptedVariants": [
+        "遙控器不能用。可以幫我看一下嗎？"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "遙控器不能用。可以幫我看一下嗎？",
+        "contrastKo": "問題 + 幫我看一下",
+        "explanationKo": "시간이 지난 뒤에도 같은 문제 설명과 도움 요청을 적용한다.",
+        "errorCode": "zh05.production"
+      },
+      "benchmarkId": "zh05-retention",
+      "transferId": "zh05-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "measurementKey": "zh.problem.report-and-request-help"
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "parallelConstructChecked": true
+  },
+  "prerequisiteUnitIds": [
+    "zh-tw-a2-schedule-change-lean-004"
+  ]
+}

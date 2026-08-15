@@ -1,0 +1,5595 @@
+{
+  "schemaVersion": "cems-lean-pack-1",
+  "version": 1,
+  "language": "zh",
+  "packId": "zh-tw-everyday-functions-a2-pilot-01",
+  "titleKo": "대만 중국어 일상 문제 해결 8단원",
+  "descriptionKo": "일상에서 자주 필요한 8개 기능을 이해→형태 회상→짧은 산출→3일 전이→14일 유지 순서로 훈련하는 소규모 파일럿 코스입니다.",
+  "expectedWeeks": 4,
+  "newUnitsPerDayMax": 1,
+  "sequencePolicy": "linear",
+  "unitOrder": [
+    "zh-a2-restaurant-remove-ingredient-lean-001",
+    "zh-tw-a2-clarify-repeat-lean-002",
+    "zh-tw-a2-ask-directions-lean-003",
+    "zh-tw-a2-schedule-change-lean-004",
+    "zh-tw-a2-report-problem-lean-005",
+    "zh-tw-a2-compare-choose-lean-006",
+    "zh-tw-a2-delay-update-lean-007",
+    "zh-tw-a2-confirm-details-lean-008"
+  ],
+  "unitFiles": [
+    "units/01_zh-a2-restaurant-remove-ingredient-lean-001.json",
+    "units/02_zh-tw-a2-clarify-repeat-lean-002.json",
+    "units/03_zh-tw-a2-ask-directions-lean-003.json",
+    "units/04_zh-tw-a2-schedule-change-lean-004.json",
+    "units/05_zh-tw-a2-report-problem-lean-005.json",
+    "units/06_zh-tw-a2-compare-choose-lean-006.json",
+    "units/07_zh-tw-a2-delay-update-lean-007.json",
+    "units/08_zh-tw-a2-confirm-details-lean-008.json"
+  ],
+  "units": [
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-a2-restaurant-remove-ingredient-lean-001",
+      "level": "A2",
+      "functionKo": "음식에서 특정 재료를 빼 달라고 정중하게 요청한다",
+      "situationKo": "대만 식당에서 주문하며 원하지 않는 재료를 제외해 달라고 말한다",
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "machineAudited": true,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "machineValidated": true,
+        "parallelConstructChecked": true
+      },
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "targets": [
+        {
+          "targetId": "zh-u1-frame",
+          "kind": "pragmaticFrame",
+          "traditional": "可以幫我把{ingredient}拿掉嗎？",
+          "simplified": "可以帮我把{ingredient}拿掉吗？",
+          "pinyinMarked": "Kěyǐ bāng wǒ bǎ {ingredientPinyin} nádiào ma?",
+          "meaningKo": "{ingredient}을 빼 주실 수 있나요?",
+          "segmentation": [
+            "可以幫我把{ingredient}拿掉嗎？"
+          ],
+          "pinyinSegments": [
+            "kěyǐ bāng wǒ bǎ {ingredientpinyin} nádiào ma?"
+          ],
+          "usageNoteKo": "대만에서 음식 재료를 빼 달라고 할 때 자연스러운 요청이다."
+        },
+        {
+          "targetId": "zh-u1-ba",
+          "kind": "chunk",
+          "traditional": "把{ingredient}拿掉",
+          "simplified": "把{ingredient}拿掉",
+          "pinyinMarked": "Bǎ {ingredientPinyin} nádiào",
+          "meaningKo": "{ingredient}을 대상으로 삼아 빼다",
+          "segmentation": [
+            "把{ingredient}拿掉"
+          ],
+          "pinyinSegments": [
+            "bǎ {ingredientpinyin} nádiào"
+          ]
+        },
+        {
+          "targetId": "zh-u1-polite",
+          "kind": "chunk",
+          "traditional": "不好意思",
+          "simplified": "不好意思",
+          "pinyinMarked": "Bù hǎoyìsi",
+          "meaningKo": "실례하지만, 죄송하지만",
+          "segmentation": [
+            "不好意思"
+          ],
+          "pinyinSegments": [
+            "bù hǎoyìsi"
+          ]
+        }
+      ],
+      "slotBanks": {
+        "ingredient": [
+          {
+            "traditional": "花生",
+            "simplified": "花生",
+            "pinyinMarked": "huāshēng",
+            "meaningKo": "땅콩"
+          },
+          {
+            "traditional": "香菜",
+            "simplified": "香菜",
+            "pinyinMarked": "xiāngcài",
+            "meaningKo": "고수"
+          },
+          {
+            "traditional": "辣椒",
+            "simplified": "辣椒",
+            "pinyinMarked": "làjiāo",
+            "meaningKo": "고추"
+          },
+          {
+            "traditional": "蔥",
+            "simplified": "葱",
+            "pinyinMarked": "cōng",
+            "meaningKo": "파"
+          },
+          {
+            "traditional": "橄欖",
+            "simplified": "橄榄",
+            "pinyinMarked": "gǎnlǎn",
+            "meaningKo": "올리브"
+          }
+        ]
+      },
+      "model": {
+        "lines": [
+          {
+            "speaker": "客人",
+            "traditional": "不好意思，可以幫我把花生拿掉嗎？",
+            "simplified": "不好意思，可以帮我把花生拿掉吗？",
+            "pinyinMarked": "Bù hǎoyìsi, kěyǐ bāng wǒ bǎ huāshēng nádiào ma?",
+            "translationKo": "실례하지만 땅콩을 빼 주실 수 있나요?"
+          },
+          {
+            "speaker": "店員",
+            "traditional": "可以，沒問題。",
+            "simplified": "可以，没问题。",
+            "pinyinMarked": "Kěyǐ, méi wèntí.",
+            "translationKo": "네, 문제없습니다."
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh-u1-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "peanut-intent",
+          "promptKo": "손님의 의도를 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "客人",
+              "traditional": "不好意思，可以幫我把花生拿掉嗎？",
+              "simplified": "不好意思，可以帮我把花生拿掉吗？",
+              "pinyinMarked": "Bù hǎoyìsi, kěyǐ bāng wǒ bǎ huāshēng nádiào ma?",
+              "translationKo": "땅콩을 빼 달라고 합니다."
+            },
+            {
+              "speaker": "店員",
+              "traditional": "可以。",
+              "simplified": "可以。",
+              "pinyinMarked": "Kěyǐ.",
+              "translationKo": "네."
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "땅콩을 빼 달라고 요청한다.",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "땅콩을 더 달라고 요청한다.",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "가격을 묻는다.",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "拿掉는 제거를 뜻합니다."
+          ],
+          "feedback": {
+            "correctAnswer": "땅콩을 빼 달라고 요청한다.",
+            "contrastKo": "拿掉 ↔ 加進去",
+            "explanationKo": "把 뒤의 대상을 제거해 달라는 요청이다.",
+            "errorCode": "zh.u1.comprehension"
+          }
+        },
+        {
+          "taskId": "zh-u1-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "cilantro-listen",
+          "promptKo": "문장을 듣고 빼 달라고 한 재료를 고르세요.",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "고수",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "땅콩",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "고추",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "把 뒤의 재료 이름을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "香菜 · 고수",
+            "contrastKo": "香菜 xiāngcài",
+            "explanationKo": "把 뒤의 명사가 제거 대상이다.",
+            "errorCode": "zh.u1.listening"
+          },
+          "ttsTraditional": "可以幫我把香菜拿掉嗎？",
+          "ttsSimplified": "可以帮我把香菜拿掉吗？"
+        },
+        {
+          "taskId": "zh-u1-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-ba"
+          ],
+          "variantKey": "nadiao-cloze",
+          "promptKo": "빈칸에 “빼다”에 해당하는 번체 표현을 입력하세요.",
+          "clozeText": "可以幫我把辣椒____嗎？",
+          "acceptedSet": [
+            "拿掉"
+          ],
+          "stripPunctuation": true,
+          "hints": [
+            "拿로 시작합니다."
+          ],
+          "feedback": {
+            "correctAnswer": "拿掉",
+            "contrastKo": "拿掉 = 빼다",
+            "explanationKo": "把 + 대상 + 拿掉 순서를 사용한다.",
+            "errorCode": "zh.u1.form"
+          }
+        },
+        {
+          "taskId": "zh-u1-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "cilantro-order",
+          "promptKo": "고수를 빼 달라는 문장이 되도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以幫我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "把"
+            },
+            {
+              "tokenId": "t3",
+              "text": "香菜"
+            },
+            {
+              "tokenId": "t4",
+              "text": "拿掉"
+            },
+            {
+              "tokenId": "t5",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4",
+            "t5"
+          ],
+          "joinWithoutSpace": true,
+          "hints": [
+            "把 뒤에 香菜를 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我把香菜拿掉嗎？",
+            "contrastKo": "可以幫我 → 把 → 재료 → 拿掉 → 嗎",
+            "explanationKo": "把 구조의 대상과 동작 순서를 지킨다.",
+            "errorCode": "zh.u1.order"
+          }
+        },
+        {
+          "taskId": "zh-u1-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "chili-transform",
+          "promptKo": "재료를 고추로 바꾸어 번체 문장을 입력하세요.",
+          "contextKo": "기본 문장: 可以幫我把花生拿掉嗎？",
+          "acceptedSet": [
+            "可以幫我把辣椒拿掉嗎？"
+          ],
+          "stripPunctuation": true,
+          "hints": [
+            "把 뒤의 재료만 辣椒로 바꿉니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我把辣椒拿掉嗎？",
+            "contrastKo": "花生 → 辣椒",
+            "explanationKo": "문형은 유지하고 대상 슬롯만 바꾼다.",
+            "errorCode": "zh.u1.transform"
+          }
+        },
+        {
+          "taskId": "zh-u1-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "peanut-guided",
+          "promptKo": "땅콩을 빼 달라고 번체 중국어 한 문장으로 정중하게 요청하세요.",
+          "acceptedVariants": [
+            "不好意思，可以幫我把花生拿掉嗎？",
+            "可以幫我把花生拿掉嗎？"
+          ],
+          "stripPunctuation": true,
+          "hints": [
+            "可以幫我…嗎？를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "不好意思，可以幫我把花生拿掉嗎？",
+            "contrastKo": "把 + 花生 + 拿掉",
+            "explanationKo": "요청 틀 안에서 대상과 동작의 순서를 유지한다.",
+            "errorCode": "zh.u1.guided"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh-u1-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "scallion-repair",
+          "promptKo": "파를 빼 달라고 번체 중국어로 요청하세요.",
+          "acceptedVariants": [
+            "可以幫我把蔥拿掉嗎？",
+            "不好意思，可以幫我把蔥拿掉嗎？"
+          ],
+          "stripPunctuation": true,
+          "hints": [
+            "把蔥拿掉를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我把蔥拿掉嗎？",
+            "contrastKo": "재료만 바꾸기",
+            "explanationKo": "다른 재료에도 같은 요청 틀을 적용한다.",
+            "errorCode": "zh.u1.guided"
+          }
+        },
+        {
+          "taskId": "zh-u1-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "chili-repair-order",
+          "promptKo": "고추를 빼 달라는 문장을 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以幫我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "把"
+            },
+            {
+              "tokenId": "t3",
+              "text": "辣椒"
+            },
+            {
+              "tokenId": "t4",
+              "text": "拿掉"
+            },
+            {
+              "tokenId": "t5",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4",
+            "t5"
+          ],
+          "joinWithoutSpace": true,
+          "hints": [
+            "把 뒤에 辣椒를 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我把辣椒拿掉嗎？",
+            "contrastKo": "把 + 대상 + 동작",
+            "explanationKo": "어순을 다른 재료로 다시 확인한다.",
+            "errorCode": "zh.u1.order"
+          }
+        },
+        {
+          "taskId": "zh-u1-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh-u1-ba"
+          ],
+          "variantKey": "scallion-repair-cloze",
+          "promptKo": "빈칸에 제거 동작을 입력하세요.",
+          "clozeText": "可以幫我把蔥____嗎？",
+          "acceptedSet": [
+            "拿掉"
+          ],
+          "stripPunctuation": true,
+          "hints": [
+            "두 글자입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "拿掉",
+            "contrastKo": "拿掉 = 빼다",
+            "explanationKo": "동작 표현의 한자를 회상한다.",
+            "errorCode": "zh.u1.form"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh.u1.comprehension",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-form"
+          ]
+        },
+        {
+          "errorCode": "zh.u1.listening",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-order"
+          ]
+        },
+        {
+          "errorCode": "zh.u1.form",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-form"
+          ]
+        },
+        {
+          "errorCode": "zh.u1.order",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-order"
+          ]
+        },
+        {
+          "errorCode": "zh.u1.transform",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-guided"
+          ]
+        },
+        {
+          "errorCode": "zh.u1.guided",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "repairTaskRefs": [
+            "zh-u1-repair-guided"
+          ]
+        }
+      ],
+      "transferItems": [
+        {
+          "benchmarkId": "zh-u1-transfer",
+          "transferId": "zh-u1-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "taskId": "zh-u1-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "celery-transfer",
+          "promptKo": "새 재료 상황입니다. 번체 중국어로 요청하세요.",
+          "contextKo": "샐러리 芹菜(qíncài)를 빼 달라고 합니다.",
+          "acceptedVariants": [
+            "可以幫我把芹菜拿掉嗎？"
+          ],
+          "stripPunctuation": true,
+          "hints": [],
+          "feedback": {
+            "correctAnswer": "可以幫我把芹菜拿掉嗎？",
+            "contrastKo": "把 + 芹菜 + 拿掉",
+            "explanationKo": "새 재료에도 같은 把 어순을 적용한다.",
+            "errorCode": "zh.u1.guided"
+          },
+          "measurementKey": "zh.order.remove-ingredient"
+        },
+        {
+          "benchmarkId": "zh-u1-retention",
+          "transferId": "zh-u1-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "taskId": "zh-u1-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "garlic-retention",
+          "promptKo": "유지 확인입니다. 번체 중국어로 요청하세요.",
+          "contextKo": "마늘 蒜(suàn)을 빼 달라고 합니다.",
+          "acceptedVariants": [
+            "可以幫我把蒜拿掉嗎？"
+          ],
+          "stripPunctuation": true,
+          "hints": [],
+          "feedback": {
+            "correctAnswer": "可以幫我把蒜拿掉嗎？",
+            "contrastKo": "把 + 蒜 + 拿掉",
+            "explanationKo": "시간이 지난 뒤 새로운 재료에 적용한다.",
+            "errorCode": "zh.u1.guided"
+          },
+          "measurementKey": "zh.order.remove-ingredient"
+        }
+      ],
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 1,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "baselineItems": [
+        {
+          "taskId": "zh-baseline-remove-01",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh-u1-frame",
+            "zh-u1-ba",
+            "zh-u1-polite"
+          ],
+          "variantKey": "olive-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "올리브 橄欖(gǎnlǎn)을 음식에서 빼 달라고 요청합니다.",
+          "acceptedVariants": [
+            "可以幫我把橄欖拿掉嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh-remove-baseline-01",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.order.remove-ingredient"
+        }
+      ],
+      "prerequisiteUnitIds": []
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-clarify-repeat-lean-002",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 2,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "잘 듣지 못한 정보를 다시 묻고 확인한다",
+      "situationKo": "회의·전화·예약에서 놓친 정보를 번체 중국어로 확인한다",
+      "targets": [
+        {
+          "targetId": "zh02-repeat",
+          "kind": "pragmaticFrame",
+          "traditional": "可以再說一次{part}嗎？",
+          "simplified": "可以再说一次{part}吗？",
+          "pinyinMarked": "Kěyǐ zài shuō yí cì {partPinyin} ma?",
+          "meaningKo": "{part}을 다시 한 번 말해 주실 수 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "可以",
+            "再說一次",
+            "{part}",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "kěyǐ",
+            "zài shuō yí cì",
+            "{partPinyin}",
+            "ma"
+          ],
+          "usageNoteKo": "못 들은 정보의 범위를 넣어 반복을 요청한다."
+        },
+        {
+          "targetId": "zh02-mean",
+          "kind": "pragmaticFrame",
+          "traditional": "你的意思是{detail}嗎？",
+          "simplified": "你的意思是{detail}吗？",
+          "pinyinMarked": "Nǐ de yìsi shì {detailPinyin} ma?",
+          "meaningKo": "말씀하신 뜻이 {detail}인가요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "你的意思",
+            "是",
+            "{detail}",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "nǐ de yìsi",
+            "shì",
+            "{detailPinyin}",
+            "ma"
+          ],
+          "usageNoteKo": "들은 내용을 자신의 말로 확인한다."
+        },
+        {
+          "targetId": "zh02-clear",
+          "kind": "construction",
+          "traditional": "我沒聽清楚{part}。",
+          "simplified": "我没听清楚{part}。",
+          "pinyinMarked": "Wǒ méi tīng qīngchǔ {partPinyin}.",
+          "meaningKo": "{part}을 똑똑히 듣지 못했어요.",
+          "region": "zh-TW",
+          "segmentation": [
+            "我",
+            "沒聽清楚",
+            "{part}"
+          ],
+          "pinyinSegments": [
+            "wǒ",
+            "méi tīng qīngchǔ",
+            "{partPinyin}"
+          ],
+          "usageNoteKo": "놓친 정보 부분을 구체적으로 말한다.",
+          "patternTokens": [
+            {
+              "traditional": "我",
+              "simplified": "我"
+            },
+            {
+              "traditional": "沒聽清楚",
+              "simplified": "没听清楚"
+            },
+            {
+              "slot": "part"
+            }
+          ]
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "甲",
+            "traditional": "會議在二〇五號房。",
+            "simplified": "会议在二〇五号房。",
+            "pinyinMarked": "Huìyì zài èr líng wǔ hào fáng.",
+            "translationKo": "회의는 205호에서 열립니다."
+          },
+          {
+            "speaker": "乙",
+            "traditional": "不好意思，我沒聽清楚房間號碼。可以再說一次嗎？",
+            "simplified": "不好意思，我没听清楚房间号码。可以再说一次吗？",
+            "pinyinMarked": "Bù hǎoyìsi, wǒ méi tīng qīngchǔ fángjiān hàomǎ. Kěyǐ zài shuō yí cì ma?",
+            "translationKo": "죄송하지만 방 번호를 잘 못 들었어요. 다시 말해 주실 수 있나요?"
+          }
+        ]
+      },
+      "slotBanks": {
+        "part": [
+          {
+            "traditional": "那個地址",
+            "simplified": "那个地址",
+            "pinyinMarked": "nàge dìzhǐ",
+            "meaningKo": "그 주소"
+          },
+          {
+            "traditional": "房間號碼",
+            "simplified": "房间号码",
+            "pinyinMarked": "fángjiān hàomǎ",
+            "meaningKo": "방 번호"
+          },
+          {
+            "traditional": "最後一個數字",
+            "simplified": "最后一个数字",
+            "pinyinMarked": "zuìhòu yí ge shùzì",
+            "meaningKo": "마지막 숫자"
+          },
+          {
+            "traditional": "登機門號碼",
+            "simplified": "登机门号码",
+            "pinyinMarked": "dēngjīmén hàomǎ",
+            "meaningKo": "탑승구 번호"
+          }
+        ],
+        "detail": [
+          {
+            "traditional": "星期五早上",
+            "simplified": "星期五早上",
+            "pinyinMarked": "xīngqíwǔ zǎoshang",
+            "meaningKo": "금요일 오전"
+          },
+          {
+            "traditional": "二〇五號房",
+            "simplified": "二〇五号房",
+            "pinyinMarked": "èr líng wǔ hào fáng",
+            "meaningKo": "205호"
+          },
+          {
+            "traditional": "下午三點",
+            "simplified": "下午三点",
+            "pinyinMarked": "xiàwǔ sān diǎn",
+            "meaningKo": "오후 3시"
+          },
+          {
+            "traditional": "B登機門",
+            "simplified": "B登机门",
+            "pinyinMarked": "B dēngjīmén",
+            "meaningKo": "B 탑승구"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh02-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "room-number-intent",
+          "promptKo": "두 번째 사람의 의도를 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "甲",
+              "traditional": "會議在二〇五號房。",
+              "simplified": "会议在二〇五号房。",
+              "pinyinMarked": "Huìyì zài èr líng wǔ hào fáng.",
+              "translationKo": "회의는 205호에서 열립니다."
+            },
+            {
+              "speaker": "乙",
+              "traditional": "不好意思，我沒聽清楚房間號碼。可以再說一次嗎？",
+              "simplified": "不好意思，我没听清楚房间号码。可以再说一次吗？",
+              "pinyinMarked": "Bù hǎoyìsi, wǒ méi tīng qīngchǔ fángjiān hàomǎ. Kěyǐ zài shuō yí cì ma?",
+              "translationKo": "죄송하지만 방 번호를 잘 못 들었어요. 다시 말해 주실 수 있나요?"
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "방 번호를 다시 말해 달라고 요청한다.",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "회의를 취소한다.",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "회의 시간을 바꾼다.",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "沒聽清楚는 잘 듣지 못했다는 뜻입니다.",
+            "再說一次는 다시 말하다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "방 번호를 다시 말해 달라고 요청한다.",
+            "contrastKo": "沒聽清楚 / 再說一次",
+            "explanationKo": "놓친 부분을 밝히고 반복을 요청한다.",
+            "errorCode": "zh02.comprehension"
+          }
+        },
+        {
+          "taskId": "zh02-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "gate-b-listen",
+          "promptKo": "문장을 듣고 확인해야 할 정보를 고르세요.",
+          "ttsTraditional": "集合地點是B登機門。",
+          "ttsSimplified": "集合地点是B登机门。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "탑승구",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "날짜",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "가격",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "B登機門을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "B登機門",
+            "contrastKo": "登機門 = 탑승구",
+            "explanationKo": "핵심 장소 정보를 듣고 구별한다.",
+            "errorCode": "zh02.listening"
+          }
+        },
+        {
+          "taskId": "zh02-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "again-cloze",
+          "promptKo": "빈칸에 알맞은 번체 표현을 입력하세요.",
+          "clozeText": "可以再說____嗎？",
+          "acceptedSet": [
+            "一次"
+          ],
+          "hints": [
+            "한 번이라는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "一次",
+            "contrastKo": "再說一次 = 다시 한 번 말하다",
+            "explanationKo": "반복 요청에서 次를 사용한다.",
+            "errorCode": "zh02.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh02-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "friday-mean-order",
+          "promptKo": "금요일 오전인지 확인하는 문장으로 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "你的意思"
+            },
+            {
+              "tokenId": "t2",
+              "text": "是"
+            },
+            {
+              "tokenId": "t3",
+              "text": "星期五早上"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "你的意思를 먼저 둡니다.",
+            "嗎를 끝에 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "你的意思是星期五早上嗎？",
+            "contrastKo": "你的意思是 + 확인 내용 + 嗎？",
+            "explanationKo": "들은 내용을 질문으로 되짚는다.",
+            "errorCode": "zh02.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh02-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "address-repeat-transform",
+          "promptKo": "같은 의미를 반복 요청 문장으로 바꾸세요.",
+          "contextKo": "기본 의미: 我沒聽清楚那個地址。",
+          "acceptedSet": [
+            "可以再說一次那個地址嗎？",
+            "可以再說一次地址嗎？"
+          ],
+          "hints": [
+            "可以로 시작하세요.",
+            "再說一次를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "可以再說一次那個地址嗎？",
+            "contrastKo": "沒聽清楚 → 再說一次",
+            "explanationKo": "놓친 정보를 반복 요청으로 바꾼다.",
+            "errorCode": "zh02.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh02-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "last-number-guided",
+          "promptKo": "번체 중국어 한 문장으로 요청하세요.",
+          "contextKo": "마지막 숫자를 다시 말해 달라고 요청합니다.",
+          "acceptedVariants": [
+            "可以再說一次最後一個數字嗎？"
+          ],
+          "hints": [
+            "可以와 再說一次를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以再說一次最後一個數字嗎？",
+            "contrastKo": "再說一次 + 정보",
+            "explanationKo": "정보 범위를 넣어 반복을 요청한다.",
+            "errorCode": "zh02.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh02-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "clear-room-repair",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "我沒聽____房間號碼。",
+          "acceptedSet": [
+            "清楚"
+          ],
+          "hints": [
+            "똑똑히라는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "清楚",
+            "contrastKo": "沒聽清楚 = 똑똑히 못 들음",
+            "explanationKo": "놓친 상태를 정확히 표현한다.",
+            "errorCode": "zh02.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh02-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "address-order-repair",
+          "promptKo": "주소를 다시 말해 달라는 문장으로 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以"
+            },
+            {
+              "tokenId": "t2",
+              "text": "再說一次"
+            },
+            {
+              "tokenId": "t3",
+              "text": "那個地址"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "可以를 먼저 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以再說一次那個地址嗎？",
+            "contrastKo": "可以 + 再說一次 + 정보 + 嗎",
+            "explanationKo": "반복 요청 어순을 다른 정보로 확인한다.",
+            "errorCode": "zh02.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh02-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "three-mean-repair",
+          "promptKo": "번체 중국어로 확인하세요.",
+          "contextKo": "회의가 오후 3시라는 뜻인지 묻습니다.",
+          "acceptedVariants": [
+            "你的意思是會議在下午三點嗎？",
+            "你的意思是下午三點嗎？"
+          ],
+          "hints": [
+            "你的意思是로 시작하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "你的意思是會議在下午三點嗎？",
+            "contrastKo": "你的意思是 + 내용 + 嗎",
+            "explanationKo": "시간 정보를 질문으로 되짚는다.",
+            "errorCode": "zh02.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh02.comprehension",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-form"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        },
+        {
+          "errorCode": "zh02.listening",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-form"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        },
+        {
+          "errorCode": "zh02.form",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-form"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        },
+        {
+          "errorCode": "zh02.order",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-order"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        },
+        {
+          "errorCode": "zh02.transform",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-guided"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        },
+        {
+          "errorCode": "zh02.production",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "repairTaskRefs": [
+            "zh02-repair-guided"
+          ],
+          "contrastKo": "다른 정보로 반복 요청과 확인을 다시 연습한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh02-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "delivery-address-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "배송 주소를 다시 말해 달라고 요청합니다.",
+          "acceptedVariants": [
+            "可以再說一次送貨地址嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh02-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.clarify.repeat-information"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh02-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "gate-number-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "탑승구 번호를 다시 말해 달라고 요청합니다.",
+          "acceptedVariants": [
+            "可以再說一次登機門號碼嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以再說一次登機門號碼嗎？",
+            "contrastKo": "再說一次 + 새 정보",
+            "explanationKo": "다른 장소 정보에도 반복 요청을 적용한다.",
+            "errorCode": "zh02.production"
+          },
+          "benchmarkId": "zh02-transfer",
+          "transferId": "zh02-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.clarify.repeat-information"
+        },
+        {
+          "taskId": "zh02-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh02-repeat",
+            "zh02-mean",
+            "zh02-clear"
+          ],
+          "variantKey": "reservation-time-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "예약 시간을 다시 말해 달라고 요청합니다.",
+          "acceptedVariants": [
+            "可以再說一次訂位時間嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以再說一次訂位時間嗎？",
+            "contrastKo": "再說一次 + 새 정보",
+            "explanationKo": "시간이 지난 뒤에도 같은 반복 요청을 새 정보에 적용한다.",
+            "errorCode": "zh02.production"
+          },
+          "benchmarkId": "zh02-retention",
+          "transferId": "zh02-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.clarify.repeat-information"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-a2-restaurant-remove-ingredient-lean-001"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-ask-directions-lean-003",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 3,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "장소의 위치와 가는 방법을 묻는다",
+      "situationKo": "역·건물·거리에서 필요한 장소를 찾고 위치를 확인한다",
+      "targets": [
+        {
+          "targetId": "zh03-where",
+          "kind": "pragmaticFrame",
+          "traditional": "請問，{place}在哪裡？",
+          "simplified": "请问，{place}在哪里？",
+          "pinyinMarked": "Qǐngwèn, {placePinyin} zài nǎlǐ?",
+          "meaningKo": "실례합니다, {place}은 어디에 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "請問",
+            "{place}",
+            "在哪裡"
+          ],
+          "pinyinSegments": [
+            "qǐngwèn",
+            "{placePinyin}",
+            "zài nǎlǐ"
+          ],
+          "usageNoteKo": "낯선 사람에게 정중하게 장소 위치를 묻는다."
+        },
+        {
+          "targetId": "zh03-how",
+          "kind": "pragmaticFrame",
+          "traditional": "去{place}要怎麼走？",
+          "simplified": "去{place}要怎么走？",
+          "pinyinMarked": "Qù {placePinyin} yào zěnme zǒu?",
+          "meaningKo": "{place}에 가려면 어떻게 가나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "去",
+            "{place}",
+            "要怎麼走"
+          ],
+          "pinyinSegments": [
+            "qù",
+            "{placePinyin}",
+            "yào zěnme zǒu"
+          ],
+          "usageNoteKo": "목적지로 가는 길을 묻는다."
+        },
+        {
+          "targetId": "zh03-near",
+          "kind": "pragmaticFrame",
+          "traditional": "是在{landmark}旁邊嗎？",
+          "simplified": "是在{landmark}旁边吗？",
+          "pinyinMarked": "Shì zài {landmarkPinyin} pángbiān ma?",
+          "meaningKo": "{landmark} 옆에 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "是",
+            "在",
+            "{landmark}",
+            "旁邊",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "shì",
+            "zài",
+            "{landmarkPinyin}",
+            "pángbiān",
+            "ma"
+          ],
+          "usageNoteKo": "기준 장소 옆인지 확인한다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "旅客",
+            "traditional": "請問，服務台在哪裡？",
+            "simplified": "请问，服务台在哪里？",
+            "pinyinMarked": "Qǐngwèn, fúwùtái zài nǎlǐ?",
+            "translationKo": "실례합니다, 안내 데스크는 어디에 있나요?"
+          },
+          {
+            "speaker": "站務員",
+            "traditional": "直走，在大門旁邊。",
+            "simplified": "直走，在大门旁边。",
+            "pinyinMarked": "Zhí zǒu, zài dàmén pángbiān.",
+            "translationKo": "곧장 가세요. 정문 옆에 있습니다."
+          }
+        ]
+      },
+      "slotBanks": {
+        "place": [
+          {
+            "traditional": "廁所",
+            "simplified": "厕所",
+            "pinyinMarked": "cèsuǒ",
+            "meaningKo": "화장실"
+          },
+          {
+            "traditional": "藥局",
+            "simplified": "药局",
+            "pinyinMarked": "yàojú",
+            "meaningKo": "약국"
+          },
+          {
+            "traditional": "服務台",
+            "simplified": "服务台",
+            "pinyinMarked": "fúwùtái",
+            "meaningKo": "안내 데스크"
+          },
+          {
+            "traditional": "四號月台",
+            "simplified": "四号月台",
+            "pinyinMarked": "sì hào yuètái",
+            "meaningKo": "4번 플랫폼"
+          }
+        ],
+        "landmark": [
+          {
+            "traditional": "電梯",
+            "simplified": "电梯",
+            "pinyinMarked": "diàntī",
+            "meaningKo": "엘리베이터"
+          },
+          {
+            "traditional": "銀行",
+            "simplified": "银行",
+            "pinyinMarked": "yínháng",
+            "meaningKo": "은행"
+          },
+          {
+            "traditional": "大門",
+            "simplified": "大门",
+            "pinyinMarked": "dàmén",
+            "meaningKo": "정문"
+          },
+          {
+            "traditional": "公車站",
+            "simplified": "公车站",
+            "pinyinMarked": "gōngchē zhàn",
+            "meaningKo": "버스 정류장"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh03-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "service-desk-intent",
+          "promptKo": "여행자가 묻는 것을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "旅客",
+              "traditional": "請問，服務台在哪裡？",
+              "simplified": "请问，服务台在哪里？",
+              "pinyinMarked": "Qǐngwèn, fúwùtái zài nǎlǐ?",
+              "translationKo": "실례합니다, 안내 데스크는 어디에 있나요?"
+            },
+            {
+              "speaker": "站務員",
+              "traditional": "直走，在大門旁邊。",
+              "simplified": "直走，在大门旁边。",
+              "pinyinMarked": "Zhí zǒu, zài dàmén pángbiān.",
+              "translationKo": "곧장 가세요. 정문 옆에 있습니다."
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "안내 데스크의 위치",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "표의 가격",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "출발 시간",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "在哪裡는 어디에 있는지 묻습니다."
+          ],
+          "feedback": {
+            "correctAnswer": "안내 데스크의 위치",
+            "contrastKo": "在哪裡 = 어디에",
+            "explanationKo": "장소 위치를 묻는 기능을 확인한다.",
+            "errorCode": "zh03.comprehension"
+          }
+        },
+        {
+          "taskId": "zh03-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "bank-left-listen",
+          "promptKo": "문장을 듣고 어디에서 왼쪽으로 도는지 고르세요.",
+          "ttsTraditional": "直走，到銀行左轉。",
+          "ttsSimplified": "直走，到银行左转。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "은행",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "정문",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "버스 정류장",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "銀行 뒤의 左轉을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "銀行",
+            "contrastKo": "到銀行左轉",
+            "explanationKo": "방향 지시의 기준 장소를 듣는다.",
+            "errorCode": "zh03.listening"
+          }
+        },
+        {
+          "taskId": "zh03-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "where-cloze",
+          "promptKo": "빈칸에 알맞은 번체 표현을 입력하세요.",
+          "clozeText": "請問，藥局在____？",
+          "acceptedSet": [
+            "哪裡"
+          ],
+          "hints": [
+            "어디라는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "哪裡",
+            "contrastKo": "在哪裡 = 어디에 있다",
+            "explanationKo": "위치 질문의 핵심 의문사를 쓴다.",
+            "errorCode": "zh03.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh03-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "service-order",
+          "promptKo": "안내 데스크 위치를 묻도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "請問"
+            },
+            {
+              "tokenId": "t2",
+              "text": "服務台"
+            },
+            {
+              "tokenId": "t3",
+              "text": "在哪裡"
+            },
+            {
+              "tokenId": "t4",
+              "text": "？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "請問을 먼저 둡니다.",
+            "在哪裡를 끝에 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "請問，服務台在哪裡？",
+            "contrastKo": "請問 + 장소 + 在哪裡？",
+            "explanationKo": "정중한 위치 질문 어순을 확인한다.",
+            "errorCode": "zh03.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh03-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "museum-how-transform",
+          "promptKo": "위치 질문을 길 묻기 문장으로 바꾸세요.",
+          "contextKo": "기본 문장: 博物館在哪裡？",
+          "acceptedSet": [
+            "去博物館要怎麼走？"
+          ],
+          "hints": [
+            "去로 시작하고 要怎麼走를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "去博物館要怎麼走？",
+            "contrastKo": "在哪裡 → 要怎麼走",
+            "explanationKo": "위치 질문을 이동 경로 요청으로 바꾼다.",
+            "errorCode": "zh03.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh03-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "pharmacy-guided",
+          "promptKo": "번체 중국어 한 문장으로 위치를 물으세요.",
+          "contextKo": "실례한다고 말한 뒤 약국 藥局(yàojú)이 어디인지 묻습니다.",
+          "acceptedVariants": [
+            "請問，藥局在哪裡？",
+            "請問藥局在哪裡？"
+          ],
+          "hints": [
+            "請問과 在哪裡를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "請問，藥局在哪裡？",
+            "contrastKo": "請問 + 장소 + 在哪裡？",
+            "explanationKo": "실제 장소 이름을 넣어 위치를 묻는다.",
+            "errorCode": "zh03.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh03-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "near-bank-repair",
+          "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+          "clozeText": "是在銀行____嗎？",
+          "acceptedSet": [
+            "旁邊"
+          ],
+          "hints": [
+            "옆이라는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "旁邊",
+            "contrastKo": "在 + 장소 + 旁邊",
+            "explanationKo": "상대 위치를 확인한다.",
+            "errorCode": "zh03.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh03-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "bus-stop-repair",
+          "promptKo": "버스 정류장 가는 길을 묻도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "去"
+            },
+            {
+              "tokenId": "t2",
+              "text": "公車站"
+            },
+            {
+              "tokenId": "t3",
+              "text": "要怎麼走"
+            },
+            {
+              "tokenId": "t4",
+              "text": "？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "去 뒤에 목적지를 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "去公車站要怎麼走？",
+            "contrastKo": "去 + 목적지 + 要怎麼走？",
+            "explanationKo": "다른 장소로 길 질문 어순을 반복한다.",
+            "errorCode": "zh03.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh03-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "elevator-near-repair",
+          "promptKo": "번체 중국어로 위치를 확인하세요.",
+          "contextKo": "그곳이 엘리베이터 옆인지 묻습니다.",
+          "acceptedVariants": [
+            "是在電梯旁邊嗎？",
+            "在電梯旁邊嗎？"
+          ],
+          "hints": [
+            "電梯와 旁邊을 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "是在電梯旁邊嗎？",
+            "contrastKo": "在 + 기준 장소 + 旁邊嗎？",
+            "explanationKo": "기준 장소를 바꾸어 상대 위치를 확인한다.",
+            "errorCode": "zh03.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh03.comprehension",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-form"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh03.listening",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-order"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh03.form",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-form"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh03.order",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-order"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh03.transform",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-order"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh03.production",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "repairTaskRefs": [
+            "zh03-repair-guided"
+          ],
+          "contrastKo": "위치 표현과 어순을 다른 장소로 다시 확인한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh03-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "atm-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "실례한다고 말한 뒤 ATM 提款機(tíkuǎnjī)의 위치를 묻습니다.",
+          "acceptedVariants": [
+            "請問，提款機在哪裡？",
+            "請問提款機在哪裡？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh03-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.directions.ask-location"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh03-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "platform-four-location-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "실례한다고 말한 뒤 4번 플랫폼 四號月台(sì hào yuètái)의 위치를 묻습니다.",
+          "acceptedVariants": [
+            "請問，四號月台在哪裡？",
+            "請問四號月台在哪裡？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "請問，四號月台在哪裡？",
+            "contrastKo": "請問 + 새 장소 + 在哪裡？",
+            "explanationKo": "새 장소에도 같은 위치 질문을 적용한다.",
+            "errorCode": "zh03.production"
+          },
+          "benchmarkId": "zh03-transfer",
+          "transferId": "zh03-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.directions.ask-location"
+        },
+        {
+          "taskId": "zh03-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh03-where",
+            "zh03-how",
+            "zh03-near"
+          ],
+          "variantKey": "restroom-location-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "실례한다고 말한 뒤 화장실의 위치를 묻습니다.",
+          "acceptedVariants": [
+            "請問，廁所在哪裡？",
+            "請問廁所在哪裡？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "請問，廁所在哪裡？",
+            "contrastKo": "請問 + 새 장소 + 在哪裡？",
+            "explanationKo": "시간이 지난 뒤에도 같은 위치 질문을 독립적으로 만든다.",
+            "errorCode": "zh03.production"
+          },
+          "benchmarkId": "zh03-retention",
+          "transferId": "zh03-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.directions.ask-location"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-clarify-repeat-lean-002"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-schedule-change-lean-004",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 4,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "가능한 시간을 묻고 약속을 변경한다",
+      "situationKo": "친구·병원·서비스 예약의 날짜와 시간을 조율한다",
+      "targets": [
+        {
+          "targetId": "zh04-free",
+          "kind": "pragmaticFrame",
+          "traditional": "你{day}有空嗎？",
+          "simplified": "你{day}有空吗？",
+          "pinyinMarked": "Nǐ {dayPinyin} yǒu kòng ma?",
+          "meaningKo": "{day}에 시간 있어요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "你",
+            "{day}",
+            "有空",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "nǐ",
+            "{dayPinyin}",
+            "yǒu kòng",
+            "ma"
+          ],
+          "usageNoteKo": "상대의 가능한 날짜를 묻는다."
+        },
+        {
+          "targetId": "zh04-time",
+          "kind": "pragmaticFrame",
+          "traditional": "{time}可以嗎？",
+          "simplified": "{time}可以吗？",
+          "pinyinMarked": "{timePinyin} kěyǐ ma?",
+          "meaningKo": "{time} 괜찮나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "{time}",
+            "可以",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "{timePinyin}",
+            "kěyǐ",
+            "ma"
+          ],
+          "usageNoteKo": "구체적인 시간을 간단히 제안한다."
+        },
+        {
+          "targetId": "zh04-move",
+          "kind": "pragmaticFrame",
+          "traditional": "可以改到{newTime}嗎？",
+          "simplified": "可以改到{newTime}吗？",
+          "pinyinMarked": "Kěyǐ gǎi dào {newTimePinyin} ma?",
+          "meaningKo": "{newTime}으로 바꿀 수 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "可以",
+            "改到",
+            "{newTime}",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "kěyǐ",
+            "gǎi dào",
+            "{newTimePinyin}",
+            "ma"
+          ],
+          "usageNoteKo": "이미 잡힌 약속 시간을 변경한다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "甲",
+            "traditional": "你星期四有空嗎？",
+            "simplified": "你星期四有空吗？",
+            "pinyinMarked": "Nǐ xīngqísì yǒu kòng ma?",
+            "translationKo": "목요일에 시간 있어요?"
+          },
+          {
+            "speaker": "乙",
+            "traditional": "我下午有空。",
+            "simplified": "我下午有空。",
+            "pinyinMarked": "Wǒ xiàwǔ yǒu kòng.",
+            "translationKo": "오후에 시간 있어요."
+          },
+          {
+            "speaker": "甲",
+            "traditional": "下午三點可以嗎？",
+            "simplified": "下午三点可以吗？",
+            "pinyinMarked": "Xiàwǔ sān diǎn kěyǐ ma?",
+            "translationKo": "오후 3시 괜찮아요?"
+          }
+        ]
+      },
+      "slotBanks": {
+        "day": [
+          {
+            "traditional": "星期一",
+            "simplified": "星期一",
+            "pinyinMarked": "xīngqíyī",
+            "meaningKo": "월요일"
+          },
+          {
+            "traditional": "星期二",
+            "simplified": "星期二",
+            "pinyinMarked": "xīngqí’èr",
+            "meaningKo": "화요일"
+          },
+          {
+            "traditional": "星期四",
+            "simplified": "星期四",
+            "pinyinMarked": "xīngqísì",
+            "meaningKo": "목요일"
+          },
+          {
+            "traditional": "星期五",
+            "simplified": "星期五",
+            "pinyinMarked": "xīngqíwǔ",
+            "meaningKo": "금요일"
+          }
+        ],
+        "time": [
+          {
+            "traditional": "星期二早上十點",
+            "simplified": "星期二早上十点",
+            "pinyinMarked": "xīngqí’èr zǎoshang shí diǎn",
+            "meaningKo": "화요일 오전 10시"
+          },
+          {
+            "traditional": "星期四下午三點",
+            "simplified": "星期四下午三点",
+            "pinyinMarked": "xīngqísì xiàwǔ sān diǎn",
+            "meaningKo": "목요일 오후 3시"
+          },
+          {
+            "traditional": "星期五早上",
+            "simplified": "星期五早上",
+            "pinyinMarked": "xīngqíwǔ zǎoshang",
+            "meaningKo": "금요일 오전"
+          },
+          {
+            "traditional": "晚上六點半",
+            "simplified": "晚上六点半",
+            "pinyinMarked": "wǎnshang liù diǎn bàn",
+            "meaningKo": "저녁 6시 30분"
+          }
+        ],
+        "newTime": [
+          {
+            "traditional": "星期四上午十一點",
+            "simplified": "星期四上午十一点",
+            "pinyinMarked": "xīngqísì shàngwǔ shíyī diǎn",
+            "meaningKo": "목요일 오전 11시"
+          },
+          {
+            "traditional": "星期五下午",
+            "simplified": "星期五下午",
+            "pinyinMarked": "xīngqíwǔ xiàwǔ",
+            "meaningKo": "금요일 오후"
+          },
+          {
+            "traditional": "星期一早上",
+            "simplified": "星期一早上",
+            "pinyinMarked": "xīngqíyī zǎoshang",
+            "meaningKo": "월요일 오전"
+          },
+          {
+            "traditional": "下星期二",
+            "simplified": "下星期二",
+            "pinyinMarked": "xià xīngqí’èr",
+            "meaningKo": "다음 주 화요일"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh04-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "thursday-three-intent",
+          "promptKo": "대화의 목적을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "甲",
+              "traditional": "你星期四有空嗎？",
+              "simplified": "你星期四有空吗？",
+              "pinyinMarked": "Nǐ xīngqísì yǒu kòng ma?",
+              "translationKo": "목요일에 시간 있어요?"
+            },
+            {
+              "speaker": "乙",
+              "traditional": "我下午有空。",
+              "simplified": "我下午有空。",
+              "pinyinMarked": "Wǒ xiàwǔ yǒu kòng.",
+              "translationKo": "오후에 시간 있어요."
+            },
+            {
+              "speaker": "甲",
+              "traditional": "下午三點可以嗎？",
+              "simplified": "下午三点可以吗？",
+              "pinyinMarked": "Xiàwǔ sān diǎn kěyǐ ma?",
+              "translationKo": "오후 3시 괜찮아요?"
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "목요일 오후 3시 약속을 잡는다.",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "목요일 약속을 취소한다.",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "장소를 찾는다.",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "有空는 시간이 있다는 뜻입니다.",
+            "可以嗎는 괜찮은지 묻습니다."
+          ],
+          "feedback": {
+            "correctAnswer": "목요일 오후 3시 약속을 잡는다.",
+            "contrastKo": "有空 / 可以嗎",
+            "explanationKo": "가능한 날짜와 시간을 차례로 확인한다.",
+            "errorCode": "zh04.comprehension"
+          }
+        },
+        {
+          "taskId": "zh04-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "friday-morning-listen",
+          "promptKo": "문장을 듣고 제안한 시간을 고르세요.",
+          "ttsTraditional": "星期五早上可以嗎？",
+          "ttsSimplified": "星期五早上可以吗？",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "금요일 오전",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "목요일 오후",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "월요일 오전",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "星期五早上을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "星期五早上",
+            "contrastKo": "星期五早上 / 星期四下午",
+            "explanationKo": "제안 시간을 듣고 구별한다.",
+            "errorCode": "zh04.listening"
+          }
+        },
+        {
+          "taskId": "zh04-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "free-cloze",
+          "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+          "clozeText": "你星期二有____嗎？",
+          "acceptedSet": [
+            "空"
+          ],
+          "hints": [
+            "시간이 있다는 표현입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "空",
+            "contrastKo": "有空 = 시간이 있다",
+            "explanationKo": "날짜 뒤에 有空嗎를 붙인다.",
+            "errorCode": "zh04.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh04-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "move-thursday-order",
+          "promptKo": "목요일 오전 11시로 바꾸는 문장으로 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以"
+            },
+            {
+              "tokenId": "t2",
+              "text": "改到"
+            },
+            {
+              "tokenId": "t3",
+              "text": "星期四上午十一點"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "可以를 먼저 둡니다.",
+            "改到 뒤에 새 시간을 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以改到星期四上午十一點嗎？",
+            "contrastKo": "可以 + 改到 + 새 시간 + 嗎",
+            "explanationKo": "변경 시간의 위치를 확인한다.",
+            "errorCode": "zh04.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh04-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "tuesday-ten-transform",
+          "promptKo": "시간 진술을 제안 질문으로 바꾸세요.",
+          "contextKo": "기본 의미: 星期二早上十點。",
+          "acceptedSet": [
+            "星期二早上十點可以嗎？"
+          ],
+          "hints": [
+            "시간 뒤에 可以嗎를 붙이세요."
+          ],
+          "feedback": {
+            "correctAnswer": "星期二早上十點可以嗎？",
+            "contrastKo": "시간 + 可以嗎？",
+            "explanationKo": "구체적인 시간을 간단히 제안한다.",
+            "errorCode": "zh04.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh04-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "friday-afternoon-guided",
+          "promptKo": "번체 중국어로 일정 변경을 요청하세요.",
+          "contextKo": "약속을 금요일 오후로 바꿀 수 있는지 묻습니다.",
+          "acceptedVariants": [
+            "可以改到星期五下午嗎？"
+          ],
+          "hints": [
+            "可以改到로 시작하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以改到星期五下午嗎？",
+            "contrastKo": "改到 + 새 시간",
+            "explanationKo": "다른 시간대로 변경을 요청한다.",
+            "errorCode": "zh04.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh04-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "time-can-repair",
+          "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+          "clozeText": "晚上六點半____嗎？",
+          "acceptedSet": [
+            "可以"
+          ],
+          "hints": [
+            "괜찮다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以",
+            "contrastKo": "시간 + 可以嗎？",
+            "explanationKo": "시간 제안의 핵심 표현을 확인한다.",
+            "errorCode": "zh04.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh04-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "free-monday-repair",
+          "promptKo": "월요일에 시간 있는지 묻도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "你"
+            },
+            {
+              "tokenId": "t2",
+              "text": "星期一"
+            },
+            {
+              "tokenId": "t3",
+              "text": "有空"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "你 뒤에 날짜를 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "你星期一有空嗎？",
+            "contrastKo": "你 + 날짜 + 有空嗎？",
+            "explanationKo": "다른 요일로 가능 여부를 묻는다.",
+            "errorCode": "zh04.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh04-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "next-tuesday-repair",
+          "promptKo": "번체 중국어로 일정 변경을 요청하세요.",
+          "contextKo": "약속을 다음 주 화요일로 바꿀 수 있는지 묻습니다.",
+          "acceptedVariants": [
+            "可以改到下星期二嗎？"
+          ],
+          "hints": [
+            "改到와 下星期二를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以改到下星期二嗎？",
+            "contrastKo": "改到 + 새 날짜",
+            "explanationKo": "새 날짜로 같은 변경 기능을 적용한다.",
+            "errorCode": "zh04.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh04.comprehension",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-form"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh04.listening",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-form"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh04.form",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-form"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh04.order",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-order"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh04.transform",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-guided"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        },
+        {
+          "errorCode": "zh04.production",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "repairTaskRefs": [
+            "zh04-repair-guided"
+          ],
+          "contrastKo": "시간 제안과 일정 변경을 다른 날짜로 다시 확인한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh04-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "move-monday-four-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "약속을 월요일 오후 4시로 바꿀 수 있는지 묻습니다.",
+          "acceptedVariants": [
+            "可以把約會改到星期一下午四點嗎？",
+            "可以改到星期一下午四點嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh04-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.schedule.move-appointment"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh04-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "move-thursday-two-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "예약을 목요일 오후 2시로 바꿀 수 있는지 묻습니다.",
+          "acceptedVariants": [
+            "可以把預約改到星期四下午兩點嗎？",
+            "可以改到星期四下午兩點嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以把預約改到星期四下午兩點嗎？",
+            "contrastKo": "改到 + 새 예약 시간",
+            "explanationKo": "새 시간에도 일정 변경 기능을 적용한다.",
+            "errorCode": "zh04.production"
+          },
+          "benchmarkId": "zh04-transfer",
+          "transferId": "zh04-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.schedule.move-appointment"
+        },
+        {
+          "taskId": "zh04-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh04-free",
+            "zh04-time",
+            "zh04-move"
+          ],
+          "variantKey": "move-wednesday-nine-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "약속을 수요일 오전 9시로 바꿀 수 있는지 묻습니다.",
+          "acceptedVariants": [
+            "可以把約會改到星期三早上九點嗎？",
+            "可以改到星期三早上九點嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "可以把約會改到星期三早上九點嗎？",
+            "contrastKo": "可以把 + 약속 + 改到 + 새 시간 + 嗎",
+            "explanationKo": "시간이 지난 뒤에도 같은 일정 변경 요청을 독립적으로 만든다.",
+            "errorCode": "zh04.production"
+          },
+          "benchmarkId": "zh04-retention",
+          "transferId": "zh04-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.schedule.move-appointment"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-ask-directions-lean-003"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-report-problem-lean-005",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 5,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "문제를 설명하고 도움이나 교체를 요청한다",
+      "situationKo": "호텔·역·가게에서 기기나 물건의 문제를 알린다",
+      "targets": [
+        {
+          "targetId": "zh05-not-work",
+          "kind": "construction",
+          "traditional": "{item}不能用。",
+          "simplified": "{item}不能用。",
+          "pinyinMarked": "{itemPinyin} bù néng yòng.",
+          "meaningKo": "{item}을 사용할 수 없어요.",
+          "region": "zh-TW",
+          "segmentation": [
+            "{item}",
+            "不能用"
+          ],
+          "pinyinSegments": [
+            "{itemPinyin}",
+            "bù néng yòng"
+          ],
+          "usageNoteKo": "문제 대상을 먼저 짧게 설명한다.",
+          "patternTokens": [
+            {
+              "slot": "item"
+            },
+            {
+              "traditional": "不能用",
+              "simplified": "不能用"
+            }
+          ]
+        },
+        {
+          "targetId": "zh05-help",
+          "kind": "pragmaticFrame",
+          "traditional": "可以幫我看一下嗎？",
+          "simplified": "可以帮我看一下吗？",
+          "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+          "meaningKo": "좀 봐주실 수 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "可以",
+            "幫我",
+            "看一下",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "kěyǐ",
+            "bāng wǒ",
+            "kàn yíxià",
+            "ma"
+          ],
+          "usageNoteKo": "상대에게 문제를 확인해 달라고 정중하게 요청한다."
+        },
+        {
+          "targetId": "zh05-replace",
+          "kind": "pragmaticFrame",
+          "traditional": "可以換一個嗎？",
+          "simplified": "可以换一个吗？",
+          "pinyinMarked": "Kěyǐ huàn yí ge ma?",
+          "meaningKo": "하나 바꿔 주실 수 있나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "可以",
+            "換一個",
+            "嗎"
+          ],
+          "pinyinSegments": [
+            "kěyǐ",
+            "huàn yí ge",
+            "ma"
+          ],
+          "usageNoteKo": "고장 난 물건의 교체를 요청한다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "客人",
+            "traditional": "房卡不能用。",
+            "simplified": "房卡不能用。",
+            "pinyinMarked": "Fángkǎ bù néng yòng.",
+            "translationKo": "키 카드를 사용할 수 없어요."
+          },
+          {
+            "speaker": "櫃台",
+            "traditional": "不好意思。",
+            "simplified": "不好意思。",
+            "pinyinMarked": "Bù hǎoyìsi.",
+            "translationKo": "죄송합니다."
+          },
+          {
+            "speaker": "客人",
+            "traditional": "可以幫我看一下嗎？",
+            "simplified": "可以帮我看一下吗？",
+            "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+            "translationKo": "좀 봐주실 수 있나요?"
+          }
+        ]
+      },
+      "slotBanks": {
+        "item": [
+          {
+            "traditional": "房卡",
+            "simplified": "房卡",
+            "pinyinMarked": "fángkǎ",
+            "meaningKo": "호텔 키 카드"
+          },
+          {
+            "traditional": "售票機",
+            "simplified": "售票机",
+            "pinyinMarked": "shòupiàojī",
+            "meaningKo": "매표기"
+          },
+          {
+            "traditional": "充電器",
+            "simplified": "充电器",
+            "pinyinMarked": "chōngdiànqì",
+            "meaningKo": "충전기"
+          },
+          {
+            "traditional": "冷氣",
+            "simplified": "冷气",
+            "pinyinMarked": "lěngqì",
+            "meaningKo": "에어컨"
+          },
+          {
+            "traditional": "印表機",
+            "simplified": "印表机",
+            "pinyinMarked": "yìnbiǎojī",
+            "meaningKo": "프린터"
+          },
+          {
+            "traditional": "遙控器",
+            "simplified": "遥控器",
+            "pinyinMarked": "yáokòngqì",
+            "meaningKo": "리모컨"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh05-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "key-card-intent",
+          "promptKo": "손님이 원하는 것을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "客人",
+              "traditional": "房卡不能用。",
+              "simplified": "房卡不能用。",
+              "pinyinMarked": "Fángkǎ bù néng yòng.",
+              "translationKo": "키 카드를 사용할 수 없어요."
+            },
+            {
+              "speaker": "櫃台",
+              "traditional": "不好意思。",
+              "simplified": "不好意思。",
+              "pinyinMarked": "Bù hǎoyìsi.",
+              "translationKo": "죄송합니다."
+            },
+            {
+              "speaker": "客人",
+              "traditional": "可以幫我看一下嗎？",
+              "simplified": "可以帮我看一下吗？",
+              "pinyinMarked": "Kěyǐ bāng wǒ kàn yíxià ma?",
+              "translationKo": "좀 봐주실 수 있나요?"
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "작동하지 않는 키 카드에 대한 도움",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "새 방 예약",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "체크아웃 시간 확인",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "不能用는 사용할 수 없다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "작동하지 않는 키 카드에 대한 도움",
+            "contrastKo": "不能用 / 幫我看一下",
+            "explanationKo": "문제를 말한 뒤 도움을 요청한다.",
+            "errorCode": "zh05.comprehension"
+          }
+        },
+        {
+          "taskId": "zh05-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "printer-listen",
+          "promptKo": "문장을 듣고 문제가 있는 물건을 고르세요.",
+          "ttsTraditional": "印表機不能用。",
+          "ttsSimplified": "打印机不能用。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "프린터",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "충전기",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "리모컨",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "문장 앞의 물건 이름을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "印表機",
+            "contrastKo": "印表機 / 充電器",
+            "explanationKo": "문제 대상을 듣고 상태와 연결한다.",
+            "errorCode": "zh05.listening"
+          }
+        },
+        {
+          "taskId": "zh05-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "not-use-cloze",
+          "promptKo": "빈칸에 알맞은 말을 입력하세요.",
+          "clozeText": "冷氣不能____。",
+          "acceptedSet": [
+            "用"
+          ],
+          "hints": [
+            "사용하다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "用",
+            "contrastKo": "能用 / 不能用",
+            "explanationKo": "사용 가능 여부를 표현한다.",
+            "errorCode": "zh05.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh05-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "help-order",
+          "promptKo": "도움을 요청하는 문장으로 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以"
+            },
+            {
+              "tokenId": "t2",
+              "text": "幫我"
+            },
+            {
+              "tokenId": "t3",
+              "text": "看一下"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "可以를 먼저 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我看一下嗎？",
+            "contrastKo": "可以 + 幫我 + 看一下 + 嗎",
+            "explanationKo": "정중한 도움 요청 어순을 확인한다.",
+            "errorCode": "zh05.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh05-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "remote-replace-transform",
+          "promptKo": "문제 상황에서 교체 요청으로 바꾸세요.",
+          "contextKo": "기본 상황: 遙控器不能用。",
+          "acceptedSet": [
+            "可以換一個嗎？"
+          ],
+          "hints": [
+            "可以와 換一個를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "可以換一個嗎？",
+            "contrastKo": "不能用 → 換一個",
+            "explanationKo": "해결책으로 교체를 요청한다.",
+            "errorCode": "zh05.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh05-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "air-conditioner-guided",
+          "promptKo": "번체 중국어 두 문장으로 문제와 요청을 입력하세요.",
+          "contextKo": "에어컨을 사용할 수 없다고 말하고 봐 달라고 요청합니다.",
+          "acceptedVariants": [
+            "冷氣不能用。可以幫我看一下嗎？"
+          ],
+          "hints": [
+            "冷氣不能用을 먼저 쓰세요.",
+            "幫我看一下을 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "冷氣不能用。可以幫我看一下嗎？",
+            "contrastKo": "문제 설명 + 도움 요청",
+            "explanationKo": "상대가 문제와 원하는 행동을 바로 알 수 있게 한다.",
+            "errorCode": "zh05.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh05-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "charger-use-repair",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "充電器不能____。",
+          "acceptedSet": [
+            "用"
+          ],
+          "hints": [
+            "한 글자입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "用",
+            "contrastKo": "不能用 = 사용할 수 없음",
+            "explanationKo": "다른 기기로 상태 표현을 확인한다.",
+            "errorCode": "zh05.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh05-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "help-repair",
+          "promptKo": "도움 요청을 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "可以"
+            },
+            {
+              "tokenId": "t2",
+              "text": "幫我"
+            },
+            {
+              "tokenId": "t3",
+              "text": "看一下"
+            },
+            {
+              "tokenId": "t4",
+              "text": "嗎？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "幫我 뒤에 看一下을 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "可以幫我看一下嗎？",
+            "contrastKo": "幫我 + 看一下",
+            "explanationKo": "도움 요청의 어순을 반복한다.",
+            "errorCode": "zh05.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh05-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "charger-replace-repair",
+          "promptKo": "번체 중국어로 문제와 교체 요청을 말하세요.",
+          "contextKo": "충전기를 사용할 수 없어 하나 바꿔 달라고 요청합니다.",
+          "acceptedVariants": [
+            "充電器不能用。可以換一個嗎？"
+          ],
+          "hints": [
+            "不能用과 換一個를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "充電器不能用。可以換一個嗎？",
+            "contrastKo": "문제 + 교체 요청",
+            "explanationKo": "다른 기기에도 교체 요청을 적용한다.",
+            "errorCode": "zh05.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh05.comprehension",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-form"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        },
+        {
+          "errorCode": "zh05.listening",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-form"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        },
+        {
+          "errorCode": "zh05.form",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-form"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        },
+        {
+          "errorCode": "zh05.order",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-order"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        },
+        {
+          "errorCode": "zh05.transform",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-guided"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        },
+        {
+          "errorCode": "zh05.production",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "repairTaskRefs": [
+            "zh05-repair-guided"
+          ],
+          "contrastKo": "문제 대상과 도움·교체 요청을 다른 기기로 연결한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh05-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "key-card-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어로 문제와 요청을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "호텔 키 카드를 사용할 수 없다고 말하고 도움을 요청합니다.",
+          "acceptedVariants": [
+            "房卡不能用。可以幫我看一下嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh05-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.problem.report-and-request-help"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh05-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "ticket-machine-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어로 문제와 요청을 입력하세요.",
+          "contextKo": "매표기를 사용할 수 없다고 말하고 도움을 요청합니다.",
+          "acceptedVariants": [
+            "售票機不能用。可以幫我看一下嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "售票機不能用。可以幫我看一下嗎？",
+            "contrastKo": "문제 + 幫我看一下",
+            "explanationKo": "새 기기 문제에도 도움 요청을 적용한다.",
+            "errorCode": "zh05.production"
+          },
+          "benchmarkId": "zh05-transfer",
+          "transferId": "zh05-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.problem.report-and-request-help"
+        },
+        {
+          "taskId": "zh05-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh05-not-work",
+            "zh05-help",
+            "zh05-replace"
+          ],
+          "variantKey": "remote-help-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어로 문제와 요청을 입력하세요.",
+          "contextKo": "리모컨을 사용할 수 없다고 말하고 도움을 요청합니다.",
+          "acceptedVariants": [
+            "遙控器不能用。可以幫我看一下嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "遙控器不能用。可以幫我看一下嗎？",
+            "contrastKo": "問題 + 幫我看一下",
+            "explanationKo": "시간이 지난 뒤에도 같은 문제 설명과 도움 요청을 적용한다.",
+            "errorCode": "zh05.production"
+          },
+          "benchmarkId": "zh05-retention",
+          "transferId": "zh05-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.problem.report-and-request-help"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-schedule-change-lean-004"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-compare-choose-lean-006",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 6,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "두 선택지를 비교하고 이유와 함께 고른다",
+      "situationKo": "상품·경로 선택에서 필요한 특성을 비교한다",
+      "targets": [
+        {
+          "targetId": "zh06-which",
+          "kind": "pragmaticFrame",
+          "traditional": "哪一個比較{adjective}？",
+          "simplified": "哪一个比较{adjective}？",
+          "pinyinMarked": "Nǎ yí ge bǐjiào {adjectivePinyin}?",
+          "meaningKo": "어느 것이 더 {adjective}한가요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "哪一個",
+            "比較",
+            "{adjective}"
+          ],
+          "pinyinSegments": [
+            "nǎ yí ge",
+            "bǐjiào",
+            "{adjectivePinyin}"
+          ],
+          "usageNoteKo": "두 선택지의 한 특성을 비교해 묻는다."
+        },
+        {
+          "targetId": "zh06-than",
+          "kind": "construction",
+          "traditional": "{choiceA}比{choiceB}{adjective}。",
+          "simplified": "{choiceA}比{choiceB}{adjective}。",
+          "pinyinMarked": "{choiceAPinyin} bǐ {choiceBPinyin} {adjectivePinyin}.",
+          "meaningKo": "{choiceA}가 {choiceB}보다 {adjective}합니다.",
+          "region": "zh-TW",
+          "segmentation": [
+            "{choiceA}",
+            "比",
+            "{choiceB}",
+            "{adjective}"
+          ],
+          "pinyinSegments": [
+            "{choiceAPinyin}",
+            "bǐ",
+            "{choiceBPinyin}",
+            "{adjectivePinyin}"
+          ],
+          "usageNoteKo": "A比B+형용사 어순으로 비교한다.",
+          "patternTokens": [
+            {
+              "slot": "choiceA"
+            },
+            {
+              "traditional": "比",
+              "simplified": "比"
+            },
+            {
+              "slot": "choiceB"
+            },
+            {
+              "slot": "adjective"
+            }
+          ]
+        },
+        {
+          "targetId": "zh06-prefer",
+          "kind": "pragmaticFrame",
+          "traditional": "我想要{choice}，因為比較{reason}。",
+          "simplified": "我想要{choice}，因为比较{reason}。",
+          "pinyinMarked": "Wǒ xiǎng yào {choicePinyin}, yīnwèi bǐjiào {reasonPinyin}.",
+          "meaningKo": "더 {reason}해서 {choice}을 원해요.",
+          "region": "zh-TW",
+          "segmentation": [
+            "我想要",
+            "{choice}",
+            "因為",
+            "比較",
+            "{reason}"
+          ],
+          "pinyinSegments": [
+            "wǒ xiǎng yào",
+            "{choicePinyin}",
+            "yīnwèi",
+            "bǐjiào",
+            "{reasonPinyin}"
+          ],
+          "usageNoteKo": "선택과 간단한 비교 이유를 함께 말한다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "甲",
+            "traditional": "哪一個比較輕？",
+            "simplified": "哪一个比较轻？",
+            "pinyinMarked": "Nǎ yí ge bǐjiào qīng?",
+            "translationKo": "어느 것이 더 가벼워요?"
+          },
+          {
+            "speaker": "乙",
+            "traditional": "藍色的包包比黑色的包包輕。",
+            "simplified": "蓝色的包包比黑色的包包轻。",
+            "pinyinMarked": "Lánsè de bāobāo bǐ hēisè de bāobāo qīng.",
+            "translationKo": "파란 가방이 검은 가방보다 가벼워요."
+          },
+          {
+            "speaker": "甲",
+            "traditional": "我想要藍色的，因為比較輕。",
+            "simplified": "我想要蓝色的，因为比较轻。",
+            "pinyinMarked": "Wǒ xiǎng yào lánsè de, yīnwèi bǐjiào qīng.",
+            "translationKo": "더 가벼워서 파란 것을 원해요."
+          }
+        ]
+      },
+      "slotBanks": {
+        "adjective": [
+          {
+            "traditional": "便宜",
+            "simplified": "便宜",
+            "pinyinMarked": "piányi",
+            "meaningKo": "싸다"
+          },
+          {
+            "traditional": "輕",
+            "simplified": "轻",
+            "pinyinMarked": "qīng",
+            "meaningKo": "가볍다"
+          },
+          {
+            "traditional": "快",
+            "simplified": "快",
+            "pinyinMarked": "kuài",
+            "meaningKo": "빠르다"
+          },
+          {
+            "traditional": "近",
+            "simplified": "近",
+            "pinyinMarked": "jìn",
+            "meaningKo": "가깝다"
+          }
+        ],
+        "choiceA": [
+          {
+            "traditional": "藍色的包包",
+            "simplified": "蓝色的包包",
+            "pinyinMarked": "lánsè de bāobāo",
+            "meaningKo": "파란 가방"
+          },
+          {
+            "traditional": "這條路",
+            "simplified": "这条路",
+            "pinyinMarked": "zhè tiáo lù",
+            "meaningKo": "이 길"
+          },
+          {
+            "traditional": "這台電腦",
+            "simplified": "这台电脑",
+            "pinyinMarked": "zhè tái diànnǎo",
+            "meaningKo": "이 컴퓨터"
+          }
+        ],
+        "choiceB": [
+          {
+            "traditional": "黑色的包包",
+            "simplified": "黑色的包包",
+            "pinyinMarked": "hēisè de bāobāo",
+            "meaningKo": "검은 가방"
+          },
+          {
+            "traditional": "那條路",
+            "simplified": "那条路",
+            "pinyinMarked": "nà tiáo lù",
+            "meaningKo": "저 길"
+          },
+          {
+            "traditional": "那台電腦",
+            "simplified": "那台电脑",
+            "pinyinMarked": "nà tái diànnǎo",
+            "meaningKo": "저 컴퓨터"
+          }
+        ],
+        "choice": [
+          {
+            "traditional": "藍色的外套",
+            "simplified": "蓝色的外套",
+            "pinyinMarked": "lánsè de wàitào",
+            "meaningKo": "파란 재킷"
+          },
+          {
+            "traditional": "這條路",
+            "simplified": "这条路",
+            "pinyinMarked": "zhè tiáo lù",
+            "meaningKo": "이 길"
+          },
+          {
+            "traditional": "小一點的",
+            "simplified": "小一点的",
+            "pinyinMarked": "xiǎo yìdiǎn de",
+            "meaningKo": "조금 작은 것"
+          }
+        ],
+        "reason": [
+          {
+            "traditional": "便宜",
+            "simplified": "便宜",
+            "pinyinMarked": "piányi",
+            "meaningKo": "싸다"
+          },
+          {
+            "traditional": "快",
+            "simplified": "快",
+            "pinyinMarked": "kuài",
+            "meaningKo": "빠르다"
+          },
+          {
+            "traditional": "輕",
+            "simplified": "轻",
+            "pinyinMarked": "qīng",
+            "meaningKo": "가볍다"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh06-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "blue-bag-intent",
+          "promptKo": "첫 번째 사람이 묻는 것을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "甲",
+              "traditional": "哪一個比較輕？",
+              "simplified": "哪一个比较轻？",
+              "pinyinMarked": "Nǎ yí ge bǐjiào qīng?",
+              "translationKo": "어느 것이 더 가벼워요?"
+            },
+            {
+              "speaker": "乙",
+              "traditional": "藍色的包包比黑色的包包輕。",
+              "simplified": "蓝色的包包比黑色的包包轻。",
+              "pinyinMarked": "Lánsè de bāobāo bǐ hēisè de bāobāo qīng.",
+              "translationKo": "파란 가방이 검은 가방보다 가벼워요."
+            },
+            {
+              "speaker": "甲",
+              "traditional": "我想要藍色的，因為比較輕。",
+              "simplified": "我想要蓝色的，因为比较轻。",
+              "pinyinMarked": "Wǒ xiǎng yào lánsè de, yīnwèi bǐjiào qīng.",
+              "translationKo": "더 가벼워서 파란 것을 원해요."
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "어느 가방이 더 가벼운지",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "가방이 어디 있는지",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "가방을 바꿀 수 있는지",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "比較輕은 더 가볍다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "어느 가방이 더 가벼운지",
+            "contrastKo": "哪一個比較 + 형용사",
+            "explanationKo": "비교할 특성을 질문한다.",
+            "errorCode": "zh06.comprehension"
+          }
+        },
+        {
+          "taskId": "zh06-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "route-faster-listen",
+          "promptKo": "문장을 듣고 선택 이유를 고르세요.",
+          "ttsTraditional": "我想要這條路，因為比較快。",
+          "ttsSimplified": "我想要这条路，因为比较快。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "더 빠르기 때문",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "더 싸기 때문",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "더 가볍기 때문",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "因為 뒤의 형용사를 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "더 빠르기 때문",
+            "contrastKo": "快 / 便宜",
+            "explanationKo": "선택 이유와 비교 특성을 연결해 듣는다.",
+            "errorCode": "zh06.listening"
+          }
+        },
+        {
+          "taskId": "zh06-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "than-cloze",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "這條路____那條路快。",
+          "acceptedSet": [
+            "比"
+          ],
+          "hints": [
+            "A와 B 사이에 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "比",
+            "contrastKo": "A比B+형용사",
+            "explanationKo": "비교 대상 사이에 比를 둔다.",
+            "errorCode": "zh06.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh06-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "cheaper-order",
+          "promptKo": "어느 것이 더 싼지 묻도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "哪一個"
+            },
+            {
+              "tokenId": "t2",
+              "text": "比較"
+            },
+            {
+              "tokenId": "t3",
+              "text": "便宜"
+            },
+            {
+              "tokenId": "t4",
+              "text": "？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "哪一個을 먼저 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "哪一個比較便宜？",
+            "contrastKo": "哪一個 + 比較 + 형용사?",
+            "explanationKo": "비교 질문 어순을 확인한다.",
+            "errorCode": "zh06.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh06-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "lighter-question-transform",
+          "promptKo": "비교 문장을 질문으로 바꾸세요.",
+          "contextKo": "기본 문장: 藍色的包包比黑色的包包輕。",
+          "acceptedSet": [
+            "哪一個比較輕？"
+          ],
+          "hints": [
+            "哪一個와 比較를 사용하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "哪一個比較輕？",
+            "contrastKo": "A比B輕 → 哪一個比較輕？",
+            "explanationKo": "비교 정보를 묻는 질문으로 전환한다.",
+            "errorCode": "zh06.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh06-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "blue-jacket-guided",
+          "promptKo": "번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+          "contextKo": "파란 재킷이 더 싸기 때문에 그것을 원합니다.",
+          "acceptedVariants": [
+            "我想要藍色的外套，因為比較便宜。"
+          ],
+          "hints": [
+            "我想要와 因為比較를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "我想要藍色的外套，因為比較便宜。",
+            "contrastKo": "선택 + 因為比較 + 이유",
+            "explanationKo": "선택과 이유를 한 문장으로 연결한다.",
+            "errorCode": "zh06.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh06-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "computer-than-repair",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "這台電腦____那台電腦輕。",
+          "acceptedSet": [
+            "比"
+          ],
+          "hints": [
+            "비교 표지입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "比",
+            "contrastKo": "A比B+형용사",
+            "explanationKo": "다른 물건으로 비교 구조를 확인한다.",
+            "errorCode": "zh06.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh06-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "closer-repair",
+          "promptKo": "더 가까운 것을 묻도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "哪一個"
+            },
+            {
+              "tokenId": "t2",
+              "text": "比較"
+            },
+            {
+              "tokenId": "t3",
+              "text": "近"
+            },
+            {
+              "tokenId": "t4",
+              "text": "？"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "比較 뒤에 近을 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "哪一個比較近？",
+            "contrastKo": "哪一個比較 + 형용사?",
+            "explanationKo": "다른 특성으로 질문 어순을 반복한다.",
+            "errorCode": "zh06.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh06-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "route-prefer-repair",
+          "promptKo": "번체 중국어로 선택과 이유를 말하세요.",
+          "contextKo": "이 길이 더 빠르기 때문에 이 길을 원합니다.",
+          "acceptedVariants": [
+            "我想要走這條路，因為比較快。"
+          ],
+          "hints": [
+            "這條路와 因為比較快를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "我想要走這條路，因為比較快。",
+            "contrastKo": "선택 + 因為 + 비교 이유",
+            "explanationKo": "다른 선택지에도 이유를 연결한다.",
+            "errorCode": "zh06.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh06.comprehension",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-order"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        },
+        {
+          "errorCode": "zh06.listening",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-guided"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        },
+        {
+          "errorCode": "zh06.form",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-form"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        },
+        {
+          "errorCode": "zh06.order",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-order"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        },
+        {
+          "errorCode": "zh06.transform",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-order"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        },
+        {
+          "errorCode": "zh06.production",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "repairTaskRefs": [
+            "zh06-repair-guided"
+          ],
+          "contrastKo": "比, 比較, 선택 이유를 다른 항목으로 확인한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh06-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "silver-laptop-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "은색 노트북이 더 가벼워서 그것을 원합니다.",
+          "acceptedVariants": [
+            "我想要銀色的筆電，因為比較輕。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh06-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.compare.state-preference-reason"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh06-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "red-umbrella-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+          "contextKo": "빨간 우산이 더 작기 때문에 그것을 원합니다.",
+          "acceptedVariants": [
+            "我想要紅色的雨傘，因為比較小。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "我想要紅色的雨傘，因為比較小。",
+            "contrastKo": "選擇 + 因為比較 + 이유",
+            "explanationKo": "새 물건과 특성에도 선택 이유를 적용한다.",
+            "errorCode": "zh06.production"
+          },
+          "benchmarkId": "zh06-transfer",
+          "transferId": "zh06-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.compare.state-preference-reason"
+        },
+        {
+          "taskId": "zh06-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh06-which",
+            "zh06-than",
+            "zh06-prefer"
+          ],
+          "variantKey": "quiet-room-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장으로 선택과 이유를 말하세요.",
+          "contextKo": "안쪽 방이 더 조용해서 그 방을 원합니다.",
+          "acceptedVariants": [
+            "我想要裡面那間房，因為比較安靜。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "我想要裡面那間房，因為比較安靜。",
+            "contrastKo": "選擇 + 因為比較 + 이유",
+            "explanationKo": "시간이 지난 뒤에도 같은 선택·이유 틀을 새 상황에 적용한다.",
+            "errorCode": "zh06.production"
+          },
+          "benchmarkId": "zh06-retention",
+          "transferId": "zh06-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.compare.state-preference-reason"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-report-problem-lean-005"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-delay-update-lean-007",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 7,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "늦는 상황과 새로운 도착 시간을 알린다",
+      "situationKo": "약속이나 이동 중 지연 사실을 짧고 구체적으로 전달한다",
+      "targets": [
+        {
+          "targetId": "zh07-late",
+          "kind": "construction",
+          "traditional": "我會晚到{minutes}分鐘。",
+          "simplified": "我会晚到{minutes}分钟。",
+          "pinyinMarked": "Wǒ huì wǎn dào {minutesPinyin} fēnzhōng.",
+          "meaningKo": "{minutes}분 늦게 도착할 거예요.",
+          "region": "zh-TW",
+          "segmentation": [
+            "我",
+            "會",
+            "晚到",
+            "{minutes}",
+            "分鐘"
+          ],
+          "pinyinSegments": [
+            "wǒ",
+            "huì",
+            "wǎn dào",
+            "{minutesPinyin}",
+            "fēnzhōng"
+          ],
+          "usageNoteKo": "예상 지연 시간을 구체적으로 알린다.",
+          "patternTokens": [
+            {
+              "traditional": "我會晚到",
+              "simplified": "我会晚到"
+            },
+            {
+              "slot": "minutes"
+            },
+            {
+              "traditional": "分鐘",
+              "simplified": "分钟"
+            }
+          ]
+        },
+        {
+          "targetId": "zh07-arrive",
+          "kind": "pragmaticFrame",
+          "traditional": "我大概{time}到。",
+          "simplified": "我大概{time}到。",
+          "pinyinMarked": "Wǒ dàgài {timePinyin} dào.",
+          "meaningKo": "아마 {time}에 도착해요.",
+          "region": "zh-TW",
+          "segmentation": [
+            "我",
+            "大概",
+            "{time}",
+            "到"
+          ],
+          "pinyinSegments": [
+            "wǒ",
+            "dàgài",
+            "{timePinyin}",
+            "dào"
+          ],
+          "usageNoteKo": "새로운 예상 도착 시간을 알린다."
+        },
+        {
+          "targetId": "zh07-reason",
+          "kind": "pragmaticFrame",
+          "traditional": "不好意思，{reason}。",
+          "simplified": "不好意思，{reason}。",
+          "pinyinMarked": "Bù hǎoyìsi, {reasonPinyin}.",
+          "meaningKo": "죄송하지만 {reason}입니다.",
+          "region": "zh-TW",
+          "segmentation": [
+            "不好意思",
+            "{reason}"
+          ],
+          "pinyinSegments": [
+            "bù hǎoyìsi",
+            "{reasonPinyin}"
+          ],
+          "usageNoteKo": "짧은 사과와 이유를 먼저 전한다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "甲",
+            "traditional": "不好意思，公車晚了。",
+            "simplified": "不好意思，公交车晚了。",
+            "pinyinMarked": "Bù hǎoyìsi, gōngchē wǎn le.",
+            "translationKo": "미안해요, 버스가 늦었어요."
+          },
+          {
+            "speaker": "甲",
+            "traditional": "我會晚到十分鐘，大概三點二十分到。",
+            "simplified": "我会晚到十分钟，大概三点二十分到。",
+            "pinyinMarked": "Wǒ huì wǎn dào shí fēnzhōng, dàgài sān diǎn èrshí fēn dào.",
+            "translationKo": "10분 늦고, 아마 3시 20분에 도착해요."
+          }
+        ]
+      },
+      "slotBanks": {
+        "minutes": [
+          {
+            "traditional": "五",
+            "simplified": "五",
+            "pinyinMarked": "wǔ",
+            "meaningKo": "5"
+          },
+          {
+            "traditional": "十",
+            "simplified": "十",
+            "pinyinMarked": "shí",
+            "meaningKo": "10"
+          },
+          {
+            "traditional": "十五",
+            "simplified": "十五",
+            "pinyinMarked": "shíwǔ",
+            "meaningKo": "15"
+          },
+          {
+            "traditional": "二十",
+            "simplified": "二十",
+            "pinyinMarked": "èrshí",
+            "meaningKo": "20"
+          }
+        ],
+        "time": [
+          {
+            "traditional": "兩點十分",
+            "simplified": "两点十分",
+            "pinyinMarked": "liǎng diǎn shí fēn",
+            "meaningKo": "2시 10분"
+          },
+          {
+            "traditional": "三點二十分",
+            "simplified": "三点二十分",
+            "pinyinMarked": "sān diǎn èrshí fēn",
+            "meaningKo": "3시 20분"
+          },
+          {
+            "traditional": "七點四十五分",
+            "simplified": "七点四十五分",
+            "pinyinMarked": "qī diǎn sìshíwǔ fēn",
+            "meaningKo": "7시 45분"
+          },
+          {
+            "traditional": "九點",
+            "simplified": "九点",
+            "pinyinMarked": "jiǔ diǎn",
+            "meaningKo": "9시"
+          }
+        ],
+        "reason": [
+          {
+            "traditional": "公車晚了",
+            "simplified": "公交车晚了",
+            "pinyinMarked": "gōngchē wǎn le",
+            "meaningKo": "버스가 늦었다"
+          },
+          {
+            "traditional": "火車誤點了",
+            "simplified": "火车晚点了",
+            "pinyinMarked": "huǒchē wùdiǎn le",
+            "meaningKo": "기차가 지연됐다"
+          },
+          {
+            "traditional": "路上塞車",
+            "simplified": "路上堵车",
+            "pinyinMarked": "lùshang sāichē",
+            "meaningKo": "길이 막힌다"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh07-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "bus-delay-intent",
+          "promptKo": "말하는 사람이 전달하는 핵심을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "甲",
+              "traditional": "不好意思，公車晚了。",
+              "simplified": "不好意思，公交车晚了。",
+              "pinyinMarked": "Bù hǎoyìsi, gōngchē wǎn le.",
+              "translationKo": "미안해요, 버스가 늦었어요."
+            },
+            {
+              "speaker": "甲",
+              "traditional": "我會晚到十分鐘，大概三點二十分到。",
+              "simplified": "我会晚到十分钟，大概三点二十分到。",
+              "pinyinMarked": "Wǒ huì wǎn dào shí fēnzhōng, dàgài sān diǎn èrshí fēn dào.",
+              "translationKo": "10분 늦고, 아마 3시 20분에 도착해요."
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "10분 늦으며 3시 20분쯤 도착한다.",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "약속을 취소한다.",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "이미 도착했다.",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "晚到는 늦게 도착한다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "10분 늦으며 3시 20분쯤 도착한다.",
+            "contrastKo": "晚到 + 새 도착 시간",
+            "explanationKo": "지연 시간과 새 도착 시간을 함께 알린다.",
+            "errorCode": "zh07.comprehension"
+          }
+        },
+        {
+          "taskId": "zh07-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "fifteen-listen",
+          "promptKo": "문장을 듣고 지연 시간을 고르세요.",
+          "ttsTraditional": "我會晚到十五分鐘。",
+          "ttsSimplified": "我会晚到十五分钟。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "15분",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "5분",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "50분",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "十五와 五十를 구별하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "十五分鐘",
+            "contrastKo": "十五 / 五十",
+            "explanationKo": "숫자와 分鐘을 연결해 듣는다.",
+            "errorCode": "zh07.listening"
+          }
+        },
+        {
+          "taskId": "zh07-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "late-cloze",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "我會____十分鐘。",
+          "acceptedSet": [
+            "晚到"
+          ],
+          "hints": [
+            "두 글자입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "晚到",
+            "contrastKo": "準時 / 晚到",
+            "explanationKo": "늦게 도착한다는 상태를 표현한다.",
+            "errorCode": "zh07.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh07-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "seven-forty-five-order",
+          "promptKo": "7시 45분쯤 도착한다고 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "大概"
+            },
+            {
+              "tokenId": "t3",
+              "text": "七點四十五分"
+            },
+            {
+              "tokenId": "t4",
+              "text": "到"
+            },
+            {
+              "tokenId": "t5",
+              "text": "。"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4",
+            "t5"
+          ],
+          "hints": [
+            "我大概를 먼저 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "我大概七點四十五分到。",
+            "contrastKo": "我大概 + 시간 + 到",
+            "explanationKo": "예상 도착 시간을 가운데 둔다.",
+            "errorCode": "zh07.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh07-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "arrive-transform",
+          "promptKo": "같은 의미를 학습한 표현으로 바꾸세요.",
+          "contextKo": "기본 의미: 我三點二十分會到。",
+          "acceptedSet": [
+            "我大概三點二十分到。"
+          ],
+          "hints": [
+            "我大概로 시작하세요."
+          ],
+          "feedback": {
+            "correctAnswer": "我大概三點二十分到。",
+            "contrastKo": "會到 → 大概...到",
+            "explanationKo": "예상 시간을 자연스럽게 알린다.",
+            "errorCode": "zh07.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh07-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "traffic-twenty-guided",
+          "promptKo": "번체 중국어로 지연 상황을 알리세요.",
+          "contextKo": "길이 막혀 20분 늦고 9시쯤 도착한다고 말합니다.",
+          "acceptedVariants": [
+            "不好意思，路上塞車。我會晚到二十分鐘，大概九點到。"
+          ],
+          "hints": [
+            "不好意思와 路上塞車를 쓰세요.",
+            "晚到二十分鐘과 九點을 포함하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "不好意思，路上塞車。我會晚到二十分鐘，大概九點到。",
+            "contrastKo": "사과·이유 → 지연 시간 → 도착 시간",
+            "explanationKo": "상대가 계획을 조정할 수 있도록 필요한 정보를 준다.",
+            "errorCode": "zh07.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh07-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "five-late-repair",
+          "promptKo": "빈칸을 입력하세요.",
+          "clozeText": "我會____五分鐘。",
+          "acceptedSet": [
+            "晚到"
+          ],
+          "hints": [
+            "늦게 도착한다는 말입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "晚到",
+            "contrastKo": "晚到 + 시간",
+            "explanationKo": "다른 숫자로 지연 표현을 확인한다.",
+            "errorCode": "zh07.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh07-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "two-ten-repair",
+          "promptKo": "2시 10분쯤 도착한다고 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "大概"
+            },
+            {
+              "tokenId": "t3",
+              "text": "兩點十分"
+            },
+            {
+              "tokenId": "t4",
+              "text": "到"
+            },
+            {
+              "tokenId": "t5",
+              "text": "。"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4",
+            "t5"
+          ],
+          "hints": [
+            "大概 뒤에 시간을 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "我大概兩點十分到。",
+            "contrastKo": "大概 + 시간 + 到",
+            "explanationKo": "다른 시간으로 도착 알림을 연습한다.",
+            "errorCode": "zh07.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh07-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "train-ten-repair",
+          "promptKo": "번체 중국어로 지연을 알리세요.",
+          "contextKo": "기차가 지연되어 10분 늦는다고 말합니다.",
+          "acceptedVariants": [
+            "不好意思，火車誤點了。我會晚到十分鐘。"
+          ],
+          "hints": [
+            "火車誤點了와 晚到十分鐘을 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "不好意思，火車誤點了。我會晚到十分鐘。",
+            "contrastKo": "이유 + 지연 시간",
+            "explanationKo": "다른 교통 이유로 지연 알림을 구성한다.",
+            "errorCode": "zh07.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh07.comprehension",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-guided"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        },
+        {
+          "errorCode": "zh07.listening",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-form"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        },
+        {
+          "errorCode": "zh07.form",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-form"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        },
+        {
+          "errorCode": "zh07.order",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-order"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        },
+        {
+          "errorCode": "zh07.transform",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-order"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        },
+        {
+          "errorCode": "zh07.production",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "repairTaskRefs": [
+            "zh07-repair-guided"
+          ],
+          "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh07-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "five-two-ten-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어로 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "5분 늦고 2시 10분쯤 도착한다고 말합니다.",
+          "acceptedVariants": [
+            "我會晚到五分鐘，大概兩點十分到。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh07-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.delay.state-lateness-and-arrival"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh07-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "fifteen-seven-forty-five-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어로 입력하세요.",
+          "contextKo": "15분 늦고 7시 45분쯤 도착한다고 말합니다.",
+          "acceptedVariants": [
+            "我會晚到十五分鐘，大概七點四十五分到。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "我會晚到十五分鐘，大概七點四十五分到。",
+            "contrastKo": "晚到 + 時間 / 大概 + 到達時間",
+            "explanationKo": "다른 숫자에도 지연 알림을 적용한다.",
+            "errorCode": "zh07.production"
+          },
+          "benchmarkId": "zh07-transfer",
+          "transferId": "zh07-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.delay.state-lateness-and-arrival"
+        },
+        {
+          "taskId": "zh07-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh07-late",
+            "zh07-arrive",
+            "zh07-reason"
+          ],
+          "variantKey": "train-ten-nine-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어로 상황을 알리세요.",
+          "contextKo": "기차가 지연되어 10분 늦고 9시쯤 도착한다고 말합니다.",
+          "acceptedVariants": [
+            "不好意思，火車誤點了。我會晚到十分鐘，大概九點到。"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "不好意思，火車誤點了。我會晚到十分鐘，大概九點到。",
+            "contrastKo": "이유 + 지연 시간 + 새 도착 시간",
+            "explanationKo": "시간이 지난 뒤에도 같은 지연 알림 구조를 새 상황에 적용한다.",
+            "errorCode": "zh07.production"
+          },
+          "benchmarkId": "zh07-retention",
+          "transferId": "zh07-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.delay.state-lateness-and-arrival"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-compare-choose-lean-006"
+      ]
+    },
+    {
+      "schemaVersion": "cems-lean-unit-1",
+      "version": 3,
+      "language": "zh",
+      "unitId": "zh-tw-a2-confirm-details-lean-008",
+      "level": "A2",
+      "targetVariety": "zh-TW",
+      "primaryScript": "traditional",
+      "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+      "courseOrder": 8,
+      "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+      "estimatedMinutes": 10,
+      "functionKo": "주문·예약의 핵심 세부사항을 재확인한다",
+      "situationKo": "수량·날짜·시간·주소를 상대에게 되짚어 오류를 줄인다",
+      "targets": [
+        {
+          "targetId": "zh08-so",
+          "kind": "pragmaticFrame",
+          "traditional": "所以是{detail}，對嗎？",
+          "simplified": "所以是{detail}，对吗？",
+          "pinyinMarked": "Suǒyǐ shì {detailPinyin}, duì ma?",
+          "meaningKo": "그러면 {detail}이 맞나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "所以",
+            "是",
+            "{detail}",
+            "對嗎"
+          ],
+          "pinyinSegments": [
+            "suǒyǐ",
+            "shì",
+            "{detailPinyin}",
+            "duì ma"
+          ],
+          "usageNoteKo": "들은 세부사항을 한 문장으로 되짚는다."
+        },
+        {
+          "targetId": "zh08-check",
+          "kind": "pragmaticFrame",
+          "traditional": "我確認一下，{detail}。",
+          "simplified": "我确认一下，{detail}。",
+          "pinyinMarked": "Wǒ quèrèn yíxià, {detailPinyin}.",
+          "meaningKo": "제가 확인할게요. {detail}입니다.",
+          "region": "zh-TW",
+          "segmentation": [
+            "我",
+            "確認一下",
+            "{detail}"
+          ],
+          "pinyinSegments": [
+            "wǒ",
+            "quèrèn yíxià",
+            "{detailPinyin}"
+          ],
+          "usageNoteKo": "여러 정보를 정리해 확인을 시작한다."
+        },
+        {
+          "targetId": "zh08-right",
+          "kind": "chunk",
+          "traditional": "這樣對嗎？",
+          "simplified": "这样对吗？",
+          "pinyinMarked": "Zhèyàng duì ma?",
+          "meaningKo": "이렇게 맞나요?",
+          "region": "zh-TW",
+          "segmentation": [
+            "這樣",
+            "對嗎"
+          ],
+          "pinyinSegments": [
+            "zhèyàng",
+            "duì ma"
+          ],
+          "usageNoteKo": "정리한 내용이 맞는지 마지막으로 묻는다."
+        }
+      ],
+      "model": {
+        "lines": [
+          {
+            "speaker": "客人",
+            "traditional": "我要三張星期日下午四點的票。",
+            "simplified": "我要三张星期日下午四点的票。",
+            "pinyinMarked": "Wǒ yào sān zhāng xīngqírì xiàwǔ sì diǎn de piào.",
+            "translationKo": "일요일 오후 4시 표 세 장 주세요."
+          },
+          {
+            "speaker": "售票員",
+            "traditional": "所以是三張星期日下午四點的票，對嗎？",
+            "simplified": "所以是三张星期日下午四点的票，对吗？",
+            "pinyinMarked": "Suǒyǐ shì sān zhāng xīngqírì xiàwǔ sì diǎn de piào, duì ma?",
+            "translationKo": "그러면 일요일 오후 4시 표 세 장 맞나요?"
+          },
+          {
+            "speaker": "客人",
+            "traditional": "對。",
+            "simplified": "对。",
+            "pinyinMarked": "Duì.",
+            "translationKo": "네."
+          }
+        ]
+      },
+      "slotBanks": {
+        "detail": [
+          {
+            "traditional": "星期一下午兩點",
+            "simplified": "星期一下午两点",
+            "pinyinMarked": "xīngqíyī xiàwǔ liǎng diǎn",
+            "meaningKo": "월요일 오후 2시"
+          },
+          {
+            "traditional": "三張星期日下午四點的票",
+            "simplified": "三张星期日下午四点的票",
+            "pinyinMarked": "sān zhāng xīngqírì xiàwǔ sì diǎn de piào",
+            "meaningKo": "일요일 오후 4시 표 세 장"
+          },
+          {
+            "traditional": "兩張星期六晚上六點的票",
+            "simplified": "两张星期六晚上六点的票",
+            "pinyinMarked": "liǎng zhāng xīngqíliù wǎnshang liù diǎn de piào",
+            "meaningKo": "토요일 저녁 6시 표 두 장"
+          },
+          {
+            "traditional": "星期五送貨",
+            "simplified": "星期五送货",
+            "pinyinMarked": "xīngqíwǔ sònghuò",
+            "meaningKo": "금요일 배송"
+          },
+          {
+            "traditional": "送到中山路二十一號",
+            "simplified": "送到中山路二十一号",
+            "pinyinMarked": "sòng dào Zhōngshān Lù èrshíyī hào",
+            "meaningKo": "중산로 21호로 배송"
+          }
+        ]
+      },
+      "practicePlan": [
+        {
+          "taskId": "zh08-context",
+          "type": "contextChoice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "tickets-intent",
+          "promptKo": "직원이 하는 일을 고르세요.",
+          "contextLines": [
+            {
+              "speaker": "客人",
+              "traditional": "我要三張星期日下午四點的票。",
+              "simplified": "我要三张星期日下午四点的票。",
+              "pinyinMarked": "Wǒ yào sān zhāng xīngqírì xiàwǔ sì diǎn de piào.",
+              "translationKo": "일요일 오후 4시 표 세 장 주세요."
+            },
+            {
+              "speaker": "售票員",
+              "traditional": "所以是三張星期日下午四點的票，對嗎？",
+              "simplified": "所以是三张星期日下午四点的票，对吗？",
+              "pinyinMarked": "Suǒyǐ shì sān zhāng xīngqírì xiàwǔ sì diǎn de piào, duì ma?",
+              "translationKo": "그러면 일요일 오후 4시 표 세 장 맞나요?"
+            },
+            {
+              "speaker": "客人",
+              "traditional": "對。",
+              "simplified": "对。",
+              "pinyinMarked": "Duì.",
+              "translationKo": "네."
+            }
+          ],
+          "options": [
+            {
+              "optionId": "a",
+              "text": "표 수량과 시간을 재확인한다.",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "표를 취소한다.",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "가격을 깎는다.",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "所以是...對嗎는 재확인 표현입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "표 수량과 시간을 재확인한다.",
+            "contrastKo": "所以是...對嗎",
+            "explanationKo": "들은 정보를 묶어 상대에게 확인한다.",
+            "errorCode": "zh08.comprehension"
+          }
+        },
+        {
+          "taskId": "zh08-listen",
+          "type": "listenChoiceOrDictation",
+          "listenMode": "choice",
+          "domain": "comprehension",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "monday-two-listen",
+          "promptKo": "문장을 듣고 확인한 예약 시간을 고르세요.",
+          "ttsTraditional": "我確認一下，預約是星期一下午兩點。",
+          "ttsSimplified": "我确认一下，预约是星期一下午两点。",
+          "options": [
+            {
+              "optionId": "a",
+              "text": "월요일 오후 2시",
+              "correct": true
+            },
+            {
+              "optionId": "b",
+              "text": "화요일 오후 2시",
+              "correct": false
+            },
+            {
+              "optionId": "c",
+              "text": "월요일 정오",
+              "correct": false
+            }
+          ],
+          "hints": [
+            "星期一와 下午兩點을 들으세요."
+          ],
+          "feedback": {
+            "correctAnswer": "星期一下午兩點",
+            "contrastKo": "星期一 / 星期二",
+            "explanationKo": "날짜와 시간을 함께 듣고 확인한다.",
+            "errorCode": "zh08.listening"
+          }
+        },
+        {
+          "taskId": "zh08-cloze",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "right-cloze",
+          "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+          "clozeText": "所以是兩張票，____嗎？",
+          "acceptedSet": [
+            "對"
+          ],
+          "hints": [
+            "맞다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "對",
+            "contrastKo": "對嗎 = 맞나요",
+            "explanationKo": "정리한 내용 뒤에 확인 질문을 붙인다.",
+            "errorCode": "zh08.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh08-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "appointment-check-order",
+          "promptKo": "예약 시간을 확인하도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "確認一下"
+            },
+            {
+              "tokenId": "t3",
+              "text": "預約是星期一下午兩點"
+            },
+            {
+              "tokenId": "t4",
+              "text": "。"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "我確認一下을 먼저 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "我確認一下，預約是星期一下午兩點。",
+            "contrastKo": "我確認一下 + 세부사항",
+            "explanationKo": "확인 시작 표현 뒤에 내용을 둔다.",
+            "errorCode": "zh08.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh08-transform",
+          "type": "transform",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "delivery-friday-transform",
+          "promptKo": "질문을 재확인 문장으로 바꾸세요.",
+          "contextKo": "기본 질문: 是星期五送貨嗎？",
+          "acceptedSet": [
+            "所以是星期五送貨，對嗎？"
+          ],
+          "hints": [
+            "所以是로 시작하고 對嗎로 끝내세요."
+          ],
+          "feedback": {
+            "correctAnswer": "所以是星期五送貨，對嗎？",
+            "contrastKo": "직접 질문 → 所以是...對嗎",
+            "explanationKo": "들은 정보를 자신의 말로 재구성한다.",
+            "errorCode": "zh08.transform"
+          },
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh08-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "tickets-guided",
+          "promptKo": "번체 중국어 한 문장으로 주문 내용을 재확인하세요.",
+          "contextKo": "일요일 오후 4시 표 세 장이 맞는지 확인합니다.",
+          "acceptedVariants": [
+            "所以是三張星期日下午四點的票，對嗎？"
+          ],
+          "hints": [
+            "所以是로 시작하세요.",
+            "三張, 星期日, 四點을 포함하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "所以是三張星期日下午四點的票，對嗎？",
+            "contrastKo": "所以是 + 수량·날짜·시간 + 對嗎",
+            "explanationKo": "핵심 세부사항을 빠뜨리지 않고 확인한다.",
+            "errorCode": "zh08.production"
+          }
+        }
+      ],
+      "repairPlan": [
+        {
+          "taskId": "zh08-repair-form",
+          "type": "cloze",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "right-repair",
+          "promptKo": "빈칸을 입력하세요.",
+          "clozeText": "這樣____嗎？",
+          "acceptedSet": [
+            "對"
+          ],
+          "hints": [
+            "맞다는 뜻입니다."
+          ],
+          "feedback": {
+            "correctAnswer": "對",
+            "contrastKo": "這樣對嗎",
+            "explanationKo": "짧은 확인 표현을 기억한다.",
+            "errorCode": "zh08.form"
+          },
+          "stripPunctuation": true
+        },
+        {
+          "taskId": "zh08-repair-order",
+          "type": "tokenOrder",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "friday-check-repair",
+          "promptKo": "금요일 배송을 확인하도록 배열하세요.",
+          "tokens": [
+            {
+              "tokenId": "t1",
+              "text": "我"
+            },
+            {
+              "tokenId": "t2",
+              "text": "確認一下"
+            },
+            {
+              "tokenId": "t3",
+              "text": "是星期五送貨"
+            },
+            {
+              "tokenId": "t4",
+              "text": "。"
+            }
+          ],
+          "correctTokenIds": [
+            "t1",
+            "t2",
+            "t3",
+            "t4"
+          ],
+          "hints": [
+            "確認一下 뒤에 내용을 둡니다."
+          ],
+          "feedback": {
+            "correctAnswer": "我確認一下，是星期五送貨。",
+            "contrastKo": "我確認一下 + 내용",
+            "explanationKo": "다른 세부사항으로 확인 어순을 반복한다.",
+            "errorCode": "zh08.order"
+          },
+          "joinWithoutSpace": true
+        },
+        {
+          "taskId": "zh08-repair-guided",
+          "type": "guidedProduction",
+          "domain": "production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "address-repair",
+          "promptKo": "번체 중국어로 주소를 재확인하세요.",
+          "contextKo": "중산로 21호로 배송하는 것이 맞는지 확인합니다.",
+          "acceptedVariants": [
+            "所以是送到中山路二十一號，對嗎？"
+          ],
+          "hints": [
+            "所以是와 對嗎를 사용하세요."
+          ],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "所以是送到中山路二十一號，對嗎？",
+            "contrastKo": "所以是 + 주소 + 對嗎",
+            "explanationKo": "다른 정보 유형에도 확인 기능을 적용한다.",
+            "errorCode": "zh08.production"
+          }
+        }
+      ],
+      "repairRules": [
+        {
+          "errorCode": "zh08.comprehension",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-form"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        },
+        {
+          "errorCode": "zh08.listening",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-order"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        },
+        {
+          "errorCode": "zh08.form",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-form"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        },
+        {
+          "errorCode": "zh08.order",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-order"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        },
+        {
+          "errorCode": "zh08.transform",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-guided"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        },
+        {
+          "errorCode": "zh08.production",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "repairTaskRefs": [
+            "zh08-repair-guided"
+          ],
+          "contrastKo": "확인 표현과 세부사항을 다른 예약으로 다시 묶는다."
+        }
+      ],
+      "baselineItems": [
+        {
+          "taskId": "zh08-baseline-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "monday-two-baseline",
+          "promptKo": "학습 전 수행입니다. 번체 중국어 한 문장을 입력하세요. 정답은 지금 공개하지 않습니다.",
+          "contextKo": "예약이 월요일 오후 2시가 맞는지 확인합니다.",
+          "acceptedVariants": [
+            "所以是星期一下午兩點，對嗎？",
+            "所以預約是星期一下午兩點，對嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "benchmarkId": "zh08-baseline",
+          "phase": "baseline",
+          "minimumDelayDays": 0,
+          "noFeedback": true,
+          "measurementKey": "zh.confirm.restated-detail"
+        }
+      ],
+      "transferItems": [
+        {
+          "taskId": "zh08-transfer-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "tickets-saturday-transfer",
+          "promptKo": "3일 전이 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "토요일 저녁 6시 표 두 장이 맞는지 확인합니다.",
+          "acceptedVariants": [
+            "所以是兩張星期六晚上六點的票，對嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "所以是兩張星期六晚上六點的票，對嗎？",
+            "contrastKo": "수량 + 날짜 + 시간 + 對嗎",
+            "explanationKo": "새 주문 세부사항을 한 문장으로 확인한다.",
+            "errorCode": "zh08.production"
+          },
+          "benchmarkId": "zh08-transfer",
+          "transferId": "zh08-transfer",
+          "phase": "transfer",
+          "minimumDelayDays": 3,
+          "measurementKey": "zh.confirm.restated-detail"
+        },
+        {
+          "taskId": "zh08-retention-task",
+          "type": "guidedProduction",
+          "domain": "transfer",
+          "targetRefs": [
+            "zh08-so",
+            "zh08-check",
+            "zh08-right"
+          ],
+          "variantKey": "new-address-retention",
+          "promptKo": "14일 유지 확인입니다. 번체 중국어 한 문장을 입력하세요.",
+          "contextKo": "민권동로 3단 10호로 배송하는 것이 맞는지 확인합니다.",
+          "acceptedVariants": [
+            "所以是送到民權東路三段十號，對嗎？"
+          ],
+          "hints": [],
+          "normalization": [
+            "trim",
+            "collapseSpaces",
+            "normalizeApostrophe",
+            "stripPunctuation"
+          ],
+          "stripPunctuation": true,
+          "feedback": {
+            "correctAnswer": "所以是送到民權東路三段十號，對嗎？",
+            "contrastKo": "所以是 + 地址 + 對嗎",
+            "explanationKo": "시간이 지난 뒤 다른 정보 유형에도 확인 기능을 적용한다.",
+            "errorCode": "zh08.production"
+          },
+          "benchmarkId": "zh08-retention",
+          "transferId": "zh08-retention",
+          "phase": "retention",
+          "minimumDelayDays": 14,
+          "measurementKey": "zh.confirm.restated-detail"
+        }
+      ],
+      "qa": {
+        "status": "machine_validated_pilot",
+        "languageReviewed": false,
+        "assessmentLeakChecked": true,
+        "baselineLeakChecked": true,
+        "parallelConstructChecked": true
+      },
+      "prerequisiteUnitIds": [
+        "zh-tw-a2-delay-update-lean-007"
+      ]
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "crossUnitLeakChecked": true
+  }
+}

@@ -1,0 +1,723 @@
+{
+  "schemaVersion": "cems-lean-unit-1",
+  "version": 3,
+  "language": "zh",
+  "unitId": "zh-tw-a2-delay-update-lean-007",
+  "level": "A2",
+  "targetVariety": "zh-TW",
+  "primaryScript": "traditional",
+  "courseId": "zh-tw-everyday-functions-a2-pilot-01",
+  "courseOrder": 7,
+  "courseTitleKo": "대만 중국어 일상 문제 해결 8단원",
+  "estimatedMinutes": 10,
+  "functionKo": "늦는 상황과 새로운 도착 시간을 알린다",
+  "situationKo": "약속이나 이동 중 지연 사실을 짧고 구체적으로 전달한다",
+  "targets": [
+    {
+      "targetId": "zh07-late",
+      "kind": "construction",
+      "traditional": "我會晚到{minutes}分鐘。",
+      "simplified": "我会晚到{minutes}分钟。",
+      "pinyinMarked": "Wǒ huì wǎn dào {minutesPinyin} fēnzhōng.",
+      "meaningKo": "{minutes}분 늦게 도착할 거예요.",
+      "region": "zh-TW",
+      "segmentation": [
+        "我",
+        "會",
+        "晚到",
+        "{minutes}",
+        "分鐘"
+      ],
+      "pinyinSegments": [
+        "wǒ",
+        "huì",
+        "wǎn dào",
+        "{minutesPinyin}",
+        "fēnzhōng"
+      ],
+      "usageNoteKo": "예상 지연 시간을 구체적으로 알린다.",
+      "patternTokens": [
+        {
+          "traditional": "我會晚到",
+          "simplified": "我会晚到"
+        },
+        {
+          "slot": "minutes"
+        },
+        {
+          "traditional": "分鐘",
+          "simplified": "分钟"
+        }
+      ]
+    },
+    {
+      "targetId": "zh07-arrive",
+      "kind": "pragmaticFrame",
+      "traditional": "我大概{time}到。",
+      "simplified": "我大概{time}到。",
+      "pinyinMarked": "Wǒ dàgài {timePinyin} dào.",
+      "meaningKo": "아마 {time}에 도착해요.",
+      "region": "zh-TW",
+      "segmentation": [
+        "我",
+        "大概",
+        "{time}",
+        "到"
+      ],
+      "pinyinSegments": [
+        "wǒ",
+        "dàgài",
+        "{timePinyin}",
+        "dào"
+      ],
+      "usageNoteKo": "새로운 예상 도착 시간을 알린다."
+    },
+    {
+      "targetId": "zh07-reason",
+      "kind": "pragmaticFrame",
+      "traditional": "不好意思，{reason}。",
+      "simplified": "不好意思，{reason}。",
+      "pinyinMarked": "Bù hǎoyìsi, {reasonPinyin}.",
+      "meaningKo": "죄송하지만 {reason}입니다.",
+      "region": "zh-TW",
+      "segmentation": [
+        "不好意思",
+        "{reason}"
+      ],
+      "pinyinSegments": [
+        "bù hǎoyìsi",
+        "{reasonPinyin}"
+      ],
+      "usageNoteKo": "짧은 사과와 이유를 먼저 전한다."
+    }
+  ],
+  "model": {
+    "lines": [
+      {
+        "speaker": "甲",
+        "traditional": "不好意思，公車晚了。",
+        "simplified": "不好意思，公交车晚了。",
+        "pinyinMarked": "Bù hǎoyìsi, gōngchē wǎn le.",
+        "translationKo": "미안해요, 버스가 늦었어요."
+      },
+      {
+        "speaker": "甲",
+        "traditional": "我會晚到十分鐘，大概三點二十分到。",
+        "simplified": "我会晚到十分钟，大概三点二十分到。",
+        "pinyinMarked": "Wǒ huì wǎn dào shí fēnzhōng, dàgài sān diǎn èrshí fēn dào.",
+        "translationKo": "10분 늦고, 아마 3시 20분에 도착해요."
+      }
+    ]
+  },
+  "slotBanks": {
+    "minutes": [
+      {
+        "traditional": "五",
+        "simplified": "五",
+        "pinyinMarked": "wǔ",
+        "meaningKo": "5"
+      },
+      {
+        "traditional": "十",
+        "simplified": "十",
+        "pinyinMarked": "shí",
+        "meaningKo": "10"
+      },
+      {
+        "traditional": "十五",
+        "simplified": "十五",
+        "pinyinMarked": "shíwǔ",
+        "meaningKo": "15"
+      },
+      {
+        "traditional": "二十",
+        "simplified": "二十",
+        "pinyinMarked": "èrshí",
+        "meaningKo": "20"
+      }
+    ],
+    "time": [
+      {
+        "traditional": "兩點十分",
+        "simplified": "两点十分",
+        "pinyinMarked": "liǎng diǎn shí fēn",
+        "meaningKo": "2시 10분"
+      },
+      {
+        "traditional": "三點二十分",
+        "simplified": "三点二十分",
+        "pinyinMarked": "sān diǎn èrshí fēn",
+        "meaningKo": "3시 20분"
+      },
+      {
+        "traditional": "七點四十五分",
+        "simplified": "七点四十五分",
+        "pinyinMarked": "qī diǎn sìshíwǔ fēn",
+        "meaningKo": "7시 45분"
+      },
+      {
+        "traditional": "九點",
+        "simplified": "九点",
+        "pinyinMarked": "jiǔ diǎn",
+        "meaningKo": "9시"
+      }
+    ],
+    "reason": [
+      {
+        "traditional": "公車晚了",
+        "simplified": "公交车晚了",
+        "pinyinMarked": "gōngchē wǎn le",
+        "meaningKo": "버스가 늦었다"
+      },
+      {
+        "traditional": "火車誤點了",
+        "simplified": "火车晚点了",
+        "pinyinMarked": "huǒchē wùdiǎn le",
+        "meaningKo": "기차가 지연됐다"
+      },
+      {
+        "traditional": "路上塞車",
+        "simplified": "路上堵车",
+        "pinyinMarked": "lùshang sāichē",
+        "meaningKo": "길이 막힌다"
+      }
+    ]
+  },
+  "practicePlan": [
+    {
+      "taskId": "zh07-context",
+      "type": "contextChoice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "bus-delay-intent",
+      "promptKo": "말하는 사람이 전달하는 핵심을 고르세요.",
+      "contextLines": [
+        {
+          "speaker": "甲",
+          "traditional": "不好意思，公車晚了。",
+          "simplified": "不好意思，公交车晚了。",
+          "pinyinMarked": "Bù hǎoyìsi, gōngchē wǎn le.",
+          "translationKo": "미안해요, 버스가 늦었어요."
+        },
+        {
+          "speaker": "甲",
+          "traditional": "我會晚到十分鐘，大概三點二十分到。",
+          "simplified": "我会晚到十分钟，大概三点二十分到。",
+          "pinyinMarked": "Wǒ huì wǎn dào shí fēnzhōng, dàgài sān diǎn èrshí fēn dào.",
+          "translationKo": "10분 늦고, 아마 3시 20분에 도착해요."
+        }
+      ],
+      "options": [
+        {
+          "optionId": "a",
+          "text": "10분 늦으며 3시 20분쯤 도착한다.",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "약속을 취소한다.",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "이미 도착했다.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "晚到는 늦게 도착한다는 뜻입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "10분 늦으며 3시 20분쯤 도착한다.",
+        "contrastKo": "晚到 + 새 도착 시간",
+        "explanationKo": "지연 시간과 새 도착 시간을 함께 알린다.",
+        "errorCode": "zh07.comprehension"
+      }
+    },
+    {
+      "taskId": "zh07-listen",
+      "type": "listenChoiceOrDictation",
+      "listenMode": "choice",
+      "domain": "comprehension",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "fifteen-listen",
+      "promptKo": "문장을 듣고 지연 시간을 고르세요.",
+      "ttsTraditional": "我會晚到十五分鐘。",
+      "ttsSimplified": "我会晚到十五分钟。",
+      "options": [
+        {
+          "optionId": "a",
+          "text": "15분",
+          "correct": true
+        },
+        {
+          "optionId": "b",
+          "text": "5분",
+          "correct": false
+        },
+        {
+          "optionId": "c",
+          "text": "50분",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "十五와 五十를 구별하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "十五分鐘",
+        "contrastKo": "十五 / 五十",
+        "explanationKo": "숫자와 分鐘을 연결해 듣는다.",
+        "errorCode": "zh07.listening"
+      }
+    },
+    {
+      "taskId": "zh07-cloze",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "late-cloze",
+      "promptKo": "빈칸에 알맞은 글자를 입력하세요.",
+      "clozeText": "我會____十分鐘。",
+      "acceptedSet": [
+        "晚到"
+      ],
+      "hints": [
+        "두 글자입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "晚到",
+        "contrastKo": "準時 / 晚到",
+        "explanationKo": "늦게 도착한다는 상태를 표현한다.",
+        "errorCode": "zh07.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh07-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "seven-forty-five-order",
+      "promptKo": "7시 45분쯤 도착한다고 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "我"
+        },
+        {
+          "tokenId": "t2",
+          "text": "大概"
+        },
+        {
+          "tokenId": "t3",
+          "text": "七點四十五分"
+        },
+        {
+          "tokenId": "t4",
+          "text": "到"
+        },
+        {
+          "tokenId": "t5",
+          "text": "。"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
+      "hints": [
+        "我大概를 먼저 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "我大概七點四十五分到。",
+        "contrastKo": "我大概 + 시간 + 到",
+        "explanationKo": "예상 도착 시간을 가운데 둔다.",
+        "errorCode": "zh07.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh07-transform",
+      "type": "transform",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "arrive-transform",
+      "promptKo": "같은 의미를 학습한 표현으로 바꾸세요.",
+      "contextKo": "기본 의미: 我三點二十分會到。",
+      "acceptedSet": [
+        "我大概三點二十分到。"
+      ],
+      "hints": [
+        "我大概로 시작하세요."
+      ],
+      "feedback": {
+        "correctAnswer": "我大概三點二十分到。",
+        "contrastKo": "會到 → 大概...到",
+        "explanationKo": "예상 시간을 자연스럽게 알린다.",
+        "errorCode": "zh07.transform"
+      },
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh07-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "traffic-twenty-guided",
+      "promptKo": "번체 중국어로 지연 상황을 알리세요.",
+      "contextKo": "길이 막혀 20분 늦고 9시쯤 도착한다고 말합니다.",
+      "acceptedVariants": [
+        "不好意思，路上塞車。我會晚到二十分鐘，大概九點到。"
+      ],
+      "hints": [
+        "不好意思와 路上塞車를 쓰세요.",
+        "晚到二十分鐘과 九點을 포함하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "不好意思，路上塞車。我會晚到二十分鐘，大概九點到。",
+        "contrastKo": "사과·이유 → 지연 시간 → 도착 시간",
+        "explanationKo": "상대가 계획을 조정할 수 있도록 필요한 정보를 준다.",
+        "errorCode": "zh07.production"
+      }
+    }
+  ],
+  "repairPlan": [
+    {
+      "taskId": "zh07-repair-form",
+      "type": "cloze",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "five-late-repair",
+      "promptKo": "빈칸을 입력하세요.",
+      "clozeText": "我會____五分鐘。",
+      "acceptedSet": [
+        "晚到"
+      ],
+      "hints": [
+        "늦게 도착한다는 말입니다."
+      ],
+      "feedback": {
+        "correctAnswer": "晚到",
+        "contrastKo": "晚到 + 시간",
+        "explanationKo": "다른 숫자로 지연 표현을 확인한다.",
+        "errorCode": "zh07.form"
+      },
+      "stripPunctuation": true
+    },
+    {
+      "taskId": "zh07-repair-order",
+      "type": "tokenOrder",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "two-ten-repair",
+      "promptKo": "2시 10분쯤 도착한다고 배열하세요.",
+      "tokens": [
+        {
+          "tokenId": "t1",
+          "text": "我"
+        },
+        {
+          "tokenId": "t2",
+          "text": "大概"
+        },
+        {
+          "tokenId": "t3",
+          "text": "兩點十分"
+        },
+        {
+          "tokenId": "t4",
+          "text": "到"
+        },
+        {
+          "tokenId": "t5",
+          "text": "。"
+        }
+      ],
+      "correctTokenIds": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
+      "hints": [
+        "大概 뒤에 시간을 둡니다."
+      ],
+      "feedback": {
+        "correctAnswer": "我大概兩點十分到。",
+        "contrastKo": "大概 + 시간 + 到",
+        "explanationKo": "다른 시간으로 도착 알림을 연습한다.",
+        "errorCode": "zh07.order"
+      },
+      "joinWithoutSpace": true
+    },
+    {
+      "taskId": "zh07-repair-guided",
+      "type": "guidedProduction",
+      "domain": "production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "train-ten-repair",
+      "promptKo": "번체 중국어로 지연을 알리세요.",
+      "contextKo": "기차가 지연되어 10분 늦는다고 말합니다.",
+      "acceptedVariants": [
+        "不好意思，火車誤點了。我會晚到十分鐘。"
+      ],
+      "hints": [
+        "火車誤點了와 晚到十分鐘을 사용하세요."
+      ],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "不好意思，火車誤點了。我會晚到十分鐘。",
+        "contrastKo": "이유 + 지연 시간",
+        "explanationKo": "다른 교통 이유로 지연 알림을 구성한다.",
+        "errorCode": "zh07.production"
+      }
+    }
+  ],
+  "repairRules": [
+    {
+      "errorCode": "zh07.comprehension",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-guided"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    },
+    {
+      "errorCode": "zh07.listening",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-form"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    },
+    {
+      "errorCode": "zh07.form",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-form"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    },
+    {
+      "errorCode": "zh07.order",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-order"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    },
+    {
+      "errorCode": "zh07.transform",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-order"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    },
+    {
+      "errorCode": "zh07.production",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "repairTaskRefs": [
+        "zh07-repair-guided"
+      ],
+      "contrastKo": "지연 시간과 도착 시간을 다른 숫자로 연결한다."
+    }
+  ],
+  "baselineItems": [
+    {
+      "taskId": "zh07-baseline-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "five-two-ten-baseline",
+      "promptKo": "학습 전 수행입니다. 번체 중국어로 입력하세요. 정답은 지금 공개하지 않습니다.",
+      "contextKo": "5분 늦고 2시 10분쯤 도착한다고 말합니다.",
+      "acceptedVariants": [
+        "我會晚到五分鐘，大概兩點十分到。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "benchmarkId": "zh07-baseline",
+      "phase": "baseline",
+      "minimumDelayDays": 0,
+      "noFeedback": true,
+      "measurementKey": "zh.delay.state-lateness-and-arrival"
+    }
+  ],
+  "transferItems": [
+    {
+      "taskId": "zh07-transfer-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "fifteen-seven-forty-five-transfer",
+      "promptKo": "3일 전이 확인입니다. 번체 중국어로 입력하세요.",
+      "contextKo": "15분 늦고 7시 45분쯤 도착한다고 말합니다.",
+      "acceptedVariants": [
+        "我會晚到十五分鐘，大概七點四十五分到。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "我會晚到十五分鐘，大概七點四十五分到。",
+        "contrastKo": "晚到 + 時間 / 大概 + 到達時間",
+        "explanationKo": "다른 숫자에도 지연 알림을 적용한다.",
+        "errorCode": "zh07.production"
+      },
+      "benchmarkId": "zh07-transfer",
+      "transferId": "zh07-transfer",
+      "phase": "transfer",
+      "minimumDelayDays": 3,
+      "measurementKey": "zh.delay.state-lateness-and-arrival"
+    },
+    {
+      "taskId": "zh07-retention-task",
+      "type": "guidedProduction",
+      "domain": "transfer",
+      "targetRefs": [
+        "zh07-late",
+        "zh07-arrive",
+        "zh07-reason"
+      ],
+      "variantKey": "train-ten-nine-retention",
+      "promptKo": "14일 유지 확인입니다. 번체 중국어로 상황을 알리세요.",
+      "contextKo": "기차가 지연되어 10분 늦고 9시쯤 도착한다고 말합니다.",
+      "acceptedVariants": [
+        "不好意思，火車誤點了。我會晚到十分鐘，大概九點到。"
+      ],
+      "hints": [],
+      "normalization": [
+        "trim",
+        "collapseSpaces",
+        "normalizeApostrophe",
+        "stripPunctuation"
+      ],
+      "stripPunctuation": true,
+      "feedback": {
+        "correctAnswer": "不好意思，火車誤點了。我會晚到十分鐘，大概九點到。",
+        "contrastKo": "이유 + 지연 시간 + 새 도착 시간",
+        "explanationKo": "시간이 지난 뒤에도 같은 지연 알림 구조를 새 상황에 적용한다.",
+        "errorCode": "zh07.production"
+      },
+      "benchmarkId": "zh07-retention",
+      "transferId": "zh07-retention",
+      "phase": "retention",
+      "minimumDelayDays": 14,
+      "measurementKey": "zh.delay.state-lateness-and-arrival"
+    }
+  ],
+  "qa": {
+    "status": "machine_validated_pilot",
+    "languageReviewed": false,
+    "assessmentLeakChecked": true,
+    "baselineLeakChecked": true,
+    "parallelConstructChecked": true
+  },
+  "prerequisiteUnitIds": [
+    "zh-tw-a2-compare-choose-lean-006"
+  ]
+}
