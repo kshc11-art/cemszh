@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-cems-version="9.2.7-learning-first" data-cems-accent="graphite">
+<html lang="ko" data-cems-version="9.3.1-stable-recovery" data-cems-accent="graphite">
 <head>
 <meta charset="UTF-8">
 <script>
@@ -345,8 +345,14 @@ window.CEMS_LANG="zh";
   }
   function boot(){wrapReaders();enhanceA11y(document);syncModal();syncVersion();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-  var mo=new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){enhanceA11y(n);}});});syncModal();});
-  document.addEventListener('DOMContentLoaded',function(){mo.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});});
+  var modalMo=new MutationObserver(function(){syncModal();});
+  function observeModalA11y(root){
+    var nodes=[];if(root&&root.matches&&root.matches('.modal-overlay'))nodes.push(root);
+    if(root&&root.querySelectorAll)nodes=nodes.concat(Array.from(root.querySelectorAll('.modal-overlay')));
+    nodes.forEach(function(el){if(el.dataset.cems91ModalObserved==='1')return;el.dataset.cems91ModalObserved='1';modalMo.observe(el,{attributes:true,attributeFilter:['class','style']});});
+  }
+  var mo=new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1){enhanceA11y(n);observeModalA11y(n);}});});});
+  document.addEventListener('DOMContentLoaded',function(){observeModalA11y(document);mo.observe(document.body,{childList:true,subtree:true});});
   [400,1200,2800].forEach(function(ms){setTimeout(boot,ms);});
 })();
 </script>
@@ -365,7 +371,7 @@ window.CEMS_LANG="zh";
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d0f12">
 <meta name="description" content="HSK 중국어 학습 - 능력별 FSRS·오프라인 PWA·안전한 데이터 복구">
-<meta name="app-version" content="9.2.7-learning-first">
+<meta name="app-version" content="9.3.1-stable-recovery">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
@@ -375,7 +381,7 @@ window.CEMS_LANG="zh";
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
 
-<title>中文學習 v9.2.7 Learning-first</title>
+<title>中文學習 v9.3.1 Stable recovery</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 :root{--cems-accent:#c7cdd4;--cems-accent-strong:#5f6770;--cems-accent-secondary:#9aa2ab;--cems-accent-contrast:#ffffff;--primary:#c7cdd4;--primary-strong:#5f6770;--primary-soft:#e5e9ed;--accent-secondary:#9aa2ab;--accent-contrast:#ffffff;--success:#4ade80;--warning:#fbbf24;--danger:#fb7185;--bg:#0d0f12;--bg2:#15181c;--card:#1a1e23;--text:#f5f7fa;--muted:#a1a8b0;--border:#343a43;--phrasal:#f59e0b;--expr:#60a5fa}
@@ -529,9 +535,11 @@ body.keyboard-open .app{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 </style>
 <link rel="stylesheet" href="./learning/learning.css">
 <link rel="stylesheet" href="./learning/ux-polish.css">
+<link rel="stylesheet" href="./learning/cems-9.2.8-mobile.css">
+<link rel="stylesheet" href="./learning/cems-9.3.1-stable.css">
 </head>
 <body>
-<div id="splash"><div class="splash-icon">📚</div><div class="splash-title">中文學習</div><div class="splash-sub">v9.2.7 · Learning-first</div><div class="splash-loader"></div></div>
+<div id="splash"><div class="splash-icon">📚</div><div class="splash-title">中文學習</div><div class="splash-sub">v9.3.1 · Stable recovery</div><div class="splash-loader"></div></div>
 <div class="app">
 <!-- 홈 -->
 <div id="page-home" class="page active">
@@ -901,7 +909,7 @@ body.keyboard-open .app{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 <div id="dist-expr-formality"></div>
 </div>
 </div>
-<div class="card"><div class="card-title">📤 엑셀 업로드</div><div class="upload-zone" id="upload-zone"><div class="upload-zone-icon">📄</div><p>탭하거나 파일을 드래그하세요<br><small>Vocabulary / Phrasal_Verbs / Expressions 시트 자동 감지</small></p></div><input type="file" accept=".xlsx,.xls" hidden id="file-input"><div class="upload-result hidden" id="upload-result"></div></div>
+<div class="card"><div class="card-title">📤 엑셀 업로드</div><div class="upload-zone" id="upload-zone"><div class="upload-zone-icon">📄</div><p>탭하거나 파일을 드래그하세요<br><small>Vocabulary / Phrasal_Verbs / Expressions / Dialogues 시트 자동 감지</small></p></div><input type="file" accept=".xlsx,.xlsm,.xls" hidden id="file-input"><div class="upload-result hidden" id="upload-result"></div></div>
 <div class="card"><div class="card-title">⚙️ 데이터 관리</div><button class="btn btn-primary" style="margin-bottom:10px" onclick="exportWithStats()">📊 학습기록 포함 엑셀 Export</button><button class="btn btn-secondary" style="margin-bottom:10px" onclick="exportAllData()">📤 전체 백업 (JSON)</button><button class="btn btn-secondary" style="margin-bottom:10px" onclick="document.getElementById('restore-file-input').click()">📥 데이터 복원</button><input type="file" accept=".json" hidden id="restore-file-input" onchange="handleRestoreFile(this)"><button class="btn btn-secondary" style="margin-bottom:10px" onclick="resetWrongNotes()">🧹 오답노트 초기화</button><button class="btn btn-secondary" style="margin-bottom:10px;color:var(--warning)" onclick="clearDB('words')">🗑️ 단어 초기화</button><button class="btn btn-secondary" style="margin-bottom:10px;color:var(--expr)" onclick="clearDB('expressions')">🗑️ 표현 초기화</button><button class="btn btn-secondary" style="color:var(--danger)" onclick="resetAllData()">⚠️ 전체 초기화</button></div>
 </div>
 <!-- 설정 -->
@@ -1143,7 +1151,7 @@ body.keyboard-open .app{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 <p style="margin:0;color:var(--text)">탭하거나 파일을 드래그하세요</p>
 <p style="margin:8px 0 0;font-size:12px;color:var(--muted)">단어/표현 시트 자동 감지</p>
 </div>
-<input type="file" accept=".xlsx,.xls" hidden id="modal-file-input" onchange="processModalExcel(this.files[0])">
+<input type="file" accept=".xlsx,.xlsm,.xls" hidden id="modal-file-input" onchange="processModalExcel(this.files[0])">
 <div id="modal-upload-result" style="display:none;margin-top:16px;background:var(--bg);border-radius:12px;padding:12px">
 <div style="font-size:13px;font-weight:600;margin-bottom:8px">📊 감지된 시트 (새 단어로 추가)</div>
 <div id="modal-upload-info" style="font-size:12px"></div>
@@ -7894,12 +7902,12 @@ document.addEventListener('drop',e=>e.preventDefault());
 // 업로드 존 드래그 앤 드롭
 ['dragenter','dragover'].forEach(ev=>uploadZone?.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();uploadZone.classList.add('dragover');}));
 ['dragleave','dragend'].forEach(ev=>uploadZone?.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();uploadZone.classList.remove('dragover');}));
-uploadZone?.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();uploadZone.classList.remove('dragover');const file=e.dataTransfer?.files?.[0];console.log('Drop file:',file?.name);if(file&&(file.name.endsWith('.xlsx')||file.name.endsWith('.xls'))){processFile(file);}else if(file){showToast('⚠️ 엑셀 파일(.xlsx, .xls)만 가능합니다');}});
+uploadZone?.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();uploadZone.classList.remove('dragover');const file=e.dataTransfer?.files?.[0];console.log('Drop file:',file?.name);if(file&&(file.name.endsWith('.xlsx')||file.name.endsWith('.xlsm')||file.name.endsWith('.xls'))){processFile(file);}else if(file){showToast('⚠️ 엑셀 파일(.xlsx, .xlsm, .xls)만 가능합니다');}});
 // ★ 모달 업로드 존 드래그 앤 드롭
 const modalUploadZone=document.getElementById('modal-upload-zone');
 ['dragenter','dragover'].forEach(ev=>modalUploadZone?.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();modalUploadZone.style.borderColor='var(--primary)';modalUploadZone.style.background='color-mix(in srgb,var(--primary) 5%,transparent)';}));
 ['dragleave','dragend'].forEach(ev=>modalUploadZone?.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();modalUploadZone.style.borderColor='var(--border)';modalUploadZone.style.background='transparent';}));
-modalUploadZone?.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();modalUploadZone.style.borderColor='var(--border)';modalUploadZone.style.background='transparent';const file=e.dataTransfer?.files?.[0];if(file&&(file.name.endsWith('.xlsx')||file.name.endsWith('.xls'))){processModalExcel(file);}else if(file){showToast('⚠️ 엑셀 파일(.xlsx, .xls)만 가능합니다');}});
+modalUploadZone?.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();modalUploadZone.style.borderColor='var(--border)';modalUploadZone.style.background='transparent';const file=e.dataTransfer?.files?.[0];if(file&&(file.name.endsWith('.xlsx')||file.name.endsWith('.xlsm')||file.name.endsWith('.xls'))){processModalExcel(file);}else if(file){showToast('⚠️ 엑셀 파일(.xlsx, .xlsm, .xls)만 가능합니다');}});
 
 // === 데이터 관리 ===
 async function clearDB(store){const name=store==='expressions'?'표현':'단어';showConfirm(name+' 초기화',name+' 데이터가 삭제됩니다. 계속할까요?',async()=>{const tx=db.transaction([store],'readwrite');tx.objectStore(store).clear();await new Promise(r=>{tx.oncomplete=r;});showToast('🗑️ '+name+' 초기화 완료');updateHomeStats();updateDataPage();});}
@@ -12178,8 +12186,12 @@ function phase7InstallAccessibility(){
   if(!document.getElementById('phase7-live')){const live=document.createElement('div');live.id='phase7-live';live.className='phase7-sr-only';live.setAttribute('role','status');live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');document.body.append(live);}
   document.querySelectorAll('.retry-banner').forEach(x=>{x.setAttribute('role','status');x.setAttribute('aria-live','polite');});
   phase7EnhanceControls();
-  const observer=new MutationObserver(records=>{let modalChanged=false;for(const record of records){if(record.type==='attributes'&&record.target.classList?.contains('modal-overlay')){modalChanged=true;const shown=record.target.classList.contains('show');record.target.setAttribute('aria-hidden',String(!shown));if(shown)phase7FocusModal(record.target);else if(!phase7TopModal())phase7LastFocused?.focus?.();}if(record.type==='childList')record.addedNodes.forEach(node=>{if(node.nodeType===1)phase7EnhanceControls(node);});if(record.type==='attributes'&&(record.attributeName==='class'||record.attributeName==='style'))phase7UpdateA11yState();}if(modalChanged)document.body.style.overflow=phase7TopModal()?'hidden':'';});
-  observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+  const stateSelector='.modal-overlay,.page,.nav-item,.chip,.mode-card,.type-tab,.filter-toggle,.progress-fill';
+  const stateObserver=new MutationObserver(records=>{let modalChanged=false;for(const record of records){if(record.target.classList?.contains('modal-overlay')){modalChanged=true;const shown=record.target.classList.contains('show');record.target.setAttribute('aria-hidden',String(!shown));if(shown)phase7FocusModal(record.target);else if(!phase7TopModal())phase7LastFocused?.focus?.();}}phase7UpdateA11yState();if(modalChanged)document.body.style.overflow=phase7TopModal()?'hidden':'';});
+  function phase7ObserveStateNodes(root=document){const nodes=[];if(root.matches?.(stateSelector))nodes.push(root);root.querySelectorAll?.(stateSelector).forEach(node=>nodes.push(node));nodes.forEach(node=>{if(node.dataset.phase7Observed==='1')return;node.dataset.phase7Observed='1';stateObserver.observe(node,{attributes:true,attributeFilter:['class','style']});});}
+  phase7ObserveStateNodes(document);
+  const childObserver=new MutationObserver(records=>{for(const record of records)record.addedNodes.forEach(node=>{if(node.nodeType===1){phase7EnhanceControls(node);phase7ObserveStateNodes(node);}});});
+  childObserver.observe(document.body,{subtree:true,childList:true});
   document.addEventListener('keydown',phase7TrapFocus,true);document.addEventListener('keydown',phase7KeyboardShortcuts);
 }
 
@@ -13127,7 +13139,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 var CEMS9 = (function () {
 
-  var VERSION = '9.2.7-learning-first';
+  var VERSION = '9.3.1-stable-recovery';
   var DAY_MS = 86400000;
 
   /* ---------------------------------------------------------------------- *
@@ -14824,8 +14836,8 @@ if (document.readyState === 'loading') {
       window.showPage=wrapped;
     }
     routeHash();
-    document.documentElement.dataset.cemsVersion='9.2.7-learning-first';
-    document.title=(window.CEMS_LANG==='zh'?'中文學習':'CEMS English')+' v9.2.7 Learning-first';
+    document.documentElement.dataset.cemsVersion='9.3.1-stable-recovery';
+    document.title=(window.CEMS_LANG==='zh'?'中文學習':'CEMS English')+' v9.3.1 Stable recovery';
   }
   window.addEventListener('hashchange',routeHash);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(install,180);});
@@ -14841,5 +14853,6 @@ if (document.readyState === 'loading') {
 <script src="./learning/scheduler.js"></script>
 <script src="./learning/learning-ui.js"></script>
 <script src="./learning/ux-polish.js"></script>
+<script src="./learning/cems-9.3.1-stable.js"></script>
 </body>
 </html>

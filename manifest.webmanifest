@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "CEMS Chinese · v9.2.7 Learning-first",
+  "name": "CEMS Chinese · v9.3.1 Stable recovery",
   "short_name": "中文學習",
-  "description": "오프라인 중국어 학습 — 오늘의 목표를 중심으로 문맥 이해, 짧은 무힌트 산출, 오류 보완, 3일 전이와 14일 유지를 연결하고 카드 기억 통계와 수행 근거를 분리한 v9.2.7",
+  "description": "오프라인 중국어 학습 — 안정화된 홈, 카드·예문 분리, 검증형 문제 출제, 로컬 우선 문장 판독과 선택적 Gemini 프록시를 포함한 v9.3.1",
   "lang": "ko-KR",
   "dir": "ltr",
   "start_url": "./index.html",
