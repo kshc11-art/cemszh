@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first */
+/* CEMS v9.2.8 Learning-first */
 .cems-lean-home{border:1px solid color-mix(in srgb,var(--primary) 42%,var(--border));background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 13%,var(--card)),color-mix(in srgb,var(--success) 7%,var(--card)))}
 .cems-lean-home-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .cems-lean-home-sub{font-size:11px;line-height:1.55;color:var(--muted);margin-top:4px}
@@ -42,7 +42,7 @@ body.cems-lean-running #cems-ux-onboard{display:none!important}
 .cems-lean-export-actions{display:flex;gap:6px;flex:0 0 auto}.cems-lean-export-actions .btn{width:auto;min-width:66px;height:38px;padding:0 10px;font-size:10px}
 @media(max-width:520px){.cems-lean-export-actions{width:100%}.cems-lean-export-actions .btn{flex:1}}
 
-/* CEMS v9.2.7 Learning-first — active course, content studio and issue reporting */
+/* CEMS v9.2.8 Learning-first — active course, content studio and issue reporting */
 .cems-lean-expand{border:1px solid color-mix(in srgb,var(--success) 48%,var(--border));background:linear-gradient(145deg,color-mix(in srgb,var(--success) 12%,var(--card)),var(--card));border-radius:18px;padding:15px;margin-bottom:13px}
 .cems-lean-expand>span{display:block;font-size:9px;font-weight:900;letter-spacing:.04em;color:var(--success)}
 .cems-lean-expand h2{font-size:16px;line-height:1.35;margin:5px 0 6px}.cems-lean-expand p{font-size:10px;line-height:1.65;color:var(--muted);margin:0 0 12px}.cems-lean-expand .btn{width:100%}

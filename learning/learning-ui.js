@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first — goal-led small courses, local audit and delayed learning UI */
+/* CEMS v9.3.1 Learning-first — goal-led small courses, local audit and delayed learning UI */
 (function () {
   'use strict';
 
@@ -9,7 +9,7 @@
   var progress = modules.progress;
   var scheduler = modules.scheduler;
   var studio = modules.studio;
-  var VERSION = '9.2.7-learning-first';
+  var VERSION = '9.3.1-stable-recovery';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var initPromise = null;
   var state = {
@@ -208,7 +208,7 @@
     if (action.kind === 'benchmark') return '같은 답을 다시 외우는 대신 다른 문맥의 첫 시도만 확인합니다.';
     if (action.kind === 'repair') return '정답을 본 문장이 아니라 다른 변형으로 오류를 다시 고칩니다.';
     if (action.kind === 'continueUnit') return '끊긴 문맥→회상→산출 흐름을 먼저 마쳐 학습 단위를 완결합니다.';
-    if (action.kind === 'legacy') return '오늘 예정된 카드만 짧게 복습해 어휘·표현의 장기 기억을 유지합니다.';
+    if (action.kind === 'legacy') return '복습 예정 카드와 아직 시작하지 않은 신규 카드를 작은 묶음으로 학습합니다.';
     return '생활 기능 하나를 문맥에서 이해하고 선택지 없는 짧은 산출까지 진행합니다.';
   }
   function actionButtonText(plan) {
@@ -1019,18 +1019,18 @@
   }
   function syncLeanVersion() {
     document.documentElement.dataset.cemsVersion = VERSION;
-    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.2.7';
+    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
     document.title = visible;
     var meta = document.querySelector('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v9.2.7 · Learning-first'; });
-    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.2.7'; });
+    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v9.3.1 · Stable recovery'; });
+    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.3.1'; });
     var versionCard = Array.from(document.querySelectorAll('#page-settings .card')).find(function (card) { var title = card.querySelector('.card-title'); return title && title.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.2.7 · Learning-first';
-    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v9.2.7';
+    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.3.1 · Stable recovery';
+    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v9.3.1';
   }
   function protectLeanVersion() {
     if (state.versionObserver) return;
-    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.2.7';
+    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
     var titleNode = document.querySelector('title');
     state.versionObserver = new MutationObserver(function () {
       if (document.title !== expectedTitle || document.documentElement.dataset.cemsVersion !== VERSION) setTimeout(syncLeanVersion, 0);
@@ -1081,6 +1081,7 @@
     exportActiveCourse: exportActiveCourse,
     startToday: startToday,
     startUnit: startUnit,
+    refresh: refreshAll,
     getProgressSummary: getProgressSummary
   };
   if (/[?&]cemsTest=1(?:&|$)/.test(location.search)) {

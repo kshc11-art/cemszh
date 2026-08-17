@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first
+/* CEMS v9.2.8 Learning-first
    Navigation, accessible touch targets, compact long pages and evidence-first charts.
    Loaded after the legacy and Lean styles so the learning engines remain untouched. */
 
@@ -414,7 +414,7 @@ body.cems-ux25 #page-home .zh-home-label{font-size:11px!important}
 body.cems-ux25 .cems-ux25-snapshot-head .btn{min-height:46px;height:46px}
 
 
-/* CEMS v9.2.7 Learning-first — goal-led layout and non-purple dark palette */
+/* CEMS v9.2.8 Learning-first — goal-led layout and non-purple dark palette */
 body.cems-ux25,body.cems-ux26{
   --primary:#c7cdd4;--primary-strong:#5f6770;--success:#4ade80;--warning:#fbbf24;--danger:#fb7185;
   --ux25-sky:#38bdf8;--ux25-cyan:#9aa2ab;
@@ -451,7 +451,7 @@ body.cems-ux25 #daily-goal-card,body.cems-ux26 #daily-goal-card{background:linea
 @media(max-width:520px){.cems-lf-paired-grid{grid-template-columns:1fr}.cems-lf-evidence-intro{flex-direction:column}.cems-lf-course-evidence{text-align:left}.cems-lf-action-grid{grid-template-columns:1fr 1fr 1fr}.cems-lf-hero-head strong{font-size:16px}}
 
 
-/* CEMS v9.2.7 — neutral default and user-selected non-purple/non-teal accents */
+/* CEMS v9.2.8 — neutral default and user-selected non-purple/non-teal accents */
 body.cems-ux25,body.cems-ux26,body.cems-ux27{
   --primary:var(--cems-accent,#c7cdd4);
   --primary-strong:var(--cems-accent-strong,#5f6770);

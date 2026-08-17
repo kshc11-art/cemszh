@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first — goal-aligned courses, delayed checks, repairs and FSRS */
+/* CEMS v9.2.8 Learning-first — goal-aligned courses, delayed checks, repairs and FSRS */
 (function () {
   'use strict';
 
@@ -39,6 +39,9 @@
     var when = new Date(raw).getTime();
     return Number.isFinite(when) && when <= now;
   }
+  function isNewCard(item) {
+    return Number(item && (item.reviewCount || item.reps || 0)) <= 0;
+  }
   async function legacyDueSummary(language) {
     var now = progress && progress.nowMs ? progress.nowMs() : Date.now();
     var groups = [];
@@ -47,11 +50,27 @@
       if (language === 'en' && typeof getAllPV === 'function') groups.push({ type: 'phrasal', mode: 'pv-flashcard', label: '구동사', rows: await getAllPV() });
       if (typeof getAllExpr === 'function') groups.push({ type: 'expr', mode: 'expr-fc', label: '표현', rows: await getAllExpr() });
     } catch (_) {}
-    groups.forEach(function (group) { group.due = (group.rows || []).filter(function (item) { return isDue(item, now); }).length; delete group.rows; });
-    groups.sort(function (a, b) { return b.due - a.due; });
-    var total = groups.reduce(function (sum, group) { return sum + group.due; }, 0);
-    var selected = groups.find(function (group) { return group.due > 0; }) || null;
-    return { total: total, groups: groups, selected: selected, sessionCount: selected ? Math.min(8, Math.max(1, selected.due)) : 0 };
+    groups.forEach(function (group) {
+      var rows = group.rows || [];
+      group.due = rows.filter(function (item) { return isDue(item, now); }).length;
+      group.fresh = rows.filter(function (item) { return isNewCard(item) && !isDue(item, now); }).length;
+      group.available = group.due + group.fresh;
+      group.totalCards = rows.length;
+      delete group.rows;
+    });
+    groups.sort(function (a, b) { return b.due - a.due || b.fresh - a.fresh; });
+    var dueTotal = groups.reduce(function (sum, group) { return sum + group.due; }, 0);
+    var freshTotal = groups.reduce(function (sum, group) { return sum + group.fresh; }, 0);
+    var total = dueTotal + freshTotal;
+    var selected = groups.find(function (group) { return group.available > 0; }) || null;
+    return {
+      total: total,
+      dueTotal: dueTotal,
+      freshTotal: freshTotal,
+      groups: groups,
+      selected: selected,
+      sessionCount: selected ? Math.min(8, Math.max(1, selected.available)) : 0
+    };
   }
   function taskTarget(task) { return (task.targetRefs || [])[0] || ''; }
   function interleave(tasks) {
@@ -183,7 +202,7 @@
     if (input.delayedCount) steps.push({ id: 'delayed', label: '지연 확인', count: Number(input.delayedCount), detail: '새 문맥·유지', priority: 1 });
     if (input.repairCount) steps.push({ id: 'repair', label: '오류 보완', count: Number(input.repairCount), detail: '다른 문장 재확인', priority: 2 });
     if (input.inProgress) steps.push({ id: 'course', label: '진행 단원', count: 1, detail: '문맥→산출 이어가기', priority: 3 });
-    if (input.reviewCount) steps.push({ id: 'review', label: '카드 복습', count: Number(input.reviewCount), detail: '예정 카드만', priority: 4 });
+    if (input.reviewCount) steps.push({ id: 'review', label: '카드 복습', count: Number(input.reviewCount), detail: input.reviewDetail || '복습 예정 + 신규', priority: 4 });
     if (!input.inProgress && input.newUnit) steps.push({ id: 'course', label: '새 단원', count: 1, detail: input.baselineCount ? '기준선부터' : '생활 기능 1개', priority: 5 });
     return steps;
   }
@@ -222,6 +241,7 @@
       delayedCount: delayed.length,
       repairCount: repairs.length,
       reviewCount: legacy.sessionCount,
+      reviewDetail: '복습 ' + legacy.dueTotal + ' · 신규 ' + legacy.freshTotal,
       baselineCount: candidateBaseline.length,
       inProgress: !!inProgress,
       newUnit: !!(unitStateSelected && !unitStateSelected.started)
@@ -237,6 +257,8 @@
       repairCount: repairs.length,
       legacy: legacy,
       reviewCount: legacy.sessionCount,
+      reviewDueCount: legacy.dueTotal,
+      reviewFreshCount: legacy.freshTotal,
       newUnitCount: unitStateSelected && !unitStateSelected.started ? 1 : 0,
       courseBlockCount: inProgress || (unitStateSelected && !unitStateSelected.started) ? 1 : 0,
       dailyNewLimitReached: dailyNewLimitReached,
@@ -255,8 +277,8 @@
     };
   }
   function launchLegacy(legacy) {
-    if (!legacy || !legacy.selected || !legacy.selected.due) return false;
-    var selected = legacy.selected, count = Math.min(8, Math.max(1, selected.due));
+    if (!legacy || !legacy.selected || !legacy.selected.available) return false;
+    var selected = legacy.selected, count = Math.min(8, Math.max(1, selected.available));
     var inputIds = selected.type === 'phrasal' ? ['pv-study-count', 'study-count'] : selected.type === 'expr' ? ['expr-study-count', 'study-count'] : ['study-count'];
     inputIds.forEach(function (id) { var input = document.getElementById(id); if (input) input.value = String(count); });
     try { localStorage.setItem('defaultCount', String(count)); } catch (_) {}

@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first — course packs, cold baseline, practice and delayed transfer/retention */
+/* CEMS v9.2.8 Learning-first — course packs, cold baseline, practice and delayed transfer/retention */
 (function () {
   'use strict';
 

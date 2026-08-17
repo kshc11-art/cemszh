@@ -1,8 +1,8 @@
-/* CEMS v9.2.7 Learning-first — goal-led navigation, accessible controls and evidence summaries */
+/* CEMS v9.3.1 Learning-first — goal-led navigation, accessible controls and evidence summaries */
 (function () {
   'use strict';
 
-  var VERSION = '9.2.7-learning-first';
+  var VERSION = '9.3.1-stable-recovery';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var PREFIX = 'cemsUx26:' + LANG + ':';
   var state = {
@@ -10,7 +10,7 @@
     studioStep: read('studioStep', '1'),
     statsTab: read('statsTab', 'summary'),
     dataTab: read('dataTab', 'library'),
-    homeToolsOpen: read('homeToolsOpen', '0'),
+    homeToolsOpen: '0',
     polishing: false,
     timer: 0
   };
@@ -75,14 +75,14 @@
 
   function syncVersion() {
     document.documentElement.dataset.cemsVersion = VERSION;
-    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.2.7';
+    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
     document.title = title;
     var meta = qs('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v9.2.7 · Learning-first'; });
-    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.2.7'; });
+    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v9.3.1 · Stable recovery'; });
+    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.3.1'; });
     var versionCard = qsa('#page-settings .card').find(function (card) { var heading = qs('.card-title', card); return heading && heading.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.2.7 · Learning-first';
-    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v9.2.7';
+    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.3.1 · Stable recovery';
+    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v9.3.1';
   }
 
   function ensureAppbar() {
@@ -92,7 +92,7 @@
     if (!existing) {
       existing = make('header', 'cems82-appbar');
       existing.id = 'cems82-appbar';
-      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">문맥 학습 · 지연 확인 · v9.2.7</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
+      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">문맥 학습 · 지연 확인 · v9.3.1</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
       home.insertBefore(existing, home.firstElementChild);
     }
     var button = qs('#cems82-settings', existing);
@@ -396,16 +396,16 @@
     var details = qs('#cems-ux25-home-tools', page);
     if (!details && start) {
       details = make('details', 'cems-ux25-home-tools'); details.id = 'cems-ux25-home-tools';
-      details.appendChild(make('summary', '', '<div><strong>카드 복습·단어 DB</strong><span>개별 어휘·표현의 장기 기억을 보조하는 선택 기능</span></div><b>열기</b>'));
+      details.appendChild(make('summary', '', '<div><strong>추가 학습·카드 관리</strong><span>개별 어휘·표현의 장기 기억을 보조하는 선택 기능</span></div><b>열기</b>'));
       start.parentNode.insertBefore(details, start);
       var move = [], node = start;
       while (node) { var next = node.nextSibling; if (node.nodeType === 1) move.push(node); node = next; }
       move.forEach(function (item) { details.appendChild(item); });
-      details.addEventListener('toggle', function () { write('homeToolsOpen', details.open ? '1' : '0'); var b = qs(':scope > summary > b', details); if (b) b.textContent = details.open ? '접기' : '열기'; });
+      details.addEventListener('toggle', function () { state.homeToolsOpen = details.open ? '1' : '0'; if (details.open) details.dataset.cems931UserOpened = '1'; var b = qs(':scope > summary > b', details); if (b) b.textContent = details.open ? '접기' : '열기'; });
     }
     if (!details) return;
     countCardData().then(function (count) {
-      details.open = state.homeToolsOpen === '1';
+      if (!details.dataset.cems931Initialized) { details.open = false; details.dataset.cems931Initialized = '1'; } else { details.open = state.homeToolsOpen === '1'; }
       var label = qs(':scope > summary span', details); if (label) label.textContent = count ? '카드 ' + count + '개 · 예정 복습과 개별 모드' : '카드 데이터 없음 · 필요할 때만 추가';
       var b = qs(':scope > summary > b', details); if (b) b.textContent = details.open ? '접기' : '열기';
       var smart = qs('#cems-ux-smart', details) || qs('#cems-ux-smart', page);
@@ -420,7 +420,7 @@
   function openCardTools() {
     var details = qs('#cems-ux25-home-tools');
     if (!details) return;
-    details.open = true; write('homeToolsOpen', '1');
+    details.open = true; state.homeToolsOpen = '1'; details.dataset.cems931UserOpened = '1';
     details.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -587,7 +587,7 @@
     try {
       syncThemeMarker(); ensureAppbar(); syncVersion(); syncTheme(); polishIcons(); wrapExcelFunctions(); polishHome(); polishStudy(); polishSettings(); polishData(); polishStats(); polishLeanDashboard(); polishStudio(); updateStudioStatus(); addMetricBars(qs('#cems-lean-dashboard') || document); compactLeanStats(qs('.cems-lean-stats-details')); decorateLegacyStatsMeters();
       document.body.classList.add('cems-ux25', 'cems-ux26', 'cems-ux27');
-    } catch (error) { console.warn('[CEMS UX 9.2.7] polish', error); }
+    } catch (error) { console.warn('[CEMS UX 9.3.1] polish', error); }
     finally { state.polishing = false; }
   }
   function schedule(delay) { clearTimeout(state.timer); state.timer = setTimeout(polishAll, delay == null ? 40 : delay); }
@@ -619,16 +619,11 @@
       var wrapped = function () { var result = previous.apply(this, arguments); schedule(20); setTimeout(polishAll, 250); return result; };
       wrapped.__cemsUx25Patched = true; wrapped.__cemsUx25Previous = previous; window.showPage = wrapped;
     }
-    var observer = new MutationObserver(function (records) {
-      if (state.polishing) return;
-      var relevant = records.some(function (record) { var node = record.target && (record.target.nodeType === 1 ? record.target : record.target.parentElement); return node && (node.closest && (node.closest('#cems-lean-dashboard,#page-lean-studio,#cems83-dashboard,#page-settings') || node.matches('#cems-lean-dashboard,#cems83-dashboard'))); });
-      if (relevant) schedule(80);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    /* v9.3.1: document-wide DOM observation removed. Exact page events trigger polish explicitly. */
   }
 
   function init() {
-    bind(); polishAll(); [300, 900, 1800, 3500].forEach(function (ms) { setTimeout(polishAll, ms); });
+    bind(); polishAll(); setTimeout(polishAll, 450);
   }
 
   window.CEMS_UX27 = {

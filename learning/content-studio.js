@@ -1,4 +1,4 @@
-/* CEMS v9.2.7 Learning-first — reviewerless small-course authoring and deterministic local audit */
+/* CEMS v9.2.8 Learning-first — reviewerless small-course authoring and deterministic local audit */
 (function () {
   'use strict';
 
