@@ -7749,9 +7749,13 @@ function filterByTag(tag){currentTagFilter=tag;wordOffset=0;updateWordTable();}
 let addWordType='vocab';
 function openAddWordModal(keepWord=''){
 if(!keepWord) addWordType=currentDataType==='expr'?'expr':currentDataType==='phrasal'?'phrasal':'vocab';
-document.getElementById('add-type-vocab').classList.toggle('active',addWordType==='vocab');
-document.getElementById('add-type-phrasal').classList.toggle('active',addWordType==='phrasal');
-document.getElementById('add-type-expr').classList.toggle('active',addWordType==='expr');
+/* 9.5.1: 중국어 빌드의 추가 모달에는 구동사 탭(#add-type-phrasal)이 없다.
+   여기서 null.classList 로 예외가 나서 데이터 화면의 "추가" 버튼이 모달을 못 열고
+   그대로 죽어 있었다(수동 단어·표현 추가 전체 불능). 탭은 빌드마다 다를 수 있으므로
+   선택적으로 다룬다. */
+document.getElementById('add-type-vocab')?.classList.toggle('active',addWordType==='vocab');
+document.getElementById('add-type-phrasal')?.classList.toggle('active',addWordType==='phrasal');
+document.getElementById('add-type-expr')?.classList.toggle('active',addWordType==='expr');
 document.getElementById('add-vocab-fields').style.display=addWordType==='vocab'?'block':'none';
 document.getElementById('add-pv-fields').style.display=addWordType==='phrasal'?'block':'none';
 document.getElementById('add-expr-fields').style.display=addWordType==='expr'?'block':'none';
@@ -7781,9 +7785,9 @@ showModal('add-word-modal');
 }
 function switchAddType(t){
 addWordType=t;
-document.getElementById('add-type-vocab').classList.toggle('active',t==='vocab');
-document.getElementById('add-type-phrasal').classList.toggle('active',t==='phrasal');
-document.getElementById('add-type-expr').classList.toggle('active',t==='expr');
+document.getElementById('add-type-vocab')?.classList.toggle('active',t==='vocab');
+document.getElementById('add-type-phrasal')?.classList.toggle('active',t==='phrasal');
+document.getElementById('add-type-expr')?.classList.toggle('active',t==='expr');
 document.getElementById('add-vocab-fields').style.display=t==='vocab'?'block':'none';
 document.getElementById('add-pv-fields').style.display=t==='phrasal'?'block':'none';
 document.getElementById('add-expr-fields').style.display=t==='expr'?'block':'none';
