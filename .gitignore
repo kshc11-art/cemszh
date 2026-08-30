@@ -1,0 +1,11 @@
+harness/node_modules/
+harness/out/
+harness/*.log
+node_modules/
+.DS_Store
+
+# 절대 커밋 금지 — 실제 시크릿
+worker/.dev.vars
+.env
+.env.*
+!.env.example

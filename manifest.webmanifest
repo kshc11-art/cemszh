@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "CEMS Chinese · v9.3.1 Stable recovery",
+  "name": "CEMS Chinese · v9.5.1",
   "short_name": "中文學習",
-  "description": "오프라인 중국어 학습 — 안정화된 홈, 카드·예문 분리, 검증형 문제 출제, 로컬 우선 문장 판독과 선택적 Gemini 프록시를 포함한 v9.3.1",
+  "description": "교과서·실전 회화·대용량 JSON 라이브러리, 전체 정보 카드와 FSRS 복습을 통합한 오프라인 중국어 학습 PWA",
   "lang": "ko-KR",
   "dir": "ltr",
   "start_url": "./index.html",
@@ -13,8 +13,8 @@
     "minimal-ui"
   ],
   "orientation": "portrait-primary",
-  "background_color": "#0d0f12",
-  "theme_color": "#0d0f12",
+  "background_color": "#080d14",
+  "theme_color": "#080d14",
   "categories": [
     "education",
     "productivity"
@@ -102,5 +102,6 @@
         }
       ]
     }
-  ]
+  ],
+  "version": "9.5.1"
 }

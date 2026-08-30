@@ -1,0 +1,105 @@
+{
+  "schema": "cems-routine-1",
+  "id": "zh-tw-travel-day3",
+  "locale": "zh-TW",
+  "title": "대만 중국어 3일 차",
+  "subtitle": "길 찾기와 기념품 쇼핑·현지 결제",
+  "durationMinutes": 60,
+  "tags": ["대만", "여행", "길 찾기", "쇼핑", "결제", "번체", "실전 회화"],
+  "stages": [
+    {
+      "id": "vocabulary",
+      "type": "vocabulary",
+      "shortTitle": "단어",
+      "title": "필수 단어 완전 정복",
+      "minutes": 20,
+      "items": [
+        {"zh":"迷路","pinyin":"mí lù","ko":"길을 잃다","group":"길 찾기 & 이동"},
+        {"zh":"怎麼走","pinyin":"zěn me zǒu","ko":"어떻게 가나요?","group":"길 찾기 & 이동"},
+        {"zh":"遠 / 近","pinyin":"yuǎn / jìn","ko":"멀다 / 가깝다","group":"길 찾기 & 이동"},
+        {"zh":"直走","pinyin":"zhí zǒu","ko":"직진하다, 똑바로 가다","group":"길 찾기 & 이동"},
+        {"zh":"右轉 / 左轉","pinyin":"yòu zhuǎn / zuǒ zhuǎn","ko":"우회전하다 / 좌회전하다","group":"길 찾기 & 이동"},
+        {"zh":"路口","pinyin":"lù kǒu","ko":"교차로, 골목 어귀","group":"길 찾기 & 이동"},
+        {"zh":"紅綠燈","pinyin":"hóng lǜ dēng","ko":"신호등","group":"길 찾기 & 이동"},
+        {"zh":"對面","pinyin":"duì miàn","ko":"맞은편, 건너편","group":"길 찾기 & 이동"},
+        {"zh":"旁邊","pinyin":"páng biān","ko":"옆, 근처","group":"길 찾기 & 이동"},
+        {"zh":"走路","pinyin":"zǒu lù","ko":"걷다, 걸어가다","group":"길 찾기 & 이동"},
+        {"zh":"騎腳踏車","pinyin":"qí jiǎo tà chē","ko":"자전거를 타다","note":"대만 공공자전거 YouBike 이용 시 자주 쓰는 표현","group":"길 찾기 & 이동"},
+        {"zh":"伴手禮","pinyin":"bàn shǒu lǐ","ko":"기념품, 귀국 선물","note":"대만에서 紀念品보다 일상적으로 많이 쓰는 표현","group":"쇼핑 & 구경"},
+        {"zh":"逛街","pinyin":"guàng jiē","ko":"쇼핑하다, 거리를 구경하다","group":"쇼핑 & 구경"},
+        {"zh":"鳳梨酥","pinyin":"fèng lí sū","ko":"펑리수, 파인애플 케이크","group":"쇼핑 & 구경"},
+        {"zh":"牛軋糖","pinyin":"niú gá táng","ko":"누가탕, 대만식 누가 캔디","group":"쇼핑 & 구경"},
+        {"zh":"試吃","pinyin":"shì chī","ko":"시식하다","group":"쇼핑 & 구경"},
+        {"zh":"適合","pinyin":"shì hé","ko":"어울리다, 적합하다","group":"쇼핑 & 구경"},
+        {"zh":"顏色 / 尺寸","pinyin":"yán sè / chǐ cùn","ko":"색상 / 사이즈","group":"쇼핑 & 구경"},
+        {"zh":"隨便看看","pinyin":"suí biàn kàn kàn","ko":"그냥 둘러보는 거예요","note":"점원이 말을 걸 때 쓸 수 있는 표현","group":"쇼핑 & 구경"},
+        {"zh":"打折","pinyin":"dǎ zhé","ko":"할인하다","exampleZh":"打八折","exampleKo":"20% 할인하다","group":"흥정 & 결제"},
+        {"zh":"便宜 / 貴","pinyin":"pián yí / guì","ko":"싸다 / 비싸다","group":"흥정 & 결제"},
+        {"zh":"買一送一","pinyin":"mǎi yī sòng yī","ko":"1+1, 하나 사면 하나 무료","group":"흥정 & 결제"},
+        {"zh":"退稅","pinyin":"tuì shuì","ko":"세금 환급, 택스 리펀","group":"흥정 & 결제"},
+        {"zh":"刷卡","pinyin":"shuā kǎ","ko":"카드로 결제하다","group":"흥정 & 결제"},
+        {"zh":"付現（金）","pinyin":"fù xiàn (jīn)","ko":"현금으로 결제하다","group":"흥정 & 결제"},
+        {"zh":"發票","pinyin":"fā piào","ko":"영수증","note":"대만의 통일발표 영수증은 추첨 번호가 포함될 수 있음","group":"흥정 & 결제"},
+        {"zh":"載具","pinyin":"zài jù","ko":"모바일 전자 영수증 저장 수단","exampleZh":"有載具嗎？","exampleKo":"전자 영수증 바코드 있으세요?","group":"흥정 & 결제"},
+        {"zh":"統編","pinyin":"tǒng biān","ko":"사업자 통일번호","exampleZh":"需要統編嗎？","exampleKo":"사업자 번호가 필요하세요?","group":"흥정 & 결제"},
+        {"zh":"袋子","pinyin":"dài zi","ko":"봉투","group":"흥정 & 결제"},
+        {"zh":"零錢","pinyin":"líng qián","ko":"잔돈, 동전","group":"흥정 & 결제"},
+        {"zh":"包起來","pinyin":"bāo qǐ lái","ko":"포장하다, 싸다","group":"흥정 & 결제"}
+      ]
+    },
+    {
+      "id": "grammar",
+      "type": "grammar",
+      "shortTitle": "문법",
+      "title": "핵심 문법 11가지",
+      "minutes": 20,
+      "items": [
+        {"pattern":"從 A 到 B","pinyin":"cóng A dào B","explanation":"A에서 B까지. 장소나 시간의 출발점과 도착점을 나타냅니다.","exampleZh":"從這裡到捷運站。","exampleKo":"여기에서 지하철역까지."},
+        {"pattern":"要 + 時間／錢","pinyin":"yào + time / money","explanation":"시간이나 돈이 걸리거나 필요함을 나타냅니다.","exampleZh":"走過去要十分鐘。這個要多少錢？","exampleKo":"걸어가면 10분 걸려요. 이거 얼마예요?"},
+        {"pattern":"會不會","pinyin":"huì bú huì","explanation":"가능성이나 추측을 조심스럽게 묻습니다.","exampleZh":"走路去會不會很遠？","exampleKo":"걸어가면 너무 멀지 않을까요?"},
+        {"pattern":"往 + 방향 + 동사","pinyin":"wǎng + direction + verb","explanation":"어느 방향으로 움직이는지 나타냅니다.","exampleZh":"往右轉。往前走。","exampleKo":"오른쪽으로 도세요. 앞으로 가세요."},
+        {"pattern":"一…就…","pinyin":"yī… jiù…","explanation":"~하자마자 ~하다, 또는 ~하면 바로 ~하다는 뜻입니다.","exampleZh":"看到紅綠燈一右轉，就到了。","exampleKo":"신호등을 보고 우회전하면 바로 도착해요."},
+        {"pattern":"동사 + 看看／看","pinyin":"verb + kànkan / kàn","explanation":"한번 해 보다, 시험해 보다의 뜻을 부드럽게 나타냅니다.","exampleZh":"我可以試穿看看嗎？你吃吃看。","exampleKo":"한번 입어봐도 될까요? 한번 먹어 봐."},
+        {"pattern":"比","pinyin":"bǐ","explanation":"두 대상의 성질이나 정도를 비교합니다.","exampleZh":"這家比那家便宜。","exampleKo":"이 가게가 저 가게보다 싸요."},
+        {"pattern":"如果…的話，就…","pinyin":"rúguǒ… dehuà, jiù…","explanation":"만약 ~라면, 그러면 ~한다는 조건을 나타냅니다.","exampleZh":"如果買三盒的話，就打八折嗎？","exampleKo":"세 상자를 사면 20% 할인인가요?"},
+        {"pattern":"把 + 목적어 + 동사","pinyin":"bǎ + object + verb","explanation":"목적어를 어떻게 처리하는지 강조하는 처치문입니다.","exampleZh":"請把這個包起來。請把發票給我。","exampleKo":"이것을 포장해 주세요. 영수증을 주세요."},
+        {"pattern":"一點也不／都沒","pinyin":"yìdiǎn yě bù / dōu méi","explanation":"전혀 ~하지 않다, 하나도 ~하지 않았다는 뜻입니다.","exampleZh":"這家店一點也不貴。我都沒買。","exampleKo":"이 가게는 전혀 비싸지 않아요. 저는 하나도 안 샀어요."},
+        {"pattern":"又…又…","pinyin":"yòu… yòu…","explanation":"두 가지 성질이나 상태를 함께 나열합니다.","exampleZh":"這個伴手禮又便宜又好吃。","exampleKo":"이 기념품은 싸고 맛있어요."}
+      ]
+    },
+    {
+      "id": "shadowing",
+      "type": "shadowing",
+      "shortTitle": "섀도잉",
+      "title": "실전 대화 섀도잉",
+      "minutes": 15,
+      "items": [
+        {"speaker":"나","zh":"完蛋了，我們好像迷路了。從這裡到那家伴手禮店，怎麼走？","pinyin":"Wán dàn le, wǒ men hǎo xiàng mí lù le. Cóng zhè lǐ dào nà jiā bàn shǒu lǐ diàn, zěn me zǒu?","ko":"큰일 났다. 우리 길을 잃은 것 같아. 여기에서 그 기념품 가게까지 어떻게 가?"},
+        {"speaker":"친구","zh":"我看一下地圖。往前直走，看到紅綠燈往左轉就到了。走路只要五分鐘。","pinyin":"Wǒ kàn yí xià dì tú. Wǎng qián zhí zǒu, kàn dào hóng lǜ dēng wǎng zuǒ zhuǎn jiù dào le. Zǒu lù zhǐ yào wǔ fēn zhōng.","ko":"지도 좀 볼게. 앞으로 직진하다가 신호등이 보이면 왼쪽으로 돌면 바로야. 걸어서 5분밖에 안 걸려."},
+        {"speaker":"점원","zh":"歡迎光臨！可以試吃看看喔！今天鳳梨酥買一送一。","pinyin":"Huān yíng guāng lín! Kě yǐ shì chī kàn kàn ō! Jīn tiān fèng lí sū mǎi yī sòng yī.","ko":"어서 오세요! 한번 시식해 보세요. 오늘 펑리수는 1+1입니다."},
+        {"speaker":"나","zh":"真的嗎？這家比昨天那家便宜耶。又便宜又好吃。如果我買六盒的話，可以幫我包起來嗎？","pinyin":"Zhēn de ma? Zhè jiā bǐ zuó tiān nà jiā pián yí ye. Yòu pián yí yòu hǎo chī. Rú guǒ wǒ mǎi liù hé de huà, kě yǐ bāng wǒ bāo qǐ lái ma?","ko":"정말요? 이 가게가 어제 그 가게보다 싸네요. 싸고 맛있어요. 제가 여섯 상자를 사면 포장해 주실 수 있나요?"},
+        {"speaker":"점원","zh":"沒問題。請問要刷卡還是付現？","pinyin":"Méi wèn tí. Qǐng wèn yào shuā kǎ hái shì fù xiàn?","ko":"문제없습니다. 카드로 결제하시겠어요, 현금으로 결제하시겠어요?"},
+        {"speaker":"나","zh":"我要刷卡。","pinyin":"Wǒ yào shuā kǎ.","ko":"카드로 결제할게요."},
+        {"speaker":"점원","zh":"好，有載具嗎？需要統編嗎？需要買袋子嗎？","pinyin":"Hǎo, yǒu zài jù ma? Xū yào tǒng biān ma? Xū yào mǎi dài zi ma?","ko":"네. 전자 영수증 바코드 있으세요? 사업자 번호 필요하세요? 봉투 구매하시나요?"},
+        {"speaker":"나","zh":"都沒有，不用袋子，請給我發票就好，謝謝！","pinyin":"Dōu méi yǒu, bú yòng dài zi, qǐng gěi wǒ fā piào jiù hǎo, xiè xie!","ko":"둘 다 없어요. 봉투는 필요 없고 종이 영수증만 주세요. 감사합니다!"}
+      ]
+    },
+    {
+      "id": "writing",
+      "type": "writing",
+      "shortTitle": "작문",
+      "title": "작문 테스트",
+      "minutes": 5,
+      "items": [
+        {"id":"q1","promptKo":"걸어가면 너무 멀지 않을까?","answerZh":"走路去會不會太遠？"},
+        {"id":"q2","promptKo":"신호등을 보고 우회전하면, 바로 도착이에요.","answerZh":"看到紅綠燈往右轉，就到了。"},
+        {"id":"q3","promptKo":"이것 좀 포장해 주실 수 있나요? 저 카드 결제할게요.","answerZh":"可以幫我把這個包起來嗎？我要刷卡。"}
+      ]
+    }
+  ],
+  "history": [
+    {"day":1,"topic":"공항 도착·호텔 이동·친구 재회","grammar":["了","得／不","有點","先…再…","幫","剛","越來越","就在","為了","沒想到","連…都…"]},
+    {"day":2,"topic":"식당·야시장 주문과 맛 표현","grammar":["要","還是","不要","給","一點","過","起來","太…了","除了…以外","怎麼 + V","對了"]},
+    {"day":3,"topic":"길 찾기·기념품 쇼핑·현지 결제","grammar":["從 A 到 B","要 + 시간／돈","會不會","往 + 방향 + V","一…就…","V + 看看","比","如果…就…","把","一點也不／都沒","又…又…"]}
+  ]
+}

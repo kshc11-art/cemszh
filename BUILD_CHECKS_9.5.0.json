@@ -1,0 +1,74 @@
+{
+  "version": "9.5.0",
+  "revision": "9.5.0",
+  "generatedAt": "2026-08-29T20:36:07.150721+00:00",
+  "checks": {
+    "versionConsistency": {
+      "pass": true,
+      "values": {
+        "VERSION": "9.5.0",
+        "REVISION": "9.5.0",
+        "buildInfo": "9.5.0",
+        "manifest": "9.5.0"
+      }
+    },
+    "javascriptSyntax": {
+      "pass": true,
+      "files": 17,
+      "inlineScripts": 12,
+      "errors": []
+    },
+    "serviceWorkerAssets": {
+      "pass": true,
+      "declared": 49,
+      "missing": []
+    },
+    "cacheBustedAssets": {
+      "pass": true,
+      "query": "?v=9.5.0",
+      "htmlRefs": 27
+    },
+    "browserRegression": {
+      "pass": true,
+      "pages": 10,
+      "studyModes": 8,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "failedRequests": 0
+    },
+    "structure": {
+      "pass": true,
+      "replaceStatePerShowPage": 1,
+      "updateWordTablePerTabSwitch": 1,
+      "showPageWrapDepth": 0,
+      "baseline": {
+        "replaceStatePerShowPage": 5,
+        "updateWordTablePerTabSwitch": 5
+      }
+    },
+    "exprLeak": {
+      "pass": true,
+      "before": 1678,
+      "after": 1678,
+      "baselineReproduced": true
+    },
+    "swUpdateFlag": {
+      "pass": true
+    },
+    "cssRenderParity": {
+      "pass": true,
+      "method": "동일 JS · 원본 CSS 대조군과 computed style 비교",
+      "differences": 0,
+      "importantCount": {
+        "before": 1255,
+        "after": 1050
+      }
+    }
+  },
+  "knownLimits": [
+    "Lean 화면 진입 약 60초(원본에서도 57.5초, 이번 릴리스 범위 밖)",
+    "연어 모드 적합 콘텐츠 55개(데이터 문제)",
+    "시드 한국어 뜻 품질(별도 과제)"
+  ],
+  "pass": true
+}

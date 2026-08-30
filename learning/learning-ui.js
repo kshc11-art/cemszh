@@ -1,4 +1,4 @@
-/* CEMS v9.3.1 Learning-first — goal-led small courses, local audit and delayed learning UI */
+/* CEMS v9.4.4 Learning-first — goal-led small courses, local audit and delayed learning UI */
 (function () {
   'use strict';
 
@@ -9,12 +9,18 @@
   var progress = modules.progress;
   var scheduler = modules.scheduler;
   var studio = modules.studio;
-  var VERSION = '9.3.1-stable-recovery';
+  /* 9.5.1: ux-polish.js 와 같은 DOM 에 버전 문자열을 쓰므로 출처를 하나로 맞춘다
+     (<html data-cems-version>). 두 상수가 어긋나 있으면 아래 protectLeanVersion 의
+     관찰자와 ux-polish 의 syncVersion 이 서로 값을 되돌려 쓴다. */
+  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.1';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var initPromise = null;
   var state = {
     ready: false,
-    refreshing: false,
+    refreshing: null,        // 진행 중인 refreshAll 프로미스 (null = 유휴)
+    refreshPending: null,    // 트레일링 엣지로 예약된 다음 1회
+    pageHookInstalled: false,
+    quickStartPatched: false,
     plan: null,
     unitStates: [],
     allUnitStates: [],
@@ -157,12 +163,11 @@
       if (app) app.insertAdjacentHTML('beforeend', pageMarkup());
       else document.body.insertAdjacentHTML('beforeend', pageMarkup());
     }
-    if (!qs('#cems-lean-home-card')) {
-      var home = qs('#page-home');
-      var daily = qs('#daily-goal-card', home);
-      if (daily) daily.insertAdjacentHTML('beforebegin', homeCardMarkup());
-      else if (home) home.insertAdjacentHTML('afterbegin', homeCardMarkup());
-    }
+    /* v9.4.4-r3: keep the original Home hierarchy. The learning dashboard
+       remains available on its own page, but it is no longer injected above
+       the legacy daily-goal and quick-start cards. */
+    var legacyHomeCard = qs('#cems-lean-home-card');
+    if (legacyHomeCard) legacyHomeCard.remove();
   }
   function planCountsHtml(plan) {
     var steps = plan && Array.isArray(plan.steps) ? plan.steps : [];
@@ -330,9 +335,7 @@
       '<details class="cems-lean-section cems-lean-stats-details" open><summary><div><h2>학습 근거</h2><p>문제 수보다 새 문맥 적용·지연 유지·무힌트 산출을 우선합니다.</p></div><span>펼치기</span></summary>' + statsHtml() + '</details>';
     try { window.dispatchEvent(new CustomEvent('cems:lean-dashboard-rendered')); } catch (_) {}
   }
-  async function refreshAll() {
-    if (state.refreshing) return;
-    state.refreshing = true;
+  async function refreshOnce() {
     try {
       var results = await Promise.all([scheduler.buildTodayPlan(LANG), progress.getProgressSummary(LANG)]);
       state.plan = results[0];
@@ -344,7 +347,29 @@
     } catch (error) {
       console.error('[CEMS Lean] refresh', error);
       toast('Lean 학습 계획을 불러오지 못했습니다: ' + error.message);
-    } finally { state.refreshing = false; }
+    }
+  }
+  /* v9.5: 재진입 요청을 버리지 않는다(트레일링 엣지).
+     예전에는 `if (state.refreshing) return;` 로 즉시 반환해서, 겹쳐 들어온 호출이
+     아무 일도 하지 않고 undefined 를 돌려줬다. `await refreshAll()` 한 호출자는
+     "갱신이 끝났다"고 오인했고, 진행 중이던 갱신은 그 호출자의 변경분을 보지 못한
+     상태로 끝나 화면이 낡은 채로 남았다.
+     이제 진행 중이면 "끝난 뒤 1회 더" 를 예약하고, 호출자에게는 그 완료를 기다리는
+     프로미스를 돌려준다. 여러 번 겹쳐 들어와도 뒤따르는 실행은 1회로 합쳐진다. */
+  function refreshAll() {
+    if (state.refreshing) {
+      if (!state.refreshPending) {
+        state.refreshPending = state.refreshing
+          .catch(function () {})
+          .then(function () {
+            state.refreshPending = null;
+            return refreshAll();
+          });
+      }
+      return state.refreshPending;
+    }
+    state.refreshing = refreshOnce().finally(function () { state.refreshing = null; });
+    return state.refreshing;
   }
   async function importUnit(raw, options) {
     options = options || {};
@@ -818,9 +843,20 @@
       avoidKo: qs('[data-studio-field="avoidKo"]') && qs('[data-studio-field="avoidKo"]').value
     };
   }
+  /* v9.5: 입력 누락은 "예외"가 아니라 사용자에게 알려줄 상태다.
+     예전에는 throw 해서 호출 경로에 따라 미처리 예외/미처리 프로미스 거부가 됐고,
+     콘솔에는 error 로 찍히면서 정작 사용자는 무엇을 채워야 하는지 알기 어려웠다.
+     → 토스트(전역 showToast 로 위임)로 알리고, 비어 있는 첫 입력칸에 포커스를 준다. */
   function buildStudioPrompt() {
     var config = studioConfig();
-    if (!text(config.titleKo).trim() || !text(config.focusKo).trim()) throw new Error('코스 제목과 집중할 생활 기능을 입력하십시오.');
+    var missing = !text(config.titleKo).trim() ? 'titleKo'
+                : !text(config.focusKo).trim() ? 'focusKo' : '';
+    if (missing) {
+      toast('⚠️ 코스 제목과 집중할 생활 기능을 입력하십시오.');
+      var field = qs('[data-studio-field="' + missing + '"]');
+      if (field) { try { field.focus(); } catch (_) {} }
+      return null;
+    }
     state.studio.prompt = studio.buildGenerationPrompt(LANG, config);
     renderStudio(); toast('언어별 단일 생성 프롬프트를 만들었습니다.'); return state.studio.prompt;
   }
@@ -934,7 +970,7 @@
       else if (action === 'start-unit') startUnit(button.dataset.unitId).catch(fail);
       else if (action === 'set-active-course') { scheduler.setActiveCourseId(LANG, button.dataset.courseId); refreshAll(); }
       else if (action === 'choose-import') openStudio();
-      else if (action === 'studio-build-prompt') { try { buildStudioPrompt(); } catch (error) { fail(error); } }
+      else if (action === 'studio-build-prompt') buildStudioPrompt();   // v9.5: 더 이상 throw 하지 않는다
       else if (action === 'studio-copy-prompt') copyText(state.studio.prompt).then(function(){toast('프롬프트를 복사했습니다.');});
       else if (action === 'studio-download-prompt') downloadTextFile(state.studio.prompt,'text/plain;charset=utf-8','CEMS_'+LANG+'_COURSE_GENERATION_PROMPT.txt');
       else if (action === 'studio-download-guide') fetch('./authoring/CEMS_CONTENT_ADDITION_GUIDE_v4.md').then(function(r){if(!r.ok)throw new Error('가이드를 읽지 못했습니다.');return r.text();}).then(function(v){downloadTextFile(v,'text/markdown;charset=utf-8','CEMS_CONTENT_ADDITION_GUIDE_v4.md');}).catch(fail);
@@ -990,47 +1026,58 @@
     var studioFile = qs('#cems-lean-studio-file'); if (studioFile) studioFile.addEventListener('change', function () { handleStudioFile(studioFile.files && studioFile.files[0]).then(function(){toast('JSON을 열어 검사했습니다. 자동으로 추가하지 않았습니다.');}).catch(function(e){toast(e.message);}); studioFile.value=''; });
     window.addEventListener('hashchange', function () { if (location.hash === '#lean' && state.ready) { page('lean'); refreshAll(); } else if(location.hash === '#lean-studio' && state.ready) openStudio(); });
   }
+  /* v9.5: 함수 프로퍼티 플래그(__cemsLeanZhPatched) 대신 모듈 상태로 1회 가드한다.
+     플래그 방식은 deck-groups 도 quickStartMode 를 감싸기 때문에, 설치 순서에 따라
+     플래그가 사라져 재설치 때마다 중복 래핑됐다. */
   function patchLegacyChineseQuickStart() {
-    if (LANG !== 'zh' || typeof quickStartMode !== 'function' || quickStartMode.__cemsLeanZhPatched) return false;
+    if (state.quickStartPatched) return false;
+    if (LANG !== 'zh' || typeof quickStartMode !== 'function') return false;
+    state.quickStartPatched = true;
     var previous = quickStartMode;
-    var wrapped = function (type, mode) {
+    quickStartMode = function (type, mode) {
       if (/^zh-/.test(String(mode || '')) && typeof startChineseSpecialMode === 'function') return startChineseSpecialMode(mode);
       return previous.apply(this, arguments);
     };
-    wrapped.__cemsLeanZhPatched = true;
-    wrapped.__cemsLeanPrevious = previous;
-    quickStartMode = wrapped;
     return true;
   }
+  /* v9.5: showPage 전역 재정의 → afterPageShow 훅.
+     예전에는 이 모듈을 포함해 여러 확장이 showPage 를 감쌌고, 재설치가 돌 때마다
+     겹이 늘어 showPage 1회에 history.replaceState 가 5회 실행됐다.
+     훅은 'lean-ui' 키로 멱등 등록되므로 몇 번 불러도 1겹이다.
+     afterPageShow 는 showPage 본문 끝에서 발행되므로 실행 시점도 예전과 같다. */
   function patchPageRefresh() {
-    if (typeof showPage !== 'function' || showPage.__cemsLeanPatched) return;
-    var previous = showPage;
-    var wrapped = function () {
-      var result = previous.apply(this, arguments);
-      var target = String(arguments[0] || '');
-      if (target === 'home' || target === 'lean') setTimeout(refreshAll, 30);
+    if (state.pageHookInstalled || !window.CEMSHooks) return;
+    state.pageHookInstalled = true;
+    window.CEMSHooks.on('afterPageShow', 'lean-ui', function (name) {
+      var target = String(name || '');
+      if (target === 'home' || target === 'lean') {
+        /* v9.5: 예전에는 여러 확장이 showPage 를 겹겹이 감싸고 재설치 타이머까지 돌아서
+           refreshAll 이 한 화면 전환에 여러 번 걸렸고, 그중 하나가 일찍 끝나 화면이 채워졌다.
+           이제 훅이 1회만 도는 대신, IndexedDB 조회를 기다리는 동안 화면이 비어 보인다.
+           → 직전에 받아둔 계획으로 즉시 한 번 그리고, 그 다음 실제 갱신을 건다. */
+        if (state.plan) { try { renderHome(); renderDashboard(); } catch (_) {} }
+        setTimeout(refreshAll, 30);
+      }
       if (target === 'lean-studio') setTimeout(renderStudio, 30);
       syncLeanFocus(target);
       if (target !== 'lean-run') document.body.classList.remove('cems-lean-running');
-      return result;
-    };
-    wrapped.__cemsLeanPatched = true;
-    showPage = wrapped;
+    });
   }
   function syncLeanVersion() {
-    document.documentElement.dataset.cemsVersion = VERSION;
-    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
+    /* 값이 같아도 속성을 다시 쓰면 MutationRecord 가 쌓여 아래 관찰자가 매번 깨어난다. */
+    if (document.documentElement.dataset.cemsVersion !== VERSION) document.documentElement.dataset.cemsVersion = VERSION;
+    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
     document.title = visible;
     var meta = document.querySelector('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v9.3.1 · Stable recovery'; });
-    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.3.1'; });
+    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v' + VERSION + ' · 통합 학습 허브'; });
+    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v' + VERSION; });
     var versionCard = Array.from(document.querySelectorAll('#page-settings .card')).find(function (card) { var title = card.querySelector('.card-title'); return title && title.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.3.1 · Stable recovery';
-    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v9.3.1';
+    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v' + VERSION + ' · 통합 학습 허브';
+    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v' + VERSION;
   }
   function protectLeanVersion() {
     if (state.versionObserver) return;
-    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
+    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
     var titleNode = document.querySelector('title');
     state.versionObserver = new MutationObserver(function () {
       if (document.title !== expectedTitle || document.documentElement.dataset.cemsVersion !== VERSION) setTimeout(syncLeanVersion, 0);
@@ -1108,7 +1155,13 @@
       }
     });
   }
-  window.CEMS_LEAN = publicApi;
+  /* v9.5: 예전에는 window.CEMS_LEAN = publicApi 로 통째로 갈아끼워서, 파일 첫머리에서
+     읽어 온 moduleRoot._modules(schema/exercise/progress/scheduler/studio 레지스트리)가
+     통째로 사라졌다. 나중에 로드되는 코드가 CEMS_LEAN._modules 를 보면 undefined 였다.
+     → 기존 객체에 병합하고 _modules 를 명시적으로 보존한다. */
+  publicApi._modules = modules;
+  Object.assign(moduleRoot, publicApi);
+  window.CEMS_LEAN = moduleRoot;
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(function () { init().catch(function (error) { console.error('[CEMS Lean] init', error); }); }, 900); });
   else setTimeout(function () { init().catch(function (error) { console.error('[CEMS Lean] init', error); }); }, 900);

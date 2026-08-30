@@ -1,0 +1,26 @@
+{
+  "version": "9.5.1",
+  "revision": "9.5.1",
+  "build": "9.5.1",
+  "builtAt": "2026-08-29T10:41:11Z",
+  "baseArchive": "cems_chinese_pwa_v9.4.4final2.zip",
+  "externalJsonBundled": false,
+  "features": [
+    "hook-registry-single-owner",
+    "data-lens-no-global-swap",
+    "gemini-grader-version-aligned",
+    "sw-update-reload-fixed",
+    "seed-recovery-db-name-fixed",
+    "mode-eligible-quiz-topup",
+    "single-document-click-bus",
+    "attribute-escaping-on-imported-data",
+    "worker-rate-limit-and-payload-caps",
+    "sw-inflight-dedupe",
+    "browser-regression-harness"
+  ],
+  "serviceWorkers": [
+    "sw.js"
+  ],
+  "cacheVersion": "cems-zh-v9-9.5.1",
+  "notes": "v9.5.0 — 전역 함수 몽키패칭을 훅 레지스트리로 대체하고, 감사에서 확인된 결함을 수정한 구조 정리 릴리스"
+}

@@ -1,0 +1,306 @@
+/* CEMS v9.2.8 — iPhone 13 mini mobile rebuild
+   Final override layer: coherent type scale, compact data tools, legible learning tasks,
+   practical statistics and safe-area aware layouts. */
+
+:root{
+  --cems928-body:15px;
+  --cems928-small:12px;
+  --cems928-label:13px;
+  --cems928-control:15px;
+  --cems928-card-radius:16px;
+}
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  scroll-padding-top:calc(10px + env(safe-area-inset-top));
+}
+body{
+  font-size:var(--cems928-body);
+  line-height:1.48;
+  letter-spacing:-.006em;
+  overflow-wrap:anywhere;
+}
+.app{
+  width:100%;
+  max-width:430px!important;
+  padding:12px!important;
+  padding-top:calc(10px + env(safe-area-inset-top))!important;
+  padding-left:calc(12px + env(safe-area-inset-left))!important;
+  padding-right:calc(12px + env(safe-area-inset-right))!important;
+  padding-bottom:calc(88px + env(safe-area-inset-bottom))!important;
+}
+.card,
+body.cems-ux25 .card{
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:var(--cems928-card-radius);
+}
+.card-title,
+body.cems-ux25 .card-title{
+  font-size:14px!important;
+  line-height:1.4!important;
+  margin-bottom:10px;
+}
+.page-header{margin-bottom:14px}
+.page-header h1{font-size:23px;line-height:1.25}
+.page-header p{font-size:13px;line-height:1.5}
+
+/* Core control scale: readable without wasting the 375px viewport. */
+.btn,
+body.cems-ux25 .btn{
+  min-height:44px;
+  padding:10px 14px;
+  font-size:14px;
+  line-height:1.25;
+  border-radius:12px;
+}
+.btn-sm{min-height:40px;padding:8px 11px;font-size:13px}
+.form-label{font-size:13px;line-height:1.4;margin-bottom:6px}
+.form-input,
+.form-select,
+.search-box input{
+  min-height:44px;
+  font-size:16px; /* avoids automatic iOS input zoom */
+  line-height:1.35;
+}
+.toggle-label{font-size:14px;line-height:1.4}
+.type-tabs{gap:6px;margin-bottom:12px}
+.type-tab{
+  min-height:44px;
+  padding:9px 7px;
+  font-size:13px;
+  line-height:1.2;
+  border-radius:11px;
+}
+.chip{min-height:38px;padding:8px 12px;font-size:13px;line-height:1.2}
+
+/* App bar and bottom navigation. */
+body.cems-ux25 .cems82-appbar{padding:3px 1px 11px}
+body.cems-ux25 .cems82-brand-title{font-size:19px}
+body.cems-ux25 .cems82-brand-sub{font-size:11.5px;line-height:1.25}
+.bottom-nav{
+  min-height:62px;
+  padding-top:5px;
+  padding-bottom:calc(5px + env(safe-area-inset-bottom));
+}
+.nav-item{min-width:56px;min-height:50px;padding:5px 7px;gap:3px;font-size:10.5px;line-height:1.15}
+.nav-item svg{width:22px;height:22px}
+
+/* Home: one visible goal surface with useful card availability. */
+#cems-lean-home-card{padding:15px!important}
+.cems-lean-home-top{gap:8px}
+.cems-lean-home-sub,
+body.cems-ux25 .cems-lean-home-sub{font-size:12.5px!important;line-height:1.45}
+.cems-lf-time{font-size:12px!important;min-width:58px;text-align:right}
+.cems-lf-goal-focus{padding:12px!important;border-radius:13px!important}
+.cems-lf-goal-focus small{font-size:11px!important}
+.cems-lf-goal-focus strong{font-size:17px!important;line-height:1.38!important}
+.cems-lf-goal-focus p{font-size:12.5px!important;line-height:1.48!important}
+body.cems-ux25 .cems-lean-plan-counts,
+.cems-lean-plan-counts{display:grid;grid-template-columns:1fr!important;gap:7px!important;margin:11px 0!important}
+.cems-lf-plan-step{min-height:48px;padding:8px 9px!important}
+.cems-lf-plan-step>span{width:25px!important;height:25px!important;font-size:11px!important}
+.cems-lf-plan-step b{font-size:13px!important;line-height:1.3}
+.cems-lf-plan-step small{font-size:11.5px!important;line-height:1.35}
+.cems-lf-plan-step em{font-size:12px!important}
+.cems-lean-home-actions{grid-template-columns:1.25fr .9fr;gap:7px;margin-top:10px}
+
+.cems-928-goal-snapshot{
+  margin:10px 0 0;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:color-mix(in srgb,var(--bg) 86%,var(--card) 14%);
+}
+.cems-928-goal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.cems-928-goal-head strong{font-size:13px}
+.cems-928-goal-head span{font-size:11.5px;color:var(--muted)}
+.cems-928-goal-list{display:grid;gap:6px}
+.cems-928-goal-row{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:32px}
+.cems-928-goal-row>span{font-size:12.5px;font-weight:750}
+.cems-928-goal-row>div{height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+.cems-928-goal-row>div i{display:block;height:100%;width:0;border-radius:inherit;background:var(--primary-strong,var(--primary))}
+.cems-928-goal-row>small{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.cems-928-goal-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)}
+.cems-928-goal-foot button{border:0;background:transparent;color:var(--primary);font:inherit;font-weight:800;padding:5px;cursor:pointer}
+
+.cems-ux25-home-tools>summary{padding:12px 13px!important}
+.cems-ux25-home-tools>summary strong{font-size:13.5px!important}
+.cems-ux25-home-tools>summary span{font-size:11.5px!important;line-height:1.4!important}
+.cems-ux25-home-tools>summary>b{font-size:12px!important}
+.quick-actions{gap:7px}
+body.cems-ux25 .quick-action{min-height:86px;padding:9px 4px}
+body.cems-ux25 .quick-action-label{font-size:12px;line-height:1.25}
+.stat-label{font-size:11.5px;line-height:1.25}
+.stat-value{font-size:21px}
+
+/* Study setup: larger labels and descriptions, less decorative height. */
+.mode-selector{gap:7px}
+body.cems-ux25 .mode-card,
+.mode-card{min-height:96px;padding:10px 6px;border-radius:13px}
+body.cems-ux25 .mode-card-title,
+.mode-card-title{font-size:14px;line-height:1.25}
+.mode-card-desc{font-size:12px!important;line-height:1.3!important;margin-top:2px}
+body.cems-ux25 .mode-card-icon{width:32px;height:32px;margin-bottom:6px}
+.cems-ux25-filter-details>summary{min-height:44px;font-size:13px!important}
+.cems-ux25-filter-details>summary b{font-size:11.5px!important}
+.range-value{font-size:16px}
+
+/* Learning run: repair the many 8–11px labels from the old layer. */
+.cems-lean-run{
+  width:100%;
+  max-width:430px;
+  min-height:100dvh;
+  padding:calc(10px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom));
+}
+.cems-lean-runbar{grid-template-columns:44px minmax(0,1fr);gap:9px;margin-bottom:10px}
+.cems-lean-runbar span{font-size:12px!important;line-height:1.3}
+.cems-lean-task{padding:15px;border-radius:18px}
+.cems-lean-benchmark-notice strong{font-size:13px}
+.cems-lean-benchmark-notice span{font-size:12px;line-height:1.45}
+.cems-lean-task-meta{gap:6px}
+.cems-lean-task-meta span,
+.cems-lean-target{font-size:11px!important;line-height:1.2;padding:5px 8px}
+.cems-lean-task h2{font-size:21px!important;line-height:1.42!important;margin:12px 0 8px}
+.cems-lean-context-ko{font-size:14px!important;line-height:1.55;margin-bottom:9px}
+.cems-lean-stimulus{font-size:17px!important;line-height:1.65;padding:13px}
+.cems-lean-dialogue{gap:9px;padding:12px}
+.cems-lean-dialogue>div{grid-template-columns:66px minmax(0,1fr);gap:4px 8px}
+.cems-lean-dialogue b{font-size:12px!important}
+.cems-lean-dialogue span{font-size:16px!important;line-height:1.55}
+.cems-lean-dialogue small{font-size:12.5px!important;line-height:1.45}
+.cems-lean-options{gap:9px;margin-top:13px}
+.cems-lean-option{min-height:50px;padding:13px;font-size:15px!important;line-height:1.45}
+.cems-lean-input-wrap .form-input{height:52px;font-size:17px!important;padding:0 13px}
+.cems-lean-token-answer,
+.cems-lean-token-bank{min-height:51px;gap:8px;padding:9px}
+.cems-lean-token-answer button,
+.cems-lean-token-bank button{min-height:38px;padding:8px 10px;font-size:14px!important}
+.cems-lean-token-answer>span{font-size:12px!important}
+.cems-lean-listen .btn{min-width:116px;height:44px;font-size:14px!important}
+.cems-lean-transcript{font-size:15px!important;line-height:1.55;padding:11px}
+.cems-lean-hints>div{grid-template-columns:66px minmax(0,1fr);gap:8px;padding:9px}
+.cems-lean-hints b{font-size:12px!important}
+.cems-lean-hints span{font-size:14px!important;line-height:1.45}
+.cems-lean-feedback{padding:12px}
+.cems-lean-feedback>strong{font-size:13px!important}
+.cems-lean-feedback small{font-size:12px!important}
+.cems-lean-feedback p{font-size:14px!important;line-height:1.55}
+.cems-lean-feedback-issues>span{font-size:12px!important}
+.cems-lean-feedback-issues button{min-height:36px;font-size:12px!important;padding:7px 9px}
+.cems-lean-actions{gap:8px;margin-top:13px}
+.cems-lean-actions .btn{min-width:104px;height:44px;font-size:14px!important}
+.cems-lean-complete h2{font-size:23px}
+.cems-lean-complete p{font-size:14px!important;line-height:1.55}
+.cems-lean-complete-grid span{font-size:11.5px!important}
+.cems-lean-complete-errors{font-size:12px!important}
+
+/* Legacy card/quiz screens used from the card tools. */
+.flashcard-container{min-height:318px;margin-bottom:14px}
+.flashcard{height:318px}
+.flashcard-face{padding:20px}
+.flashcard-word{font-size:clamp(31px,10vw,40px)!important;line-height:1.18}
+.flashcard-hint{font-size:13px}
+.flashcard-meaning-ko{font-size:24px;line-height:1.35}
+.flashcard-meaning-en{font-size:15px;line-height:1.45}
+.flashcard-example{font-size:15px;line-height:1.55}
+.flashcard-collocation{font-size:14px;line-height:1.45}
+.tag{font-size:11px;padding:4px 8px}
+.rating-hint{font-size:13px}
+.rating-btn{min-height:66px;padding:11px 5px;font-size:13px}
+.rating-interval{font-size:11px}
+.quiz-option{min-height:52px;padding:13px 15px;font-size:15px;line-height:1.4}
+.progress-text{font-size:12px}
+
+/* Data: search is primary; 9 large filters are collapsed and compact. */
+#page-data .cems-ux25-data-pane{gap:9px}
+#page-data .card{padding:13px}
+.cems-928-data-filters{margin:0 0 11px;border:1px solid var(--border);border-radius:13px;background:var(--bg);overflow:hidden}
+.cems-928-data-filters>summary{list-style:none;min-height:43px;padding:9px 11px;display:flex;align-items:center;justify-content:space-between;gap:9px;cursor:pointer}
+.cems-928-data-filters>summary::-webkit-details-marker{display:none}
+.cems-928-data-filters>summary>div{min-width:0}
+.cems-928-data-filters>summary strong{display:block;font-size:13.5px;line-height:1.3}
+.cems-928-data-filters>summary span{display:block;margin-top:2px;font-size:11.5px;line-height:1.3;color:var(--muted)}
+.cems-928-data-filters>summary b{font-size:11.5px;color:var(--primary);white-space:nowrap}
+.cems-928-data-filters[open]>summary{border-bottom:1px solid var(--border)}
+.cems-928-data-filter-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px!important;padding:10px!important;margin:0!important;font-size:13px!important}
+#page-data .cems-928-data-filter-grid select{
+  width:100%;min-width:0;min-height:40px!important;height:40px!important;
+  padding:6px 27px 6px 9px!important;border-radius:9px!important;
+  font-size:13px!important;line-height:1.2!important;
+  text-overflow:ellipsis;
+}
+.cems-928-filter-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:7px;margin-top:2px}
+.cems-928-filter-actions button{min-height:38px;padding:7px 11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);font:inherit;font-size:12.5px;font-weight:750}
+#page-data #word-search{font-size:16px!important;min-height:44px}
+#page-data .word-table{font-size:13.5px}
+#page-data .word-table th{font-size:11.5px;padding:10px 9px}
+#page-data .word-table td{font-size:13.5px;line-height:1.4;padding:11px 9px}
+#page-data .table-container{max-height:min(52dvh,430px)}
+.upload-zone{padding:28px 16px}
+.upload-zone-icon{font-size:38px;margin-bottom:10px}
+.upload-zone p{font-size:13px;line-height:1.5}
+.upload-result{font-size:13px}
+
+/* Practical statistics replace the wall of technical cards. */
+.cems-928-stats{margin-bottom:10px}
+.cems-928-stats-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.cems-928-stats-head strong{display:block;font-size:17px;line-height:1.3}
+.cems-928-stats-head span{display:block;margin-top:3px;font-size:12px;color:var(--muted);line-height:1.4}
+.cems-928-stats-head em{font-style:normal;font-size:11.5px;color:var(--primary);white-space:nowrap}
+.cems-928-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cems-928-kpi{min-height:100px;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--card);display:flex;flex-direction:column}
+.cems-928-kpi span{font-size:12px;color:var(--muted);line-height:1.3}
+.cems-928-kpi strong{font-size:25px;line-height:1.15;margin-top:7px}
+.cems-928-kpi small{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:auto;padding-top:5px}
+.cems-928-next-action{margin-top:8px;padding:12px;border:1px solid color-mix(in srgb,var(--primary) 42%,var(--border));border-radius:14px;background:color-mix(in srgb,var(--primary) 8%,var(--card))}
+.cems-928-next-action span{font-size:11.5px;color:var(--primary);font-weight:850}
+.cems-928-next-action strong{display:block;font-size:15px;line-height:1.38;margin:4px 0}
+.cems-928-next-action p{font-size:12.5px;line-height:1.45;color:var(--muted);margin:0}
+.cems-928-stats-detail{margin-bottom:10px;border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden}
+.cems-928-stats-detail>summary{list-style:none;min-height:46px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer}
+.cems-928-stats-detail>summary::-webkit-details-marker{display:none}
+.cems-928-stats-detail>summary strong{font-size:13.5px}
+.cems-928-stats-detail>summary span{font-size:11.5px;color:var(--muted);text-align:right}
+.cems-928-stats-detail[open]>summary{border-bottom:1px solid var(--border)}
+.cems-928-stats-detail>#cems83-dashboard{padding:10px}
+#page-stats .stat-label{font-size:11.5px!important}
+#cems83-dashboard .c83-card-title{font-size:13.5px!important}
+#cems83-dashboard .c83-sub,
+#cems83-dashboard .c83-card-sub{font-size:11.5px!important;line-height:1.4!important}
+
+/* Skip link: preserve keyboard accessibility without iOS touch-focus leakage. */
+.skip-link{
+  width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;
+  opacity:0!important;pointer-events:none!important;transform:none!important;white-space:nowrap!important;
+}
+.skip-link:focus-visible{
+  width:auto!important;height:auto!important;padding:10px 14px!important;margin:0!important;
+  overflow:visible!important;clip:auto!important;clip-path:none!important;
+  opacity:1!important;pointer-events:auto!important;
+}
+.skip-link:focus:not(:focus-visible){
+  width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;
+  opacity:0!important;pointer-events:none!important;
+}
+
+@media(max-width:390px){
+  .app{padding-left:10px!important;padding-right:10px!important}
+  .card,body.cems-ux25 .card{padding:13px}
+  .cems-lean-home-actions{grid-template-columns:1fr}
+  .cems-928-goal-row{grid-template-columns:64px minmax(0,1fr) auto;gap:6px}
+  .cems-928-data-filter-grid{gap:6px!important;padding:9px!important}
+  #page-data .cems-928-data-filter-grid select{font-size:12.5px!important;padding-left:7px!important}
+  .rating-grid{gap:6px}
+  .rating-btn{font-size:12.5px;padding:10px 3px}
+}
+@media(max-width:350px){
+  .cems-928-data-filter-grid{grid-template-columns:1fr}
+  .cems-928-kpis{grid-template-columns:1fr 1fr}
+  .type-tab{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .cems-928-stats,.cems-928-data-filters{scroll-behavior:auto}
+}

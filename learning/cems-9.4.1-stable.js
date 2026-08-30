@@ -1,20 +1,34 @@
-/* CEMS v9.3.1 stable recovery
+/* CEMS v9.3.2-r4 integrated hub
  * Exact-ID integration, non-destructive content repair, example repository,
  * local-first sentence grading, Gemini proxy client, and robust tone targeting.
  */
 (function () {
   'use strict';
 
-  var VERSION = '9.3.1';
-  var BUILD = '9.3.1-stable-recovery';
+  var VERSION = '9.4.1';
+  var BUILD = '9.4.1';
+  var DATA_SCHEMA = 'cems-zh-940-schema3';
+  var SEED_FINGERPRINT = 'sha256:b013f4f5a965aa5cc54f3c6df7a17c3bf98e388574c054d30b3fced38b8dd86f';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && window.CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /Chinese/i.test(String(DB_NAME)))) ? 'zh' : 'en';
   var AUX_DB_NAME = 'CEMS_Aux_v931_' + LANG;
   var AUX_DB_VERSION = 1;
   var DEFAULT_MODEL = 'gemini-3.1-flash-lite';
-  var GRADER_VERSION = 'sentence-grader-2026-08-17-v2';
+  /* 치명 C1: Worker(worker/src/index.mjs)는 'sentence-grader-v3' 만 받고, 값이 다르면
+     409 grader_version_mismatch 로 전부 거절한다. 즉 AI 문장 판독이 100% 실패하고 있었다. */
+  var GRADER_VERSION = 'sentence-grader-v3';
   var DAY_MS = 86400000;
+  var dataReadyResolve;
+  if (!window.CEMS932DataReady) window.CEMS932DataReady = new Promise(function(resolve){ dataReadyResolve = resolve; });
+  else dataReadyResolve = function(){};
+  window.CEMS932DataReadyState = 'loading';
   var state = {
     aux: null,
+    auxOpening: null,          // 진행 중인 openAuxDB 프로미스 (중복 open 방지)
+    overridesInstalled: false, // 전역 교체 1회 가드 (함수 프로퍼티 플래그 대체)
+    toneInstalled: false,
+    distractorsInstalled: false,
+    auditedRenderers: {},
+    exprLensId: null,          // CEMS_LENS 에 등록한 격리 필터 id
     initialized: false,
     modalBundle: null,
     homeToken: 0,
@@ -22,6 +36,8 @@
     examples: [],
     sentencePool: [],
     sentenceIndex: 0,
+    sentenceFilter: 'all',
+    sentenceReturnPage: 'home',
     currentSentence: null,
     sentenceGradeToken: 0,
     aiInFlight: null,
@@ -83,11 +99,25 @@
   }
 
   /* ---------- Auxiliary IndexedDB: examples, settings, AI cache, audit ---------- */
+  /* v9.5: 진행 중인 open 프로미스를 캐싱한다.
+     예전에는 state.aux 가 채워지기 전에 auxGet/auxPut 이 겹쳐 들어오면 그때마다
+     indexedDB.open 을 새로 냈다. 열린 커넥션이 여러 개 생겨 onversionchange 처리와
+     업그레이드가 서로를 막았다. 이제 첫 호출의 프로미스를 재사용하고,
+     실패하면 캐시를 비워 다음 호출이 다시 시도할 수 있게 한다. */
   function openAuxDB() {
     if (state.aux) return Promise.resolve(state.aux);
-    return new Promise(function (resolve, reject) {
+    if (state.auxOpening) return state.auxOpening;
+    state.auxOpening = new Promise(function (resolve, reject) {
       var req = indexedDB.open(AUX_DB_NAME, AUX_DB_VERSION);
       req.onerror = function () { reject(req.error || new Error('보조 DB를 열지 못했습니다.')); };
+      /* 다른 탭이 옛 버전 커넥션을 붙잡고 있으면 업그레이드가 멈춘 채 영원히
+         응답이 없다. 예전에는 핸들러가 없어 조용히 멈췄다. */
+      req.onblocked = function () {
+        var e = new Error('다른 탭에서 이 앱이 열려 있어 보조 DB를 갱신하지 못했습니다. 다른 탭을 닫고 새로고침하세요.');
+        e.code = 'blocked';
+        try { console.warn('[CEMS 9.3.2 aux] ' + e.message); } catch (_) {}
+        reject(e);
+      };
       req.onupgradeneeded = function (event) {
         var d = event.target.result;
         if (!d.objectStoreNames.contains('examples')) {
@@ -107,10 +137,14 @@
       };
       req.onsuccess = function () {
         state.aux = req.result;
-        state.aux.onversionchange = function () { try { state.aux.close(); } catch (_) {} state.aux = null; };
+        state.aux.onversionchange = function () { try { state.aux.close(); } catch (_) {} state.aux = null; state.auxOpening = null; };
+        state.aux.onclose = function () { state.aux = null; state.auxOpening = null; };
         resolve(state.aux);
       };
     });
+    /* 실패한 open 은 캐시에 남기지 않는다 — 남기면 이후 호출이 전부 같은 오류를 되받는다. */
+    state.auxOpening.catch(function () { state.auxOpening = null; });
+    return state.auxOpening;
   }
   async function auxGet(store, key) {
     var d = await openAuxDB();
@@ -173,7 +207,7 @@
     try {
       if (typeof db !== 'undefined' && db) return db;
       if (typeof openDB === 'function') return await openDB();
-    } catch (error) { console.warn('[CEMS 9.3.1] main DB', error); }
+    } catch (error) { console.warn('[CEMS 9.3.2] main DB', error); }
     return null;
   }
 
@@ -230,7 +264,16 @@
     });
     return map;
   }
+  /* "raw" 는 말 그대로 격리(cemsQuarantined) 항목까지 포함한 원본이어야 한다.
+     가져오기·복구 경로가 격리된 행을 못 보면 같은 행을 다시 만들어 중복이 생긴다.
+     v9.5: 격리 필터가 전역 교체에서 CEMS_LENS 로 옮겨졌고, 렌즈는 getAllExpr 안에서
+     적용되므로 예전처럼 "감싸기 전의 getAllExpr" 을 들고 있어도 우회가 되지 않는다.
+     → 렌즈를 타지 않는 getAllFromStore 로 직접 읽는다. */
+  var RAW_STORES = { vocab:'words', phrasal:'phrasal_verbs', expression:'expressions' };
   function rawMainRows(type) {
+    if (typeof getAllFromStore === 'function' && RAW_STORES[type]) {
+      return Promise.resolve(getAllFromStore(RAW_STORES[type])).catch(function () { return []; });
+    }
     if (type === 'vocab' && state.rawGetAllWords) return state.rawGetAllWords();
     if (type === 'phrasal' && state.rawGetAllPV) return state.rawGetAllPV();
     if (type === 'expression' && state.rawGetAllExpr) return state.rawGetAllExpr();
@@ -257,24 +300,77 @@
   }
 
   /* ---------- Seed import and non-destructive legacy repair ---------- */
+  var SEED_URL = './content/cems_zh_seed_v940.json';
+  /* v9.5: SEED_URL_LEGACY('./content/cems_zh_full_seed_v932.json') 폴백을 제거했다.
+     그 파일은 이 빌드에 존재하지 않아 404 를 부르고, 원래 실패 원인(SEED_URL 쪽)이
+     404 메시지에 가려져 진단이 어려웠다. 이제 실패하면 원인을 그대로 남긴다. */
+  var ACCEPTED_SEED_SCHEMAS = ['cems-seed-3', 'cems-seed-2'];
+
+  async function fetchSeed(url) {
+    var response = await fetch(url, { cache:'default' });
+    if (!response.ok) throw new Error('내장 학습 데이터를 불러오지 못했습니다 (' + response.status + ').');
+    return response.json();
+  }
   async function loadSeed() {
     if (LANG !== 'zh') return null;
-    var response = await fetch('./content/acc1_seed_v931.json', { cache:'no-store' });
-    if (!response.ok) throw new Error('내장 학습 데이터를 불러오지 못했습니다 (' + response.status + ').');
-    var seed = await response.json();
-    if (!seed || seed.schemaVersion !== 'cems-seed-2') throw new Error('내장 학습 데이터 형식이 올바르지 않습니다.');
+    var seed = null;
+    try { seed = await fetchSeed(SEED_URL); }
+    catch (error) {
+      try { console.warn('[CEMS 9.3.2 seed] ' + SEED_URL + ' 로드 실패:', error && error.message ? error.message : error); } catch (_) {}
+      throw error;
+    }
+    if (!seed || ACCEPTED_SEED_SCHEMAS.indexOf(seed.schemaVersion) < 0) {
+      throw new Error('내장 학습 데이터 형식이 올바르지 않습니다 (' + (seed && seed.schemaVersion) + ').');
+    }
     return seed;
   }
-  async function importSeedIfNeeded() {
+  /* v9.4.1: seed-3 은 expressions 와 grammar 를 분리해 담는다.
+     seed-2 는 expressions 안에 문법이 섞여 있고 grammar 배열이 그 사본이었다.
+     두 형식 모두 여기서 하나의 expressions 스토어 입력으로 접는다. */
+  function seedExpressionRows(seed) {
+    var schema = window.CEMS941Schema;
+    var pure = (seed.expressions || []).slice();
+    var grammar = (seed.grammar || []).slice();
+    if (seed.schemaVersion === 'cems-seed-2') {
+      var isG = schema ? schema.isGrammarRow : function (row) { return row && row.contentKind === 'grammar'; };
+      grammar = pure.filter(isG);
+      pure = pure.filter(function (row) { return !isG(row); });
+    }
+    var rows = [];
+    pure.forEach(function (row) {
+      var out = schema ? schema.normalizeRow(row, 'expression', { withProgress:true }) : Object.assign({ contentKind:'expression' }, row);
+      if (out && !out.__missing) rows.push(out);
+    });
+    grammar.forEach(function (row) {
+      var out = schema ? schema.normalizeRow(row, 'grammar', { withProgress:true }) : Object.assign({ contentKind:'grammar' }, row);
+      if (out && !out.__missing) rows.push(out);
+    });
+    var seen = new Map();
+    rows.forEach(function (row) { var k = text(row.Expression); if (k && !seen.has(k)) seen.set(k, row); });
+    return Array.from(seen.values());
+  }
+  function seedVocabularyRows(seed) {
+    var schema = window.CEMS941Schema;
+    var rows = [];
+    (seed.vocabulary || []).forEach(function (row) {
+      var out = schema ? schema.normalizeRow(row, 'vocabulary', { withProgress:true }) : Object.assign({ contentKind:'vocab' }, row);
+      if (out && !out.__missing) rows.push(out);
+    });
+    return rows;
+  }
+  async function importSeedIfNeeded(force) {
     if (LANG !== 'zh') return { skipped:true };
-    var applied = await metaGet('seedVersion', '');
-    if (applied === VERSION) return { skipped:true };
+    var appliedFingerprint = await metaGet('seedFingerprint', '');
+    var appliedSchema = await metaGet('dataSchema', '');
+    if (!force && appliedFingerprint === SEED_FINGERPRINT && appliedSchema === DATA_SCHEMA) {
+      return { skipped:true, fingerprint:appliedFingerprint, schema:appliedSchema };
+    }
     var seed = await loadSeed();
     var currentWords = await rawMainRows('vocab'), currentExpr = await rawMainRows('expression');
     var wordMap = new Map((currentWords || []).map(function (row) { return [text(row.Traditional_CH || row.word), row]; }));
     var exprMap = new Map((currentExpr || []).map(function (row) { return [text(row.Expression), row]; }));
-    var mergedWords = (seed.vocabulary || []).map(function (row) { return mergeCard(wordMap.get(text(row.Traditional_CH)), row); });
-    var mergedExpr = (seed.expressions || []).map(function (row) { return mergeCard(exprMap.get(text(row.Expression)), row); });
+    var mergedWords = seedVocabularyRows(seed).map(function (row) { return mergeCard(wordMap.get(text(row.Traditional_CH)), row); });
+    var mergedExpr = seedExpressionRows(seed).map(function (row) { return mergeCard(exprMap.get(text(row.Expression)), row); });
     await putMainRows(mergedWords, [], mergedExpr);
     var oldExamples = await auxAll('examples'), exampleMap = new Map(oldExamples.map(function (row) { return [row.id, row]; })), exampleByIdentity = exampleIdentityMap(oldExamples);
     var mergedExamples = (seed.examples || []).map(function (row) {
@@ -288,15 +384,32 @@
     });
     await auxBulkPut('examples', mergedExamples);
     await metaSet('seedVersion', VERSION);
+    await metaSet('seedBuildId', BUILD);
+    await metaSet('seedFingerprint', SEED_FINGERPRINT);
+    await metaSet('dataSchema', DATA_SCHEMA);
+    var grammarCount = mergedExpr.filter(function (row) { return row && row.contentKind === 'grammar'; }).length;
+    var expressionCount = mergedExpr.length - grammarCount;
     await addAudit('seed-import', {
       version:VERSION,
+      build:BUILD,
+      schema:DATA_SCHEMA,
+      fingerprint:SEED_FINGERPRINT,
       vocabulary:mergedWords.length,
-      expressions:mergedExpr.length,
+      expressions:expressionCount,
+      grammar:grammarCount,
       examples:mergedExamples.length,
       policy:seed.source && seed.source.policy
     });
     state.examples = [];
-    return { vocabulary:mergedWords.length, expressions:mergedExpr.length, examples:mergedExamples.length };
+    return { vocabulary:mergedWords.length, expressions:expressionCount, grammar:grammarCount, examples:mergedExamples.length, fingerprint:SEED_FINGERPRINT, schema:DATA_SCHEMA };
+  }
+  async function reindexIntegratedData() {
+    var result = await importSeedIfNeeded(true);
+    try { await quarantineLegacyDialogues(); } catch (_) {}
+    try { installExpressionFilter(); } catch (_) {}
+    try { await refreshViews(); } catch (_) {}
+    callToast('✅ 내장 데이터를 다시 인식했습니다. 학습 기록은 유지됩니다.');
+    return result;
   }
   function isLegacyDialogueCard(row) {
     if (!row) return false;
@@ -348,15 +461,17 @@
     state.examples = [];
     return { count:candidates.length };
   }
+  /* v9.5: getAllExpr 전역 교체를 없애고 데이터 렌즈에 영구 등록한다.
+     예전에는 window.getAllExpr 을 통째로 갈아끼웠는데, 다른 모듈도 같은 전역을
+     감싸고 있어서 설치 순서에 따라 격리 필터가 통째로 사라지거나 두 겹으로 걸렸다.
+     렌즈는 전역을 건드리지 않고 조회 결과에만 필터를 겹치므로 순서와 무관하다.
+     이 필터는 세션 내내 유지돼야 하므로 with() 가 아니라 push() 로 한 번 등록한다. */
   function installExpressionFilter() {
-    if (!state.rawGetAllExpr || state.rawGetAllExpr.__cems931Raw) return;
-    state.rawGetAllExpr.__cems931Raw = true;
-    var wrapped = async function () {
-      var rows = await state.rawGetAllExpr.apply(this, arguments);
+    if (state.exprLensId != null || !window.CEMS_LENS) return;   // 모듈 스코프 1회 가드
+    state.exprLensId = window.CEMS_LENS.push(function (rows, kind) {
+      if (kind !== 'expr') return rows;                          // 표현 조회에만 적용
       return (rows || []).filter(function (row) { return !row.cemsQuarantined; });
-    };
-    wrapped.__cems931 = true;
-    try { getAllExpr = wrapped; } catch (_) { window.getAllExpr = wrapped; }
+    });
   }
 
   /* ---------- Correct Excel parser ---------- */
@@ -683,7 +798,7 @@
       callToast('✅ 카드와 예문을 분리해 가져왔습니다.');
       return report;
     } catch (error) {
-      console.error('[CEMS 9.3.1 Excel]', error);
+      console.error('[CEMS 9.3.2 Excel]', error);
       var box = qs('#upload-result'); if (box) { box.innerHTML = '<div class="upload-result-item"><span>❌ 가져오기 실패</span><span>' + esc(error.message) + '</span></div>'; box.classList.remove('hidden'); }
       callToast('❌ ' + error.message); return null;
     }
@@ -827,26 +942,15 @@
     return { title:'오늘 계획을 모두 마쳤어요', sub:'문장 예문을 한 번 직접 만들어 기억을 확인해 보세요.', button:'문장 연습 시작' };
   }
   async function renderStableHome() {
-    var card = qs('#cems-lean-home-card'); if (!card) return;
-    var token = ++state.homeToken, model = await collectHomeModel(); if (token !== state.homeToken) return;
-    state.homeModel = model;
-    var copy = focusCopy(model), percent = Math.min(100, Math.round(model.todayDone / Math.max(1, model.target) * 100));
-    card.innerHTML = '<div class="cems931-home">' +
-      '<div class="cems931-home-head"><div><div class="cems931-eyebrow">오늘의 학습</div><h2>' + (model.todayDone >= model.target ? '오늘 목표를 달성했어요' : '짧게 시작해도 충분해요') + '</h2><p>' + (model.weekActive >= model.weeklyGoal ? '이번 주 목표 달성 · 남은 학습은 선택입니다.' : '이번 주 ' + model.weekActive + '/' + model.weeklyGoal + '일 · ' + Math.max(0, model.weeklyGoal-model.weekActive) + '일만 더 하면 목표 달성') + '</p></div>' +
-      '<div class="cems931-streak-pill" aria-label="' + (model.streak ? '연속 학습 ' + model.streak + '일' : '오늘 학습 시작') + '"><span>🔥</span><div><b>' + (model.streak ? model.streak + '일' : '오늘') + '</b><small>' + (model.streak ? '연속' : '시작') + '</small></div></div></div>' +
-      '<section class="cems931-focus"><div class="cems931-focus-top"><strong>' + esc(copy.title) + '</strong><small>오늘 ' + model.todayDone + '/' + model.target + '</small></div><span>' + esc(copy.sub) + '</span><div class="cems931-progress"><i style="width:' + percent + '%"></i></div></section>' +
-      '<div class="cems931-week"><div class="cems931-week-copy"><b>이번 주 ' + model.weekActive + '/' + model.weeklyGoal + '일</b><span>꾸준함은 주간 목표로 확인</span></div><div class="cems931-week-dots">' + weekDotsHtml(model) + '</div></div>' +
-      '<div class="cems931-metrics"><div class="cems931-metric"><span>지금 복습</span><b>' + model.totalDue + '</b><small>예정 카드</small></div><div class="cems931-metric"><span>취약 카드</span><b>' + model.totalWeak + '</b><small>우선 보완</small></div><div class="cems931-metric"><span>전체 DB</span><b>' + model.totalCards + '</b><small>학습 카드</small></div></div>' +
-      '<div class="cems931-home-actions"><button type="button" class="btn btn-primary" data-cems931-action="home-primary">' + esc(copy.button) + '</button><button type="button" class="btn btn-secondary" data-cems931-action="open-sentence">문장 연습</button></div>' +
-      '</div>';
-    var details = qs('#cems-ux25-home-tools');
-    if (details && !details.dataset.cems931Touched) { details.open = false; details.dataset.cems931Touched = '1'; }
+    /* The legacy daily-goal, content tabs and quick-start cards are the Home
+       screen. Remove previously injected replacement dashboards instead of
+       stacking another design system above them. */
+    var card = qs('#cems-lean-home-card'); if (card) card.remove();
     var zhHome = qs('#zh-home-card'); if (zhHome) zhHome.remove();
+    var deckHome = qs('#cems932-home-deck'); if (deckHome) deckHome.remove();
+    return null;
   }
-  function selectFocusGroup(model) {
-    var candidates = model.groups.slice().sort(function (a,b) { return b.dueRows.length - a.dueRows.length || b.newRows.length - a.newRows.length; });
-    return candidates[0] || null;
-  }
+
   async function startHomePrimary() {
     var model = state.homeModel || await collectHomeModel();
     if (!model.totalCards) { if (typeof showPage === 'function') showPage('data'); callToast('📤 엑셀 또는 백업 파일을 가져오세요.'); return; }
@@ -858,7 +962,7 @@
       if (group.type === 'expr' && typeof startExprFCWithItems === 'function') return startExprFCWithItems(chosen, group.rows);
       if ((group.type === 'vocab' || group.type === 'phrasal') && typeof startFC === 'function') return startFC(chosen, group.rows, group.type === 'phrasal' ? 'phrasal' : 'vocab');
       if (typeof showPage === 'function') showPage('study');
-    } catch (error) { console.error('[CEMS 9.3.1 home start]', error); callToast('⚠️ 학습 시작에 실패했습니다. 학습 탭에서 다시 시도하세요.'); }
+    } catch (error) { console.error('[CEMS 9.3.2 home start]', error); callToast('⚠️ 학습 시작에 실패했습니다. 학습 탭에서 다시 시도하세요.'); }
   }
 
   /* ---------- Example repository: sentences never become expression cards ---------- */
@@ -921,7 +1025,14 @@
   }
 
   async function refreshViews() {
-    try { await Promise.all([renderStableHome(), renderExampleRepository()]); } catch (error) { console.warn('[CEMS 9.3.1 refresh]', error); }
+    try {
+      var jobs = [renderStableHome(), renderExampleRepository()];
+      /* The legacy home remains the visible shell. After the built-in seed is
+         merged, refresh its counters and DB summary instead of leaving the
+         pre-import zero state on screen. */
+      if (typeof updateHomeStats === 'function') jobs.push(Promise.resolve(updateHomeStats()));
+      await Promise.all(jobs);
+    } catch (error) { console.warn('[CEMS 9.3.2 refresh]', error); }
   }
 
   /* ---------- Gemini proxy settings for GitHub Pages PWA ---------- */
@@ -975,15 +1086,34 @@
       ]);
       var body = await response.json().catch(function () { return {}; });
       if (!response.ok) throw new Error(body.message || body.error || 'HTTP ' + response.status);
-      setAiState('연결 성공 · Worker 정상 · 요청 모델 ' + (body.model || DEFAULT_MODEL), 'ok');
-    } catch (error) { setAiState('연결 실패 · ' + (error.code === 'timeout' ? '7초 시간 초과' : error.message), 'error'); }
+      /* 9.5.1: 예전에는 /health 가 200 이기만 하면 "연결 성공" 이라고 했다.
+         그런데 채점을 실제로 막는 조건은 /health 로 드러나는 다른 값들이다.
+         채점기 버전이 다르면 모든 /grade-answer 가 409 로 거부되고, API 키가 없으면
+         전부 실패한다. 실제로 v9.5.0 직전 배포가 이 상태였고 버튼은 계속 "연결 성공"
+         이라고 답했다. 이제 채점을 막는 조건을 그대로 검사한다. */
+      var remoteGrader = text(body.graderVersion);
+      if (remoteGrader && remoteGrader !== GRADER_VERSION) {
+        setAiState('연결됨 · 그러나 채점 불가 — Worker 채점기 ' + remoteGrader + ' ≠ 앱 ' + GRADER_VERSION + '. Worker 를 다시 배포하세요.', 'error');
+        return;
+      }
+      if (body.configured === false) {
+        setAiState('연결됨 · 그러나 채점 불가 — Worker 에 Gemini API 키가 없습니다.', 'error');
+        return;
+      }
+      var warnings = Array.isArray(body.warnings) ? body.warnings.filter(Boolean) : [];
+      if (warnings.length) {
+        setAiState('연결 성공 · 요청 모델 ' + (body.model || DEFAULT_MODEL) + ' · 확인 필요: ' + warnings.join(' / '), 'warn');
+        return;
+      }
+      setAiState('연결 성공 · 채점기 ' + (remoteGrader || GRADER_VERSION) + ' · 요청 모델 ' + (body.model || DEFAULT_MODEL), 'ok');
+    } catch (error) { setAiState('연결 실패 · ' + (error.code === 'timeout' ? '7초 시간 초과' : aiErrorMessage(error)), 'error'); }
   }
 
   /* ---------- Local-first free sentence checker ---------- */
   function ensureSentencePage() {
     var page = qs('#page-sentence-check'); if (page) return page;
     page = document.createElement('div'); page.id = 'page-sentence-check'; page.className = 'page';
-    page.innerHTML = '<div class="cems931-page-head"><div><h1>문장 연습</h1><p>정확한 답은 즉시, 애매한 의역만 AI로 확인합니다.</p></div><button type="button" class="btn btn-secondary cems931-icon-btn" data-cems931-action="sentence-back" aria-label="뒤로">←</button></div>' +
+    page.innerHTML = '<div class="cems931-page-head"><div><h1 id="cems931-sentence-title">문장 연습</h1><p id="cems931-sentence-subtitle">정확한 답은 즉시, 애매한 의역만 AI로 확인합니다.</p></div><button type="button" class="btn btn-secondary cems931-icon-btn" data-cems931-action="sentence-back" aria-label="뒤로">←</button></div>' +
       '<section class="card cems931-sentence-card"><div class="cems931-sentence-meta"><span id="cems931-sentence-source">예문</span><span id="cems931-sentence-progress">0 / 0</span></div><div id="cems931-sentence-prompt" class="cems931-sentence-prompt">예문을 불러오는 중입니다.</div><div id="cems931-sentence-context" class="cems931-sentence-context"></div>' +
       '<textarea id="cems931-sentence-input" class="form-input cems931-textarea" rows="4" autocomplete="off" autocapitalize="off" placeholder="' + (LANG === 'zh' ? '중국어 문장을 입력하세요' : '영어 문장을 입력하세요') + '"></textarea>' +
       '<div id="cems931-grade-status" class="cems931-grade-status" aria-live="polite"></div>' +
@@ -1057,18 +1187,69 @@
     var previous = state.aiInFlight || Promise.resolve();
     var next = previous.catch(function () {}).then(task);
     state.aiInFlight = next;
-    next.finally(function () { if (state.aiInFlight === next) state.aiInFlight = null; });
+    /* 9.5.1: 예전에는 next.finally(...) 를 썼다. finally 는 파생 프로미스를 새로 만들고,
+       그 프로미스는 next 의 거부를 그대로 물려받는데 아무도 받지 않는다. 호출자는
+       next 를 받아 처리하므로, Worker 가 한 번 실패할 때마다 unhandledrejection 이
+       하나씩 떠서 phase7LogCrash 가 앱 크래시로 기록했다(모의 Worker 로 실측).
+       then(정리, 정리) 는 거부를 흡수하므로 파생 프로미스가 거부되지 않는다. */
+    var settle = function () { if (state.aiInFlight === next) state.aiInFlight = null; };
+    next.then(settle, settle);
     return next;
+  }
+
+  /* 9.5.1: Worker 는 오류를 기계용 코드로 돌려준다(upstream_error, gemini_timeout …).
+     클라이언트가 body.error 를 그대로 화면에 붙여서 사용자가 "upstream_error" 를 봤다.
+     아는 코드는 한국어로 옮기고, 모르는 코드는 원문을 괄호로 덧붙여 진단은 남긴다. */
+  var AI_ERROR_KO = {
+    grader_version_mismatch: '앱과 Worker 의 채점기 버전이 다릅니다. Worker 를 다시 배포하세요.',
+    invalid_access_token: '접근 토큰이 올바르지 않습니다. 설정에서 토큰을 확인하세요.',
+    worker_token_not_configured: 'Worker 에 접근 토큰이 설정되지 않았습니다.',
+    gemini_key_not_configured: 'Worker 에 Gemini API 키가 설정되지 않았습니다.',
+    gemini_auth_failed: 'Gemini 인증에 실패했습니다. Worker 의 API 키를 확인하세요.',
+    gemini_rate_limited: 'Gemini 사용량 한도에 걸렸습니다. 잠시 뒤 다시 시도하세요.',
+    gemini_timeout: 'Gemini 응답이 제한 시간을 넘었습니다.',
+    gemini_network_error: 'Worker 가 Gemini 에 연결하지 못했습니다.',
+    gemini_invalid_json: 'Gemini 응답을 해석하지 못했습니다.',
+    gemini_schema_mismatch: 'Gemini 응답 형식이 계약과 다릅니다.',
+    rate_limited: '요청이 너무 잦습니다. 잠시 뒤 다시 시도하세요.',
+    payload_too_large: '보낸 문장이 너무 깁니다.',
+    accepted_answer_too_long: '정답 후보 문장이 너무 깁니다.',
+    accepted_answers_too_large: '정답 후보가 너무 많습니다.',
+    invalid_json_body: '요청 형식이 올바르지 않습니다.',
+    not_found: 'Worker 주소가 올바르지 않습니다.',
+    upstream_error: 'Worker 가 채점에 실패했습니다.',
+    worker_error: 'Worker 가 채점에 실패했습니다.',
+    timeout: 'AI 응답이 8초를 넘었습니다.',
+    circuit_open: '일시 오류가 반복되어 2분간 AI 판독을 쉬고 있습니다.',
+    disabled: 'AI 판독이 설정되지 않았습니다.',
+    local_daily_cap: '이 기기의 오늘 AI 소프트 한도에 도달했습니다.'
+  };
+  function aiErrorMessage(error) {
+    var code = text(error && error.code), raw = text(error && error.message);
+    if (AI_ERROR_KO[code]) return AI_ERROR_KO[code];
+    if (AI_ERROR_KO[raw]) return AI_ERROR_KO[raw];
+    if (/^[a-z0-9_]+$/.test(raw)) return 'AI 판독에 실패했습니다. (' + raw + ')';
+    return raw || 'AI 판독에 실패했습니다.';
   }
   async function callGeminiGrader(row, learner) {
     var cfg = await aiConfig();
     if (!cfg.enabled || !cfg.url || !cfg.token) { var disabled=new Error('AI 판독이 설정되지 않았습니다.'); disabled.code='disabled'; throw disabled; }
+    /* 9.5.1: 캐시 조회를 한도·차단기보다 먼저 한다. 저장된 판독은 네트워크도 비용도
+       들지 않는데, 예전에는 하루 한도(기본 25회)에 닿거나 2분 차단기가 걸린 동안
+       이미 채점해 둔 같은 문장까지 거부했다. */
+    var key=await sentenceCacheKey(row,learner), cached=await cachedGrade(key); if (cached) return Object.assign({},cached,{cached:true});
     if (Date.now() < state.circuitUntil) { var circuit=new Error('일시 오류가 반복되어 2분간 AI 판독을 쉬고 있습니다.'); circuit.code='circuit_open'; throw circuit; }
     var usage=await usageToday(cfg.dailyCap); if (usage.count >= usage.cap) { var quota=new Error('이 기기의 오늘 AI 소프트 한도에 도달했습니다.'); quota.code='local_daily_cap'; throw quota; }
-    var key=await sentenceCacheKey(row,learner), cached=await cachedGrade(key); if (cached) return Object.assign({},cached,{cached:true});
     return enqueueAi(async function () {
       var secondCache=await cachedGrade(key); if(secondCache)return Object.assign({},secondCache,{cached:true});
-      await incrementUsage(usage);
+      /* 9.5.1: 위 usage 는 큐에 들어가기 전에 읽은 값이라, 요청이 겹치면 둘 다 같은 N 을
+         읽고 둘 다 N+1 을 써서 한 번치만 차감된다. 직렬화된 이 안에서 다시 읽는다. */
+      var fresh=await usageToday(cfg.dailyCap);
+      if (fresh.count >= fresh.cap) throw Object.assign(new Error('이 기기의 오늘 AI 소프트 한도에 도달했습니다.'),{code:'local_daily_cap'});
+      /* C1 부수: incrementUsage 는 fetch 성공 뒤로 옮겼다(아래).
+         예전에는 요청 전에 올려서, 실패한 요청(409·타임아웃·5xx)까지 일일 한도를
+         갉아먹었다. 위 GRADER_VERSION 불일치와 겹치면 한 번도 성공하지 못한 채
+         하루 한도가 소진된다. */
       var controller=new AbortController(), requestId='cems-' + Date.now().toString(36) + '-' + fnv1a(key).slice(0,6);
       var payload={ requestId:requestId, graderVersion:GRADER_VERSION, language:LANG==='zh'?'zh-TW':'en', promptKo:text(row.translationKo), targetAnswer:text(row.targetText), acceptedAnswers:sentenceAnswers(row).slice(0,8), learnerAnswer:text(learner), rubric:{ acceptNaturalParaphrase:true, preserveNegationNumbersPeopleTimePlace:true, learnerLevel:'A1-B1' } };
       try {
@@ -1079,16 +1260,25 @@
         var body=await response.json().catch(function(){return{};});
         if(!response.ok){var e=new Error(body.message||body.error||('HTTP '+response.status));e.code=body.code||('http_'+response.status);e.status=response.status;throw e;}
         var result={verdict:text(body.verdict),confidence:Number(body.confidence||0),reason:text(body.feedbackKo||body.reason||''),correctedAnswer:text(body.correctedAnswer||''),modelUsed:text(body.modelUsed||body.model||DEFAULT_MODEL),source:'gemini'};
+        /* C1 부수: Worker 는 correct|partial|incorrect 만 돌려주는데 클라이언트는
+           correct|acceptable|incorrect|uncertain 을 기대해 'partial' 을 형식 오류로
+           버렸다. 'partial' 을 받아들이고, 의미가 같은 기존 'acceptable' 로 정규화해
+           아래 표시·채점 로직을 그대로 재사용한다. */
+        if(result.verdict==='partial')result.verdict='acceptable';
         if(!['correct','acceptable','incorrect','uncertain'].includes(result.verdict))throw Object.assign(new Error('AI 응답 형식이 올바르지 않습니다.'),{code:'invalid_response'});
-        await cacheGrade(key,result);clearAiFailures();return result;
+        /* 이미 비용이 발생한 채점 결과를 저장·집계 실패로 버리지 않는다. */
+        try { await cacheGrade(key,result); } catch (_) {}
+        try { await incrementUsage(fresh); } catch (_) {}   // 성공한 요청만 일일 한도에 반영한다
+        clearAiFailures();return result;
       }catch(error){if(error.code==='timeout'||error.status===408||error.status===429||error.status>=500)recordAiFailure(error.code||String(error.status));throw error;}
     });
   }
-  async function buildSentencePool() {
+  async function buildSentencePool(filter) {
+    filter=['dialogue','grammar','example'].includes(filter)?filter:'all';
     var examples=await loadExamples();
-    var pool=examples.filter(function (row) { return text(row.translationKo) && sentenceAnswers(row).length && normalizeSentence(row.targetText).length >= (LANG==='zh'?2:5); });
-    pool=pool.sort(function (a,b) { return fnv1a(a.id+dayKey(new Date())).localeCompare(fnv1a(b.id+dayKey(new Date()))); });
-    state.sentencePool=pool; return pool;
+    var pool=examples.filter(function(row){if(!text(row.translationKo)||!sentenceAnswers(row).length||normalizeSentence(row.targetText).length<(LANG==='zh'?2:5))return false;return filter==='all'||exampleType(row)===filter;});
+    pool=pool.sort(function(a,b){return fnv1a(a.id+dayKey(new Date())+'|'+filter).localeCompare(fnv1a(b.id+dayKey(new Date())+'|'+filter));});
+    state.sentenceFilter=filter;state.sentencePool=pool;return pool;
   }
   function sentenceSourceLabel(row) {
     var type=exampleType(row); return type==='dialogue'?'대화 예문':type==='grammar'?'문법 예문':'단어·표현 예문';
@@ -1103,13 +1293,15 @@
     var input=qs('#cems931-sentence-input');input.value='';input.disabled=false;qs('#cems931-sentence-submit').disabled=false;qs('#cems931-sentence-submit').textContent='정답 확인';
     var status=qs('#cems931-grade-status');status.className='cems931-grade-status';status.innerHTML='';qs('#cems931-manual-actions').classList.add('hidden');setTimeout(function(){input.focus();},80);
   }
-  async function openSentenceChecker() {
-    ensureSentencePage(); await buildSentencePool(); if(typeof showPage==='function')showPage('sentence-check',true); else {qsa('.page').forEach(function(p){p.classList.remove('active');});qs('#page-sentence-check').classList.add('active');} showSentenceQuestion();
+  async function openSentenceChecker(filter) {
+    filter=['dialogue','grammar','example'].includes(filter)?filter:'all';var active=qs('.page.active');if(active&&active.id!=='page-sentence-check')state.sentenceReturnPage=active.id.replace(/^page-/,'')||'home';ensureSentencePage();
+    var titles={all:'문장 쓰기',dialogue:'대화 문장 쓰기',grammar:'문법 문장 쓰기',example:'단어·표현 문장 쓰기'},subs={all:'전체 예문에서 한국어를 보고 중국어 문장을 작성합니다.',dialogue:'ACC 대화 발화만 골라 실제 회화 문장을 산출합니다.',grammar:'문법 예문만 골라 문형과 용법을 작성합니다.',example:'단어·표현 예문을 문장으로 확장합니다.'};
+    var title=qs('#cems931-sentence-title'),sub=qs('#cems931-sentence-subtitle');if(title)title.textContent=titles[filter];if(sub)sub.textContent=subs[filter];state.sentenceIndex=0;await buildSentencePool(filter);if(typeof showPage==='function')showPage('sentence-check',true);else{qsa('.page').forEach(function(p){p.classList.remove('active');});qs('#page-sentence-check').classList.add('active');}showSentenceQuestion();
   }
   function setGradeStatus(result, learner) {
-    var status=qs('#cems931-grade-status'), uncertain=result.verdict==='uncertain', good=result.verdict==='correct'||result.verdict==='acceptable';
+    var status=qs('#cems931-grade-status'), uncertain=result.verdict==='uncertain', good=result.verdict==='correct'||result.verdict==='acceptable'||result.verdict==='partial';
     status.className='cems931-grade-status show '+(good?'correct':uncertain?'review':'wrong');
-    var label=good?(result.verdict==='acceptable'?'허용 정답':'정답'):uncertain?'확인 필요':'오답';
+    var label=good?((result.verdict==='acceptable'||result.verdict==='partial')?'허용 정답':'정답'):uncertain?'확인 필요':'오답';
     var source=result.cached?'저장된 AI 판독':result.source==='gemini'?'Gemini 판독':'기기 판독';
     status.innerHTML='<strong>'+esc(label)+' · '+esc(source)+'</strong><p>'+esc(result.reason||'')+'</p>'+(result.correctedAnswer?'<p>권장 문장: <code>'+esc(result.correctedAnswer)+'</code></p>':'');
     qs('#cems931-manual-actions').classList.toggle('hidden',!uncertain);
@@ -1134,15 +1326,21 @@
     try {
       var ai=await callGeminiGrader(row,learner);
       if(gradeToken!==state.sentenceGradeToken||state.currentSentence!==row||state.currentSentenceScored)return;
-      var autoGood=(ai.verdict==='correct'||ai.verdict==='acceptable')&&ai.confidence>=.82,autoBad=ai.verdict==='incorrect'&&ai.confidence>=.88;
+      var autoGood=(ai.verdict==='correct'||ai.verdict==='acceptable'||ai.verdict==='partial')&&ai.confidence>=.82,autoBad=ai.verdict==='incorrect'&&ai.confidence>=.88;
       if(autoGood){setGradeStatus(ai,learner);await recordSentenceOutcome(true,'gemini');}
       else if(autoBad){setGradeStatus(ai,learner);await recordSentenceOutcome(false,'gemini');}
       else setGradeStatus(Object.assign({},ai,{verdict:'uncertain',reason:(ai.reason||'')+' 신뢰도가 낮아 직접 판정이 필요합니다.'}),learner);
     } catch(error){
       if(gradeToken!==state.sentenceGradeToken||state.currentSentence!==row||state.currentSentenceScored)return;
-      setGradeStatus({verdict:'uncertain',source:'local',reason:(error.code==='timeout'?'AI 응답이 8초를 넘었습니다.':error.message)+' 학습은 계속할 수 있으며, 이 답을 오답으로 자동 기록하지 않습니다.'},learner);
+      setGradeStatus({verdict:'uncertain',source:'local',reason:aiErrorMessage(error)+' 학습은 계속할 수 있으며, 이 답을 오답으로 자동 기록하지 않습니다.'},learner);
     } finally{
-      if(gradeToken===state.sentenceGradeToken&&state.currentSentence===row&&!state.currentSentenceScored){qs('#cems931-sentence-submit').disabled=false;}
+      /* 9.5.1: 예전에는 !state.currentSentenceScored 일 때만 버튼을 되살렸다.
+         그런데 AI 판독이 성공하면 recordSentenceOutcome 이 그 플래그를 세우므로,
+         채점에 성공할 때마다 "다음 문장" 버튼이 disabled 로 남아 다음 문장으로
+         넘어갈 수 없었다(모의 Worker 로 실측 확인). 로컬 판정 경로는 애초에
+         버튼을 끄지 않아서 이 막다른 길은 AI 경로에서만 났다.
+         더 새 요청이 시작됐거나 문장이 바뀐 경우에만 손대지 않는다. */
+      if(gradeToken===state.sentenceGradeToken&&state.currentSentence===row){qs('#cems931-sentence-submit').disabled=false;}
     }
   }
   async function manualSentence(correct) {
@@ -1219,7 +1417,9 @@
   function hanziChars(value){return Array.from(text(value)).filter(function(ch){return /[\u3400-\u9fff]/.test(ch);});}
   function toneLabel931(tone){return Number(tone)===5?'경성':Number(tone)+'성';}
   function installToneEngine() {
+    if(state.toneInstalled)return;                      // 모듈 스코프 1회 가드
     if(LANG!=='zh'||typeof phase5BuildQuestion!=='function')return;
+    state.toneInstalled=true;
     try{
       phase5PinyinTokens=function(value){return robustPinyinTokens(value);};window.phase5PinyinTokens=phase5PinyinTokens;
       phase5ToneSequence=function(value){var tokens=robustPinyinTokens(value);if(!tokens.length||!tokens.some(function(t){return t.tone>0;}))return[];return tokens.map(function(t){return t.tone||5;});};window.phase5ToneSequence=phase5ToneSequence;
@@ -1246,7 +1446,9 @@
   function semanticMeaning(value){return text(value).toLowerCase().normalize('NFKC').replace(/[\s\p{P}\p{S}]/gu,'').replace(/(하다|되다|이다|하는것|것)$/,'');}
   function meaningConflict(a,b){var x=semanticMeaning(a),y=semanticMeaning(b);if(!x||!y)return true;if(x===y)return true;if(Math.min(x.length,y.length)>=2&&(x.indexOf(y)>=0||y.indexOf(x)>=0))return true;return false;}
   function installSafeDistractors(){
-    if(typeof getDistractors!=='function')return;var original=getDistractors;
+    if(state.distractorsInstalled)return;               // 모듈 스코프 1회 가드
+    if(typeof getDistractors!=='function')return;
+    state.distractorsInstalled=true;var original=getDistractors;
     getDistractors=function(correct,pool,n){
       n=Number(n||4);var correctMeaning=typeof getMKO==='function'?getMKO(correct):'',correctWord=typeof getW==='function'?getW(correct):'';
       var seen=new Set(),filtered=(pool||[]).filter(function(row){var word=typeof getW==='function'?getW(row):'',meaning=typeof getMKO==='function'?getMKO(row):'';var key=semanticMeaning(meaning);if(!word||word===correctWord||!meaning||meaningConflict(meaning,correctMeaning)||seen.has(key))return false;seen.add(key);return true;});
@@ -1260,9 +1462,12 @@
     return{ok:true};
   }
   function wrapQuestionRenderer(name,selector,correctGetter,stateGetter){
-    var base=window[name];if(typeof base!=='function'||base.__cems931Audit)return;
-    var wrapped=function(){var result=base.apply(this,arguments);setTimeout(function(){try{var st=stateGetter();if(!st||st.answered)return;var audit=optionAudit(selector,correctGetter(st));if(audit.ok)return;console.warn('[CEMS 9.3.1 question skipped]',name,audit);addAudit('question-skip',{renderer:name,reason:audit.reason,index:st.idx}).catch(function(){});st.idx=Number(st.idx||0)+1;if(Number(st.__cems931Skips||0)<8){st.__cems931Skips=Number(st.__cems931Skips||0)+1;wrapped();}else callToast('⚠️ 안전한 선택지를 만들 수 없어 이 모드를 중단했습니다.');}catch(error){console.warn('[CEMS question audit]',error);}},0);return result;};wrapped.__cems931Audit=true;
-    try{window[name]=wrapped;eval(name+' = wrapped');}catch(_){window[name]=wrapped;}
+    var base=window[name];if(typeof base!=='function')return;
+    if(state.auditedRenderers[name])return;             // 모듈 스코프 1회 가드
+    state.auditedRenderers[name]=true;
+    var wrapped=function(){var result=base.apply(this,arguments);setTimeout(function(){try{var st=stateGetter();if(!st||st.answered)return;var audit=optionAudit(selector,correctGetter(st));if(audit.ok)return;console.warn('[CEMS 9.3.2 question skipped]',name,audit);addAudit('question-skip',{renderer:name,reason:audit.reason,index:st.idx}).catch(function(){});st.idx=Number(st.idx||0)+1;if(Number(st.__cems931Skips||0)<8){st.__cems931Skips=Number(st.__cems931Skips||0)+1;wrapped();}else callToast('⚠️ 안전한 선택지를 만들 수 없어 이 모드를 중단했습니다.');}catch(error){console.warn('[CEMS question audit]',error);}},0);return result;};
+    /* v9.5: eval(name+' = wrapped') 제거 — window[name] 대입과 중복이었다. */
+    window[name]=wrapped;
   }
   function installQuestionAudits(){
     wrapQuestionRenderer('showQuizQ','#quiz-options .quiz-option',function(st){return st.correctAns;},function(){try{return typeof quizState!=='undefined'?quizState:null;}catch(_){return null;}});
@@ -1276,14 +1481,16 @@
 
   /* ---------- Exact-ID integration; no document-wide MutationObserver ---------- */
   function syncVersion931() {
-    document.documentElement.dataset.cemsVersion = BUILD;
-    document.title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
-    var meta=qs('meta[name="app-version"]');if(meta)meta.content=VERSION;
-    qsa('.splash-sub').forEach(function(node){node.textContent='v'+VERSION+' · Stable recovery';});
-    qsa('.cems82-brand-sub').forEach(function(node){node.textContent=(LANG==='zh'?'문맥 학습 · 문장 연습':'문맥 학습 · 지연 확인')+' · v'+VERSION;});
+    /* 9.5.1: 화면 버전 문자열의 출처는 <html data-cems-version> 하나다.
+       CEMS943.VERSION 은 v944 레이어의 빌드 식별자여서 앱 버전과 다르다. */
+    var visibleVersion = document.documentElement.dataset.cemsVersion || '9.5.1';
+    document.title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + visibleVersion;
+    var meta=qs('meta[name="app-version"]');if(meta)meta.content=visibleVersion;
+    qsa('.splash-sub').forEach(function(node){node.textContent='v'+visibleVersion+' · 통합 학습 허브';});
+    qsa('.cems82-brand-sub').forEach(function(node){node.textContent='학습 분석 · FSRS-6 · v'+visibleVersion;});
     var versionCard=qsa('#page-settings .card').find(function(card){return /버전 정보/.test(text(qs('.card-title',card)&&qs('.card-title',card).textContent));});
-    if(versionCard){var strong=qs('strong',versionCard);if(strong)strong.textContent=(LANG==='zh'?'중국어 학습':'CEMS English')+' v'+VERSION+' · Stable recovery';}
-    var build=qs('#phase8-build-status');if(build)build.textContent='v'+VERSION;
+    if(versionCard){var strong=qs('strong',versionCard);if(strong)strong.textContent=(LANG==='zh'?'중국어 학습':'CEMS English')+' v'+visibleVersion+' · 통합 학습 허브';}
+    var build=qs('#phase8-build-status');if(build)build.textContent='v'+visibleVersion;
   }
   function polishExactMobileControls() {
     var add = qs('#page-data button[onclick*="openAddWordModal"]');
@@ -1293,32 +1500,43 @@
       if (end) { end.textContent = '종료'; end.setAttribute('aria-label','학습 종료'); end.title = '학습 종료'; end.classList.add('cems931-zh-end'); }
     }
   }
+  /* v9.5: 이 함수 전체를 모듈 스코프 플래그로 1회만 실행한다.
+     예전에는 개별 전역마다 함수 프로퍼티 플래그(__cems931, __cems931LazyXlsx ...)로
+     가드했는데, 다른 모듈이 같은 전역을 다시 감싸면 플래그가 사라져
+     [450,1600,3600]ms 재설치 타이머가 돌 때마다 또 감싸졌다. */
   function installGlobalOverrides() {
+    if(state.overridesInstalled)return;
+    state.overridesInstalled=true;
     polishExactMobileControls();
     try{processFile=processFile931;window.processFile=processFile931;}catch(_){window.processFile=processFile931;}
     try{if(typeof processModalExcel==='function'){processModalExcel=processModalExcel931;window.processModalExcel=processModalExcel931;}}catch(_){}
     try{if(typeof confirmModalExcel==='function'){confirmModalExcel=confirmModalExcel931;window.confirmModalExcel=confirmModalExcel931;}}catch(_){}
     try{
-      if(typeof exportWithStats==='function'&&!exportWithStats.__cems931LazyXlsx){
+      if(typeof exportWithStats==='function'){
         var baseExport931=exportWithStats;
         exportWithStats=async function(){if(!await ensureXLSX931()){callToast('❌ 엑셀 내보내기 엔진을 불러오지 못했습니다. 네트워크를 확인하세요.');return;}return baseExport931.apply(this,arguments);};
-        exportWithStats.__cems931LazyXlsx=true;window.exportWithStats=exportWithStats;
+        window.exportWithStats=exportWithStats;
       }
     }catch(_){}
-    if(typeof window.showPage==='function'&&!window.showPage.__cems931){
-      var baseShow=window.showPage;
-      var wrappedShow=function(name){var result=baseShow.apply(this,arguments);setTimeout(function(){
-        if(name==='home')renderStableHome();
-        else if(name==='data')renderExampleRepository();
-        else if(name==='settings')loadAiSettingsUi();
-        if(name!=='home'){var zh=qs('#zh-home-card');if(zh)zh.remove();}
-        syncVersion931();
-      },0);return result;};wrappedShow.__cems931=true;wrappedShow.__previous=baseShow;window.showPage=wrappedShow;try{showPage=wrappedShow;}catch(_){}
+    /* v9.5: showPage 전역 재정의 → afterPageShow 훅.
+       예전에는 이 모듈을 포함해 여러 확장이 showPage 를 감쌌고, 재설치 타이머가 돌 때마다
+       남의 플래그가 사라져 다시 감싸져서 showPage 1회에 history.replaceState 가 5회 돌았다.
+       훅은 'stable-home' 키로 멱등 등록되므로 몇 번 불러도 1겹이다. */
+    if(window.CEMSHooks){
+      window.CEMSHooks.on('afterPageShow','stable-home',function(name){
+        setTimeout(function(){
+          if(name==='home')renderStableHome();
+          else if(name==='data')renderExampleRepository();
+          else if(name==='settings')loadAiSettingsUi();
+          if(name!=='home'){var zh=qs('#zh-home-card');if(zh)zh.remove();}
+          syncVersion931();
+        },0);
+      });
     }
     try{
-      if(typeof updateHomeStats==='function'&&!updateHomeStats.__cems931){var baseHome=updateHomeStats;updateHomeStats=async function(){var result=await baseHome.apply(this,arguments);if(qs('#page-home.active'))renderStableHome();return result;};updateHomeStats.__cems931=true;window.updateHomeStats=updateHomeStats;}
+      if(typeof updateHomeStats==='function'){var baseHome=updateHomeStats;updateHomeStats=async function(){var result=await baseHome.apply(this,arguments);if(qs('#page-home.active'))renderStableHome();return result;};window.updateHomeStats=updateHomeStats;}
     }catch(_){}
-    if(window.CEMS_LEAN&&typeof window.CEMS_LEAN.refresh==='function'&&!window.CEMS_LEAN.refresh.__cems931){var leanRefresh=window.CEMS_LEAN.refresh;window.CEMS_LEAN.refresh=async function(){var result=await leanRefresh.apply(this,arguments);await renderStableHome();return result;};window.CEMS_LEAN.refresh.__cems931=true;}
+    if(window.CEMS_LEAN&&typeof window.CEMS_LEAN.refresh==='function'){var leanRefresh=window.CEMS_LEAN.refresh;window.CEMS_LEAN.refresh=async function(){var result=await leanRefresh.apply(this,arguments);await renderStableHome();return result;};}
   }
   var settingsTimer=null;
   function bindStableEvents() {
@@ -1326,7 +1544,7 @@
     document.addEventListener('click',function(event){var button=event.target&&event.target.closest&&event.target.closest('[data-cems931-action]');if(!button)return;var action=button.dataset.cems931Action;
       if(action==='home-primary')startHomePrimary();
       else if(action==='open-sentence')openSentenceChecker();
-      else if(action==='sentence-back'){state.sentenceGradeToken=Number(state.sentenceGradeToken||0)+1;if(typeof showPage==='function')showPage('home');}
+      else if(action==='sentence-back'){state.sentenceGradeToken=Number(state.sentenceGradeToken||0)+1;if(typeof showPage==='function')showPage(state.sentenceReturnPage||'home');}
       else if(action==='sentence-submit')submitSentence();
       else if(action==='sentence-skip'){state.sentenceIndex++;showSentenceQuestion();}
       else if(action==='manual-correct')manualSentence(true);
@@ -1334,7 +1552,11 @@
       else if(action==='test-ai')testAiConnection();
     });
     document.addEventListener('input',function(event){if(event.target&&event.target.id==='cems931-example-search')filterExampleRepository();if(event.target&&/^cems931-(proxy|ai-|weekly)/.test(event.target.id)){clearTimeout(settingsTimer);settingsTimer=setTimeout(saveAiSettingsUi,500);}});
-    document.addEventListener('change',function(event){if(event.target&&event.target.id==='cems931-example-filter')filterExampleRepository();if(event.target&&['cems931-ai-enabled','cems931-ai-daily-cap','cems931-weekly-goal'].includes(event.target.id))saveAiSettingsUi();});
+    /* 9.5.1: Worker 주소·토큰 입력칸이 이 목록에 없어서, 토글을 먼저 켜고 주소를 나중에
+       입력하면 두 값이 저장되지 않았다. 그러면 aiConfig().url/token 이 비어 AI 채점이
+       조용히 로컬 판정으로만 떨어진다("설정 탭에서 Worker를 연결하거나..."). 저장 경로가
+       "연결 확인" 버튼 하나뿐이었던 셈이다. */
+    document.addEventListener('change',function(event){if(event.target&&event.target.id==='cems931-example-filter')filterExampleRepository();if(event.target&&['cems931-ai-enabled','cems931-proxy-url','cems931-proxy-token','cems931-ai-daily-cap','cems931-weekly-goal'].includes(event.target.id))saveAiSettingsUi();});
     document.addEventListener('keydown',function(event){if(event.target&&event.target.id==='cems931-sentence-input'&&(event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();submitSentence();}});
   }
   async function initStable() {
@@ -1345,21 +1567,25 @@
       await importSeedIfNeeded();
       await quarantineLegacyDialogues();installExpressionFilter();
       installGlobalOverrides();installSafeDistractors();installToneEngine();installQuestionAudits();
-      /* Several legacy layers finish their own delayed initialization after DOMContentLoaded.
-         Re-assert only the exact public entry points; this is bounded and does not observe the DOM. */
-      [450,1600,3600].forEach(function(ms){setTimeout(installGlobalOverrides,ms);});
-      if(window.CEMS_LEAN&&typeof window.CEMS_LEAN.init==='function'){try{await window.CEMS_LEAN.init();}catch(error){console.warn('[CEMS 9.3.1 lean init]',error);}}
+      /* v9.5: [450,1600,3600]ms 재설치 루프 제거.
+         "늦게 뜨는 레거시 계층이 내 래퍼를 덮어쓴다"는 이유였지만, 실제로는 이 반복 자체가
+         다른 모듈의 플래그를 지우며 서로를 계속 다시 감싸게 만든 원인이었다.
+         이제 각 installer 가 모듈 스코프 플래그로 1회만 설치하고,
+         페이지 후처리는 afterPageShow 훅이 담당하므로 반복이 필요 없다. */
+      if(window.CEMS_LEAN&&typeof window.CEMS_LEAN.init==='function'){try{await window.CEMS_LEAN.init();}catch(error){console.warn('[CEMS 9.3.2 lean init]',error);}}
       if(window.CEMS_UX27&&typeof window.CEMS_UX27.polishAll==='function'){try{window.CEMS_UX27.polishAll();}catch(_) {}}
       var details=qs('#cems-ux25-home-tools');if(details){details.open=false;details.dataset.cems931Touched='1';var summary=qs(':scope > summary strong',details);if(summary)summary.textContent='추가 학습·카드 관리';var desc=qs(':scope > summary span',details);if(desc)desc.textContent='세부 모드·검색·개별 카드 관리가 필요할 때만 펼칩니다.';}
       var zhHome=qs('#zh-home-card');if(zhHome)zhHome.remove();
       await Promise.all([refreshViews(),loadAiSettingsUi()]);syncVersion931();
       setTimeout(function(){var injected=qs('#zh-home-card');if(injected)injected.remove();var d=qs('#cems-ux25-home-tools');if(d&&!d.dataset.cems931UserOpened)d.open=false;syncVersion931();},1200);
-    }catch(error){console.error('[CEMS 9.3.1 init]',error);callToast('⚠️ 안정화 초기화 중 일부 기능을 불러오지 못했습니다.');}
+    }catch(error){console.error('[CEMS 9.3.2 init]',error);callToast('⚠️ 안정화 초기화 중 일부 기능을 불러오지 못했습니다.');}
+    finally{window.CEMS932DataReadyState='ready';try{dataReadyResolve({version:VERSION,language:LANG});}catch(_){}}
   }
 
   window.CEMS931={
-    VERSION:VERSION,BUILD:BUILD,LANG:LANG,refresh:refreshViews,openSentenceChecker:openSentenceChecker,
-    parseExcelFile:parseExcelFile,
+    VERSION:VERSION,BUILD:BUILD,LANG:LANG,DATA_SCHEMA:DATA_SCHEMA,SEED_FINGERPRINT:SEED_FINGERPRINT,
+    refresh:refreshViews,openSentenceChecker:openSentenceChecker,loadExamples:loadExamples,parseExcelFile:parseExcelFile,
+    metaGet:metaGet,metaSet:metaSet,reindexData:reindexIntegratedData,
     __test:{
       parseWorkbookSheets:parseWorkbookSheets,normalizeSentence:normalizeSentence,localSentenceGrade:localSentenceGrade,
       robustPinyinTokens:robustPinyinTokens,segmentPinyinBase:segmentPinyinBase,semanticMeaning:semanticMeaning,optionAudit:optionAudit,
