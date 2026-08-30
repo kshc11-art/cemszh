@@ -264,6 +264,38 @@ const step = (name, status, detail) => {
     leak.err || `전 ${leak.baseline} → 후 ${leak.after}${leak.leaked ? '  ← 오염됨' : ''}`);
   report.summary.exprLeak = leak;
 
+  // ── 7b. 데이터 필터 렌즈가 다른 컬렉션까지 걸러내는가 ────────
+  //  CEMS_LENS 콜백은 kind 를 봐야 한다. 보지 않으면 "최근 7일" 필터가 걸린 동안
+  //  다른 모듈의 getAllExpr / getAllPV 까지 같이 걸러진다.
+  const lensIsolation = await page.evaluate(async () => {
+    try {
+      window.showPage('data', true); await new Promise((r) => setTimeout(r, 800));
+      const sel = document.getElementById('data-filter-special');
+      if (!sel) return { skipped: 'data-filter-special 없음' };
+      /* 시드를 방금 넣은 프로필은 모든 행의 addedDate 가 오늘이라 필터가 아무것도
+         걸러내지 않는다. 실제 기기처럼 일부 표현의 추가일을 60일 전으로 돌린다. */
+      const old = new Date(Date.now() - 60 * 86400000).toISOString();
+      const rows = await getAllFromStore('expressions');
+      for (const r of rows.slice(0, 300)) { r.addedDate = old; await saveExpr(r); }
+      await new Promise((r) => setTimeout(r, 300));
+      const baseline = (await getAllExpr()).length;
+      sel.value = 'new-7days';
+      const running = window.updateWordTable();
+      let during = baseline, active = 0;
+      for (let i = 0; i < 40; i++) {
+        await new Promise((r) => setTimeout(r, 25));
+        if (CEMS_LENS.active()) { active++; if (i === 2) during = (await getAllExpr()).length; }
+      }
+      await running;
+      sel.value = 'all';
+      return { baseline, during, activeSamples: active };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('데이터 필터 렌즈 격리', lensIsolation.err ? 'fail' : (lensIsolation.skipped ? 'info' : (lensIsolation.during === lensIsolation.baseline ? 'pass' : 'fail')),
+    lensIsolation.err || lensIsolation.skipped ||
+    `필터 동작 중 getAllExpr ${lensIsolation.baseline} → ${lensIsolation.during}${lensIsolation.during !== lensIsolation.baseline ? '  ← 표현까지 걸러짐' : ''} (렌즈 활성 샘플 ${lensIsolation.activeSamples}/40)`);
+  report.summary.lensIsolation = lensIsolation;
+
   // ── 8. 시드 무결성 복구기 도달 여부 (C3) ────────────────────
   const recovery = await page.evaluate(async () => {
     const o = {};
