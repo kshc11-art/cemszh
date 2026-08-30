@@ -55,13 +55,41 @@ jobs:
         working-directory: harness
         run: npx playwright install --with-deps chromium
 
-      - name: 회귀 배터리 (화면 10개 · 학습모드 8종 · 구조 지표)
+      - name: 회귀 배터리 (화면 · 학습모드 · 구조 지표 · 데이터 정확성)
         working-directory: harness
         run: node probe.mjs .. ci
+
+      # 아래 넷은 실패 시 스스로 비정상 종료하므로 별도 판정이 필요 없다.
+      - name: 확인 대화상자 · 학습 종료 전 경로 (실제 DOM 클릭)
+        working-directory: harness
+        run: node modals.mjs .. ci-modals
+
+      - name: 화면 버전 문구 ↔ VERSION
+        working-directory: harness
+        run: node version.mjs ..
+
+      - name: AI 채점 전 경로 (모의 Worker — Gemini 키 불필요)
+        working-directory: harness
+        run: node ai-grader.mjs .. ci-ai
+
+      - name: 저장 정규화 동치성
+        working-directory: harness
+        run: node sanitizer.mjs
 
       - name: 전수 점검 (모든 버튼 클릭)
         working-directory: harness
         run: node sweep.mjs .. ci-sweep
+
+      - name: 전수 점검 판정 (CRIT / HIGH 는 실패)
+        working-directory: harness
+        run: |
+          node -e "
+            const r = require('./out/ci-sweep/sweep.json');
+            const bad = (r.findings || []).filter(f => f.sev === 'CRIT' || f.sev === 'HIGH');
+            for (const f of bad) console.error('  [' + f.sev + '] ' + f.area + ' — ' + f.what);
+            if (bad.length) { console.error('전수 점검 실패: CRIT/HIGH ' + bad.length + '건'); process.exit(1); }
+            console.log('전수 점검 통과 (CRIT 0 / HIGH 0)');
+          "
 
       - name: 결과 판정
         working-directory: harness
@@ -88,5 +116,7 @@ jobs:
           name: harness-results
           path: |
             harness/out/ci/
+            harness/out/ci-modals/
+            harness/out/ci-ai/
             harness/out/ci-sweep/
           retention-days: 14
