@@ -12392,11 +12392,28 @@ function phase7LogCrash(kind,error){try{const list=JSON.parse(localStorage.getIt
 window.addEventListener('error',event=>phase7LogCrash('error',event));
 window.addEventListener('unhandledrejection',event=>phase7LogCrash('unhandledrejection',event));
 
+/* 9.5.1 성능: 이 갱신은 문서 전체를 훑는다(.page / .nav-item / .chip 계열 / .progress-fill).
+   호출부가 두 곳인데 둘 다 "노드 하나 늘어날 때마다" 부른다 —
+   phase7EnhanceControls 본문 끝과 childObserver(추가된 노드마다 phase7EnhanceControls 호출).
+   Lean 화면 진입 1회를 실측하니 24,638회 실행되어 setAttribute 12,606,531회,
+   inert 설정 542,036회가 발생했고 CPU 프로파일 기준 진입 지연(약 40초)의 87% 였다.
+   ① 프레임당 1회로 합치고(rAF; 배경 탭 대비 200ms 타이머 백업),
+   ② 값이 실제로 달라질 때만 쓴다. inert 는 하위 트리 포커스·스타일 재계산을 부르므로
+      무조건 다시 쓰면 특히 비싸다.
+   동기 실행이 필요하면 phase7ApplyA11yState() 를 직접 부른다. */
+function phase7SetAttrIfChanged(el,name,value){if(el.getAttribute(name)!==value)el.setAttribute(name,value);}
+function phase7ApplyA11yState(){
+  document.querySelectorAll('.page').forEach(page=>{const active=page.classList.contains('active');phase7SetAttrIfChanged(page,'aria-hidden',String(!active));if(active){if(page.hasAttribute('inert'))page.removeAttribute('inert');}else if(!page.hasAttribute('inert'))page.setAttribute('inert','');});
+  document.querySelectorAll('.nav-item').forEach(item=>{if(item.classList.contains('active'))phase7SetAttrIfChanged(item,'aria-current','page');else if(item.hasAttribute('aria-current'))item.removeAttribute('aria-current');});
+  document.querySelectorAll('.chip,.mode-card,.type-tab,.filter-toggle').forEach(el=>phase7SetAttrIfChanged(el,'aria-pressed',String(el.classList.contains('active')||el.classList.contains('checked'))));
+  document.querySelectorAll('.progress-fill').forEach(el=>{phase7SetAttrIfChanged(el,'role','progressbar');const value=parseFloat(el.style.width)||0;phase7SetAttrIfChanged(el,'aria-valuemin','0');phase7SetAttrIfChanged(el,'aria-valuemax','100');phase7SetAttrIfChanged(el,'aria-valuenow',String(Math.round(value)));});
+}
+let phase7A11yRaf=0,phase7A11yTimer=0;
 function phase7UpdateA11yState(){
-  document.querySelectorAll('.page').forEach(page=>{const active=page.classList.contains('active');page.setAttribute('aria-hidden',String(!active));if(active)page.removeAttribute('inert');else page.setAttribute('inert','');});
-  document.querySelectorAll('.nav-item').forEach(item=>{if(item.classList.contains('active'))item.setAttribute('aria-current','page');else item.removeAttribute('aria-current');});
-  document.querySelectorAll('.chip,.mode-card,.type-tab,.filter-toggle').forEach(el=>el.setAttribute('aria-pressed',String(el.classList.contains('active')||el.classList.contains('checked'))));
-  document.querySelectorAll('.progress-fill').forEach(el=>{el.setAttribute('role','progressbar');const value=parseFloat(el.style.width)||0;el.setAttribute('aria-valuemin','0');el.setAttribute('aria-valuemax','100');el.setAttribute('aria-valuenow',String(Math.round(value)));});
+  if(phase7A11yRaf||phase7A11yTimer)return;
+  const run=()=>{if(phase7A11yRaf){cancelAnimationFrame(phase7A11yRaf);phase7A11yRaf=0;}if(phase7A11yTimer){clearTimeout(phase7A11yTimer);phase7A11yTimer=0;}phase7ApplyA11yState();};
+  phase7A11yRaf=requestAnimationFrame(run);
+  phase7A11yTimer=setTimeout(run,200);
 }
 function phase7EnhanceControls(root=document){
   root.querySelectorAll('button').forEach(button=>{if(!button.hasAttribute('type'))button.type='button';const name=phase7Text(button.getAttribute('aria-label')||button.title||button.textContent);if(name)button.setAttribute('aria-label',name);});
