@@ -11550,6 +11550,12 @@ function phase3HandleFailure(error,state) {
   if(state){state.answered=false;state.__phase3Submitting=false;}
   showToast('❌ 저장 실패 — 같은 카드에서 다시 시도하세요');
 }
+/* 9.5.1: 이 잠금을 얻은 경로는 반드시 풀어야 한다. commitAnswer 는 예외를 던지지 않고
+   {ok:false} 로 돌아오는 경우가 있고(missing-card · no-pending-rating · 이미 커밋된 토큰),
+   11개 호출부가 그때 잠금을 풀지 않은 채 return 했다. 그 상태가 되면 phase3BeginSubmit 이
+   계속 false 를 돌려주어 그 학습 모드의 확인·평가 버튼이 조용히 전부 먹통이 된다.
+   UI 로 그 상태를 재현하지는 못했지만(정상 경로가 대개 먼저 잠금을 푼다), 계약이 깨져 있고
+   고치는 비용이 없으므로 모든 조기 반환에서 풀도록 맞춘다. */
 function phase3BeginSubmit(state){if(state?.__phase3Submitting)return false;state.__phase3Submitting=true;return true;}
 function phase3EndSubmit(state){if(state)state.__phase3Submitting=false;}
 
@@ -11562,7 +11568,7 @@ rateCard = async function rateCardV82(grade) {
   fcState.transitioning=true;
   try{
     const result=await commitAnswer({state:fcState,item,type,mode:'flashcard',grade,correct:Number(grade)>=2,isOutput:false,scheduleRetry:Number(grade)===0,trackRating:true});
-    if(!result.ok){fcState.transitioning=false;return;}
+    if(!result.ok){fcState.transitioning=false;phase3EndSubmit(fcState);return;}
     vibrate(Number(grade)>=2?10:[50,30,50]);
     ANSWER_PIPELINE_V3.schedule(fcState,'advance',()=>{fcState.idx++;fcState.transitioning=false;phase3EndSubmit(fcState);showCard();},180,token);
   }catch(error){fcState.transitioning=false;phase3HandleFailure(error,fcState);}
@@ -11575,7 +11581,7 @@ rateExprCard = async function rateExprCardV82(grade) {
   exprState.transitioning=true;
   try{
     const result=await commitAnswer({state:exprState,item,type:'expr',mode:'expr-fc',grade,correct:Number(grade)>=2,isOutput:false,scheduleRetry:Number(grade)===0,trackRating:true});
-    if(!result.ok){exprState.transitioning=false;return;}
+    if(!result.ok){exprState.transitioning=false;phase3EndSubmit(exprState);return;}
     vibrate(Number(grade)>=2?10:[50,30,50]);
     ANSWER_PIPELINE_V3.schedule(exprState,'advance',()=>{exprState.idx++;exprState.transitioning=false;phase3EndSubmit(exprState);showExprCard();},180,token);
   }catch(error){exprState.transitioning=false;phase3HandleFailure(error,exprState);}
@@ -11634,7 +11640,7 @@ rateQuizItem=async function rateQuizItemV82(grade){
   ANSWER_PIPELINE_V3.cancel(quizState,'auto');
   try{
     const result=await commitAnswer({state:quizState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});
-    if(!result.ok)return;
+    if(!result.ok){phase3EndSubmit(quizState);return;}
     phase3UpdateCounters(quizState,'quiz');document.getElementById('quiz-rating-bar').classList.add('hidden');
     phase3EndSubmit(quizState);nextQuiz();
   }catch(error){phase3HandleFailure(error,quizState);}
@@ -11656,7 +11662,7 @@ selectCloze=async function selectClozeV82(el,selected){
 };
 rateClozeItem=async function rateClozeItemV82(grade){
   const item=clozeState.words?.[clozeState.idx];if(!item)return;ANSWER_PIPELINE_V3.cancel(clozeState,'auto');
-  try{const result=await commitAnswer({state:clozeState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok)return;phase3UpdateCounters(clozeState,'cloze');document.getElementById('cloze-rating-bar').classList.add('hidden');phase3EndSubmit(clozeState);nextCloze();}
+  try{const result=await commitAnswer({state:clozeState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok){phase3EndSubmit(clozeState);return;}phase3UpdateCounters(clozeState,'cloze');document.getElementById('cloze-rating-bar').classList.add('hidden');phase3EndSubmit(clozeState);nextCloze();}
   catch(error){phase3HandleFailure(error,clozeState);}
 };
 
@@ -11676,7 +11682,7 @@ selectColloc=async function selectCollocV82(el,selected){
 };
 rateCollocItem=async function rateCollocItemV82(grade){
   const item=collocState.words?.[collocState.idx];if(!item)return;ANSWER_PIPELINE_V3.cancel(collocState,'auto');
-  try{const result=await commitAnswer({state:collocState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok)return;phase3UpdateCounters(collocState,'colloc');document.getElementById('colloc-rating-bar').classList.add('hidden');phase3EndSubmit(collocState);nextColloc();}
+  try{const result=await commitAnswer({state:collocState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok){phase3EndSubmit(collocState);return;}phase3UpdateCounters(collocState,'colloc');document.getElementById('colloc-rating-bar').classList.add('hidden');phase3EndSubmit(collocState);nextColloc();}
   catch(error){phase3HandleFailure(error,collocState);}
 };
 
@@ -11698,7 +11704,7 @@ selectListeningOption=async function selectListeningOptionV82(el,isCorrect){
 };
 rateListeningItem=async function rateListeningItemV82(grade){
   const item=listeningState.currentWord||listeningState.words?.[listeningState.idx];if(!item)return;ANSWER_PIPELINE_V3.cancel(listeningState,'auto');if(listeningRatingTimer){clearTimeout(listeningRatingTimer);listeningRatingTimer=null;}
-  try{const result=await commitAnswer({state:listeningState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok)return;phase3UpdateCounters(listeningState,'listening');document.getElementById('listening-rating-bar').classList.add('hidden');phase3EndSubmit(listeningState);nextListeningQ();}
+  try{const result=await commitAnswer({state:listeningState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok){phase3EndSubmit(listeningState);return;}phase3UpdateCounters(listeningState,'listening');document.getElementById('listening-rating-bar').classList.add('hidden');phase3EndSubmit(listeningState);nextListeningQ();}
   catch(error){phase3HandleFailure(error,listeningState);}
 };
 // The old helper creates its own timer. Keep only the visual part in v8.2.
@@ -11720,7 +11726,7 @@ selectExprQuiz=async function selectExprQuizV82(el,sel,ans){
 };
 rateExprQuizItem=async function rateExprQuizItemV82(grade){
   const item=exprState.words?.[exprState.idx];if(!item)return;ANSWER_PIPELINE_V3.cancel(exprState,'auto');
-  try{const result=await commitAnswer({state:exprState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok)return;phase3UpdateCounters(exprState,'expr-quiz');document.getElementById('expr-quiz-rating-bar').classList.add('hidden');phase3EndSubmit(exprState);nextExprQuiz();}
+  try{const result=await commitAnswer({state:exprState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok){phase3EndSubmit(exprState);return;}phase3UpdateCounters(exprState,'expr-quiz');document.getElementById('expr-quiz-rating-bar').classList.add('hidden');phase3EndSubmit(exprState);nextExprQuiz();}
   catch(error){phase3HandleFailure(error,exprState);}
 };
 
@@ -11738,7 +11744,7 @@ selectExprCloze=async function selectExprClozeV82(el){
 };
 rateExprClozeItem=async function rateExprClozeItemV82(grade){
   const item=exprState.words?.[exprState.idx];if(!item)return;ANSWER_PIPELINE_V3.cancel(exprState,'auto');
-  try{const result=await commitAnswer({state:exprState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok)return;phase3UpdateCounters(exprState,'expr-cloze');document.getElementById('expr-cloze-rating-bar').classList.add('hidden');exprState.idx++;exprState.answered=false;phase3EndSubmit(exprState);showExprClozeQ();}
+  try{const result=await commitAnswer({state:exprState,item,finalizePending:true,grade,scheduleRetry:Number(grade)===0});if(!result.ok){phase3EndSubmit(exprState);return;}phase3UpdateCounters(exprState,'expr-cloze');document.getElementById('expr-cloze-rating-bar').classList.add('hidden');exprState.idx++;exprState.answered=false;phase3EndSubmit(exprState);showExprClozeQ();}
   catch(error){phase3HandleFailure(error,exprState);}
 };
 
@@ -11752,7 +11758,7 @@ checkTyping=async function checkTypingV82(){
   const typedNorm=phase2NormalizePinyin(inp.value),expectNorm=phase2NormalizePinyin(getPinyin(item));
   const exact=!!typedNorm&&!!expectNorm&&typedNorm===expectNorm;const assisted=exact&&!!typingState.hintUsed;const correct=exact&&!assisted;const grade=correct?3:(assisted?2:0);const token=phase3EntryToken(typingState,item,'vocab');
   try{
-    const result=await commitAnswer({state:typingState,item,type:'vocab',mode:'typing',grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok)return;
+    const result=await commitAnswer({state:typingState,item,type:'vocab',mode:'typing',grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok){phase3EndSubmit(typingState);return;}
     typingState.answered=true;inp.disabled=true;inp.classList.add(exact?'correct':'wrong');const ans=document.getElementById('typing-answer');ans.innerHTML=`${getW(item)} <span style="color:var(--primary)">${getPinyin(item)}</span>`;ans.classList.remove('hidden','correct','wrong');ans.classList.add(exact?'correct':'wrong');
     phase3UpdateCounters(typingState,'typing');document.getElementById('typing-submit-btn').classList.add('hidden');document.getElementById('typing-hint-btn').classList.add('hidden');const ex=getEx(item);if(ex){const e=document.getElementById('typing-example');e.textContent=ex;e.classList.remove('hidden');}vibrate(correct?10:[50,30,50]);
     ANSWER_PIPELINE_V3.schedule(typingState,'advance',()=>{phase3EndSubmit(typingState);nextTyping();},phase3FeedbackDelay(correct?'correct':'wrong'),token);
@@ -11770,7 +11776,7 @@ checkDictation=async function checkDictationV82(){
   const exact=!!typedNorm&&!!expectNorm&&typedNorm===expectNorm;   /* 빈 답 == 빈 정답 을 정답으로 치지 않는다 */
   const assisted=exact&&!!dictationState.hintUsed,correct=exact&&!assisted,grade=correct?3:(assisted?2:0);
   try{
-    const result=await commitAnswer({state:dictationState,item,type,mode,grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok)return;
+    const result=await commitAnswer({state:dictationState,item,type,mode,grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok){phase3EndSubmit(dictationState);return;}
     dictationState.answered=true;const input=document.getElementById('dictation-input');input.disabled=true;input.classList.add(exact?'correct':'wrong');const ans=document.getElementById('dictation-answer');ans.classList.remove('hidden');
     const display=type==='vocab'?`${getW(item)} <span style="color:var(--primary)">${getPinyin(item)}</span>`:item.Expression;
     ans.innerHTML=exact?`✅ ${assisted?'힌트 정답':'정답'}! <strong>${display}</strong>`:`❌ 오답<br><span style="font-size:20px;font-weight:700">${display}</span><br><span style="font-size:14px;opacity:.8">${getMKO(item)}</span>`;ans.style.background=exact?'rgba(34,197,94,.2)':'rgba(239,68,68,.2)';ans.style.color=exact?'var(--success)':'var(--danger)';
@@ -11785,7 +11791,7 @@ checkExprTyping=async function checkExprTypingV82(){
   const item=exprTypingState.words?.[exprTypingState.idx];if(!item){phase3EndSubmit(exprTypingState);return;}
   const input=normalizeAnswer(document.getElementById('expr-typing-input').value||'');const alternatives=(item.Alternatives||'').split(/[,;]/).map(normalizeAnswer).filter(Boolean);const exact=input===normalizeAnswer(item.Expression)||alternatives.includes(input);const assisted=exact&&!!exprTypingState.hintUsed;const correct=exact&&!assisted,grade=correct?3:(assisted?2:0);
   try{
-    const result=await commitAnswer({state:exprTypingState,item,type:'expr',mode:'expr-typing',grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok)return;
+    const result=await commitAnswer({state:exprTypingState,item,type:'expr',mode:'expr-typing',grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok){phase3EndSubmit(exprTypingState);return;}
     exprTypingState.answered=true;document.getElementById('expr-typing-input').disabled=true;const ans=document.getElementById('expr-typing-answer');ans.classList.remove('hidden');ans.innerHTML=exact?`✅ ${assisted?'힌트 정답':'정답'}!`:`❌ 오답<br><span style="font-size:20px">${item.Expression}</span>${alternatives.length?'<br><span style="font-size:12px;opacity:.7">대체: '+alternatives.slice(0,3).join(', ')+'</span>':''}`;ans.style.background=exact?'rgba(34,197,94,.2)':'rgba(239,68,68,.2)';ans.style.color=exact?'var(--success)':'var(--danger)';
     phase3UpdateCounters(exprTypingState,'expr-typing');document.getElementById('expr-typing-submit-btn').textContent='다음 →';vibrate(correct?10:[50,30,50]);phase3EndSubmit(exprTypingState);
   }catch(error){phase3HandleFailure(error,exprTypingState);}
