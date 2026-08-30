@@ -194,6 +194,33 @@ const step = (name, status, detail) => {
   step('랜덤 회전 중복', rot.err ? 'fail' : (rot.overlap?.length ? 'info' : 'pass'), rot.err || `중복 ${rot.overlap.length}개`);
   report.summary.rotation = rot;
 
+  // ── 6b. 빈 답이 정답으로 채점되는가 ────────────────────────
+  //  정규화 결과가 양쪽 다 빈 문자열이면 '일치' 가 된다. 병음이 없는 카드(가져온
+  //  데이터에는 있을 수 있다)에 빈 답을 내면 만점으로 기록됐다.
+  const emptyAnswer = await page.evaluate(async () => {
+    try {
+      const all = await getAllWords();
+      const fake = { ...all[0], Traditional_CH: '測試空白', Pinyin: '', Meaning_KO: '빈 병음 테스트' };
+      window.showPage('study', true); await new Promise((r) => setTimeout(r, 300));
+      startTyping([fake], [fake, ...all.slice(0, 5)]);
+      await new Promise((r) => setTimeout(r, 900));
+      const inp = document.getElementById('typing-input');
+      if (!inp) return { err: 'typing-input 없음' };
+      inp.value = '';
+      document.getElementById('typing-submit-btn').click();
+      await new Promise((r) => setTimeout(r, 1200));
+      return {
+        correct: Number(document.getElementById('typing-correct')?.textContent || 0),
+        wrong: Number(document.getElementById('typing-wrong')?.textContent || 0),
+      };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('빈 답 채점', emptyAnswer.err ? 'fail' : (emptyAnswer.correct === 0 && emptyAnswer.wrong === 1 ? 'pass' : 'fail'),
+    emptyAnswer.err || `병음 없는 카드에 빈 답 → 정답 ${emptyAnswer.correct} / 오답 ${emptyAnswer.wrong}${emptyAnswer.correct ? '  ← 빈 답이 정답 처리됨' : ''}`);
+  report.summary.emptyAnswer = emptyAnswer;
+  await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
+  await page.waitForTimeout(300);
+
   // ── 7. getAllExpr 누수 재현 (C4) ───────────────────────────
   const leak = await page.evaluate(async () => {
     try {

@@ -11746,7 +11746,11 @@ rateExprClozeItem=async function rateExprClozeItemV82(grade){
 checkTyping=async function checkTypingV82(){
   if(typingState.answered||!phase3BeginSubmit(typingState))return;
   const item=typingState.words?.[typingState.idx],inp=document.getElementById('typing-input');if(!item){phase3EndSubmit(typingState);return;}
-  const exact=phase2NormalizePinyin(inp.value)===phase2NormalizePinyin(getPinyin(item));const assisted=exact&&!!typingState.hintUsed;const correct=exact&&!assisted;const grade=correct?3:(assisted?2:0);const token=phase3EntryToken(typingState,item,'vocab');
+  /* 9.5.1: 정규화 결과가 양쪽 다 빈 문자열이면 '일치' 가 되어, 병음이 없는 카드에
+     빈 답을 내면 만점(grade 3)으로 채점됐다. 가져온 데이터에는 병음 없는 행이
+     들어올 수 있다. 빈 답과 빈 정답은 결코 일치가 아니다. */
+  const typedNorm=phase2NormalizePinyin(inp.value),expectNorm=phase2NormalizePinyin(getPinyin(item));
+  const exact=!!typedNorm&&!!expectNorm&&typedNorm===expectNorm;const assisted=exact&&!!typingState.hintUsed;const correct=exact&&!assisted;const grade=correct?3:(assisted?2:0);const token=phase3EntryToken(typingState,item,'vocab');
   try{
     const result=await commitAnswer({state:typingState,item,type:'vocab',mode:'typing',grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok)return;
     typingState.answered=true;inp.disabled=true;inp.classList.add(exact?'correct':'wrong');const ans=document.getElementById('typing-answer');ans.innerHTML=`${getW(item)} <span style="color:var(--primary)">${getPinyin(item)}</span>`;ans.classList.remove('hidden','correct','wrong');ans.classList.add(exact?'correct':'wrong');
@@ -11761,7 +11765,9 @@ checkDictation=async function checkDictationV82(){
   const item=dictationState.words?.[dictationState.idx];if(!item){phase3EndSubmit(dictationState);return;}
   const type=dictationState.type==='expr'?'expr':'vocab',mode=type==='expr'?'expr-dictation':'dictation';
   const raw=document.getElementById('dictation-input').value||'';
-  const exact=type==='vocab'?phase2NormalizePinyin(raw)===phase2NormalizePinyin(getPinyin(item)):normalizeAnswer(raw)===normalizeAnswer(item.Expression);
+  const typedNorm=type==='vocab'?phase2NormalizePinyin(raw):normalizeAnswer(raw);
+  const expectNorm=type==='vocab'?phase2NormalizePinyin(getPinyin(item)):normalizeAnswer(item.Expression);
+  const exact=!!typedNorm&&!!expectNorm&&typedNorm===expectNorm;   /* 빈 답 == 빈 정답 을 정답으로 치지 않는다 */
   const assisted=exact&&!!dictationState.hintUsed,correct=exact&&!assisted,grade=correct?3:(assisted?2:0);
   try{
     const result=await commitAnswer({state:dictationState,item,type,mode,grade,correct,hintUsed:assisted,assisted,isOutput:true,scheduleRetry:!correct,wrongPolicy:grade===0?'wrong':(correct?'clear':'neutral'),persistRetrySuccess:true});if(!result.ok)return;
@@ -12210,7 +12216,7 @@ function phase5RenderCurrent(){
   document.getElementById('zh-next-btn').classList.add('hidden');phase5UpdateBookmark();
   SESSION_ENGINE_V2.syncUI(SESSION_ENGINE_V2.forState(zhState));
 }
-function phase5AnswerMatches(value){const q=zhState.question;if(zhState.mode==='zh-pinyin')return q.accepted.some(a=>phase5PinyinCorrect(value,a));if(q.kind==='order')return q.accepted.includes(phase5StripSentence(value));return q.accepted.some(a=>normalizeAnswer(a)===normalizeAnswer(value));}
+function phase5AnswerMatches(value){const q=zhState.question;if(!String(value??'').trim())return false;   /* 빈 답은 어떤 정답 후보와도 일치하지 않는다 */if(zhState.mode==='zh-pinyin')return q.accepted.some(a=>phase5PinyinCorrect(value,a));if(q.kind==='order')return q.accepted.includes(phase5StripSentence(value));return q.accepted.some(a=>normalizeAnswer(a)===normalizeAnswer(value));}
 async function phase5CommitResult(correct){
   if(!phase3BeginSubmit(zhState))return false;const item=zhState.currentWord;if(!item){phase3EndSubmit(zhState);return false;}
   const assisted=!!zhState.hintUsed,scoredCorrect=!!correct&&!assisted,grade=correct?(assisted?1:2):0;
