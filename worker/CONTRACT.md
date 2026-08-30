@@ -145,7 +145,7 @@ Worker 는 절대 반환하지 않습니다. Worker 의 `partial` ↔ 클라이�
 | 502 | `gemini_schema_mismatch` | verdict 열거 이탈 또는 `confidence` 범위 이탈 |
 | 503 | `worker_token_not_configured` | `CEMS_ACCESS_TOKEN` 시크릿 미등록 |
 | 503 | `gemini_key_not_configured` | `GEMINI_API_KEY` 시크릿 미등록 |
-| 504 | `gemini_timeout` | 업스트림이 `GEMINI_TIMEOUT_MS`(기본 8초) 안에 응답하지 않음 |
+| 504 | `gemini_timeout` | 업스트림이 `GEMINI_TIMEOUT_MS`(기본 6.5초) 안에 응답하지 않음 |
 | 504 | `gemini_network_error` | 업스트림 연결 실패(타임아웃 아님). 1회 재시도 후 |
 | 500 | `worker_error` | 분류되지 않은 내부 오류 |
 
@@ -158,7 +158,10 @@ Gemini 키가 잘못된 경우는 502 `gemini_auth_failed` 로 나오므로 사�
 - **타임아웃은 재시도하지 않습니다.** 클라이언트가 8초에 끊는데 Worker 가 재시도하면
   사용자에게는 실패로 보이면서 Gemini 호출만 중복 과금됩니다.
 - 네트워크 오류(타임아웃 아님)와 업스트림 429/5xx 는 **1회만** 재시도합니다.
-- 따라서 한 요청의 Gemini 호출은 최대 2회, 총 대기는 `GEMINI_TIMEOUT_MS` + 약간입니다.
+- 따라서 한 요청의 Gemini 호출은 최대 2회이고, **총 대기는 `GEMINI_TIMEOUT_MS` 를 넘지 않습니다**.
+  이 예산은 시도당이 아니라 요청 전체에 하나입니다. 재시도는 남은 예산 안에서만 하며,
+  남은 예산이 재시도를 감당하지 못하면 그대로 응답을 돌려줍니다. 클라이언트가 8초에
+  무조건 끊으므로, 그보다 큰 값을 넣으면 사용자에게 닿지 않는 업스트림 호출에 과금됩니다.
 
 클라이언트도 자체 방어선을 둡니다: 8초 타임아웃, 요청 직렬화, 30일 결과 캐시,
 기기별 일일 소프트 한도, 1분 내 3회 실패 시 2분 서킷 브레이커.

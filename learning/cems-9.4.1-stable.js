@@ -1234,11 +1234,18 @@
   async function callGeminiGrader(row, learner) {
     var cfg = await aiConfig();
     if (!cfg.enabled || !cfg.url || !cfg.token) { var disabled=new Error('AI 판독이 설정되지 않았습니다.'); disabled.code='disabled'; throw disabled; }
+    /* 9.5.1: 캐시 조회를 한도·차단기보다 먼저 한다. 저장된 판독은 네트워크도 비용도
+       들지 않는데, 예전에는 하루 한도(기본 25회)에 닿거나 2분 차단기가 걸린 동안
+       이미 채점해 둔 같은 문장까지 거부했다. */
+    var key=await sentenceCacheKey(row,learner), cached=await cachedGrade(key); if (cached) return Object.assign({},cached,{cached:true});
     if (Date.now() < state.circuitUntil) { var circuit=new Error('일시 오류가 반복되어 2분간 AI 판독을 쉬고 있습니다.'); circuit.code='circuit_open'; throw circuit; }
     var usage=await usageToday(cfg.dailyCap); if (usage.count >= usage.cap) { var quota=new Error('이 기기의 오늘 AI 소프트 한도에 도달했습니다.'); quota.code='local_daily_cap'; throw quota; }
-    var key=await sentenceCacheKey(row,learner), cached=await cachedGrade(key); if (cached) return Object.assign({},cached,{cached:true});
     return enqueueAi(async function () {
       var secondCache=await cachedGrade(key); if(secondCache)return Object.assign({},secondCache,{cached:true});
+      /* 9.5.1: 위 usage 는 큐에 들어가기 전에 읽은 값이라, 요청이 겹치면 둘 다 같은 N 을
+         읽고 둘 다 N+1 을 써서 한 번치만 차감된다. 직렬화된 이 안에서 다시 읽는다. */
+      var fresh=await usageToday(cfg.dailyCap);
+      if (fresh.count >= fresh.cap) throw Object.assign(new Error('이 기기의 오늘 AI 소프트 한도에 도달했습니다.'),{code:'local_daily_cap'});
       /* C1 부수: incrementUsage 는 fetch 성공 뒤로 옮겼다(아래).
          예전에는 요청 전에 올려서, 실패한 요청(409·타임아웃·5xx)까지 일일 한도를
          갉아먹었다. 위 GRADER_VERSION 불일치와 겹치면 한 번도 성공하지 못한 채
@@ -1259,8 +1266,10 @@
            아래 표시·채점 로직을 그대로 재사용한다. */
         if(result.verdict==='partial')result.verdict='acceptable';
         if(!['correct','acceptable','incorrect','uncertain'].includes(result.verdict))throw Object.assign(new Error('AI 응답 형식이 올바르지 않습니다.'),{code:'invalid_response'});
-        await incrementUsage(usage);   // 성공한 요청만 일일 한도에 반영한다
-        await cacheGrade(key,result);clearAiFailures();return result;
+        /* 이미 비용이 발생한 채점 결과를 저장·집계 실패로 버리지 않는다. */
+        try { await cacheGrade(key,result); } catch (_) {}
+        try { await incrementUsage(fresh); } catch (_) {}   // 성공한 요청만 일일 한도에 반영한다
+        clearAiFailures();return result;
       }catch(error){if(error.code==='timeout'||error.status===408||error.status===429||error.status>=500)recordAiFailure(error.code||String(error.status));throw error;}
     });
   }

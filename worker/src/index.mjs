@@ -248,23 +248,34 @@ async function callGemini(env, input) {
     },
     body: JSON.stringify(payload),
   };
-  const timeoutMs = Number(env.GEMINI_TIMEOUT_MS || 8000);
+  /* 9.5.1: 예산은 "시도당" 이 아니라 "요청 전체" 하나다. 예전에는 재시도가 timeoutMs 를
+     새로 켜서 한 요청이 최대 2*8000+250ms 까지 갈 수 있었다. 클라이언트는 8초에 무조건
+     끊으므로(learning/cems-9.4.1-stable.js 의 timeoutPromise(8000)) 그 뒤의 업스트림
+     호출은 사용자에게 닿지 않는 중복 과금일 뿐이다. 기본값도 클라이언트 상한보다
+     낮게 두어 재시도 여지를 남긴다. */
+  const timeoutMs = Number(env.GEMINI_TIMEOUT_MS || 6500);
+  const deadline = Date.now() + timeoutMs;
+  const remaining = () => deadline - Date.now();
 
   let response;
   for (let attempt = 0; attempt < 2; attempt += 1) {
+    const budget = remaining();
+    if (budget <= 0) throw Object.assign(new Error('gemini_timeout'), { status: 504 });
     try {
-      response = await fetchWithTimeout(endpoint, init, timeoutMs);
+      response = await fetchWithTimeout(endpoint, init, budget);
     } catch (error) {
-      /* 타임아웃은 재시도하지 않는다. 클라이언트가 이미 8초에 끊었고,
+      /* 타임아웃은 재시도하지 않는다. 클라이언트가 이미 끊었고,
          재시도는 사용자에게 보이지 않는 중복 과금만 남긴다. */
       if (error && error.timeout) throw Object.assign(new Error('gemini_timeout'), { status: 504 });
-      if (attempt === 0) {
+      if (attempt === 0 && remaining() > 750) {
         await new Promise((resolve) => setTimeout(resolve, 250));
         continue;
       }
       throw Object.assign(new Error('gemini_network_error'), { status: 504 });
     }
     if (!(response.status === 429 || response.status >= 500) || attempt === 1) break;
+    /* 남은 예산이 재시도 한 번을 감당하지 못하면 그대로 응답을 돌려준다. */
+    if (remaining() <= 750) break;
     await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
   }
 
