@@ -365,6 +365,24 @@ const step = (name, status, detail) => {
   step('클릭 1회당 document.querySelectorAll', 'info', perf.querySelectorAllCalls + '회');
   report.summary.perf = perf;
 
+  // ── 11b. 다른 탭이 DB 를 업그레이드한 뒤에도 읽을 수 있는가 ──
+  //  versionchange 처리기가 db.close() 만 하고 핸들을 비우지 않으면, 이후 모든 조회가
+  //  InvalidStateError 를 삼켜 빈 배열이 되고 앱 전체가 "데이터 0건" 으로 보인다.
+  const dbRecover = await page.evaluate(async () => {
+    try {
+      const before = (await getAllWords()).length;
+      const ev = new Event('versionchange');
+      try { db.dispatchEvent(ev); } catch (_) {}
+      if (typeof db !== 'undefined' && db && typeof db.onversionchange === 'function') { try { db.onversionchange(ev); } catch (_) {} }
+      await new Promise((r) => setTimeout(r, 500));
+      const after = (await getAllWords()).length;
+      return { before, after };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('DB versionchange 후 복구', dbRecover.err ? 'fail' : (dbRecover.after === dbRecover.before && dbRecover.before > 0 ? 'pass' : 'fail'),
+    dbRecover.err || `단어 ${dbRecover.before} → ${dbRecover.after}${dbRecover.after !== dbRecover.before ? '  ← 닫힌 핸들이 남아 조회가 빈 배열이 됨' : ''}`);
+  report.summary.dbRecover = dbRecover;
+
   // ── 12. 스크린샷 ───────────────────────────────────────────
   for (const r of ['home', 'study', 'stats', 'data', 'settings']) {
     try {

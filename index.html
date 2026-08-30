@@ -12830,7 +12830,7 @@ function phase8InstallTabGuard(){window.addEventListener('storage',event=>{if(ev
 
 // IndexedDB 버전 변경·페이지 폐기 복구
 function phase8ReloadApp(){location.reload();}
-function phase8BindDBLifecycle(){if(!db||db.__phase8Bound)return;try{Object.defineProperty(db,'__phase8Bound',{value:true});}catch(_){db.__phase8Bound=true;}db.onversionchange=()=>{phase8SafeCheckpoint('db-versionchange');try{db.close();}catch(_){}phase8ShowBanner('phase8-db-version','다른 탭이나 새 버전이 데이터베이스를 업그레이드했습니다. 저장된 학습 위치를 유지한 채 앱을 다시 여세요.','<button class="btn btn-primary" onclick="phase8ReloadApp()">다시 열기</button>');};}
+function phase8BindDBLifecycle(){if(!db||db.__phase8Bound)return;try{Object.defineProperty(db,'__phase8Bound',{value:true});}catch(_){db.__phase8Bound=true;}db.onversionchange=()=>{phase8SafeCheckpoint('db-versionchange');try{db.close();}catch(_){}db=null;   /* 9.5.1: 핸들을 비워야 다음 조회가 새 버전으로 다시 연다. 닫힌 핸들을 그대로 두면 getAllFromStore 의 try 가 InvalidStateError 를 삼켜 전 화면이 데이터 0건으로 보인다(실측 9447 → 0). */phase8ShowBanner('phase8-db-version','다른 탭이나 새 버전이 데이터베이스를 업그레이드했습니다. 저장된 학습 위치를 유지한 채 앱을 다시 여세요.','<button class="btn btn-primary" onclick="phase8ReloadApp()">다시 열기</button>');};}
 const phase8OpenDBBase=openDB;openDB=async function openDBV861(){const result=await phase8OpenDBBase();phase8BindDBLifecycle();return result;};
 
 function phase8InstallLifecycle(){
@@ -14714,6 +14714,10 @@ var CEMS9 = (function () {
         if (window.db && typeof db.addEventListener === 'function') {
           db.addEventListener('versionchange', function () {
             try { db.close(); } catch (e) {}
+            /* 9.5.1: 닫기만 하고 핸들을 남기면 이후 모든 조회가 조용히 빈 배열을 돌려준다.
+               비워 두면 getAllFromStore 가 알아서 다시 연다(다른 탭의 업그레이드가
+               끝난 뒤이므로 재연결이 업그레이드를 막지 않는다). */
+            try { db = null; } catch (e) {}
             toast('⚠️ 다른 탭에서 데이터베이스가 변경되었습니다. 새로고침하십시오.');
           });
         }
