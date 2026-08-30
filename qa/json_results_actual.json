@@ -1,0 +1,26 @@
+{
+  "pre": {
+    "cems943": true,
+    "input": true,
+    "accept": ".xlsx,.xlsm,.xls,.json,application/json"
+  },
+  "analysisModal": true,
+  "confirmButtonCount": 1,
+  "sources": [
+    {
+      "id": "src-1sm9jfg",
+      "title": "final2 smoke",
+      "fileName": "sample_import.json",
+      "status": "ready",
+      "counts": {
+        "word": 1,
+        "expression": 1,
+        "grammar": 1,
+        "example": 0
+      },
+      "importedCount": 3
+    }
+  ],
+  "errors": [],
+  "exception": null
+}

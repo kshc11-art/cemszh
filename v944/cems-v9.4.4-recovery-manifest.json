@@ -1,0 +1,16 @@
+{
+  "version": "9.4.4",
+  "counts": {
+    "words": 0,
+    "expressions": 697,
+    "grammar": 992,
+    "examples": 0
+  },
+  "expectedReference": {
+    "words": 9447,
+    "expressions": 686,
+    "grammar": 992,
+    "examples": 5556
+  },
+  "sha256": "c9653284b592380ac30083e4ab9c3820a7b7bf66c32d0206e6d8483f1d29c081"
+}

@@ -1,0 +1,219 @@
+/* CEMS v9.4.1 unified theme
+ * ---------------------------------------------------------------------------
+ * 메인 앱(통합 허브)과 안정 복구판이 공유하는 디자인 계층.
+ * 여기서는 시각 언어만 다룬다. 동작 변경은 cems-9.4.1-ui.js 가 담당한다.
+ *
+ * 해결하는 문제
+ *  - 상단 고정 세션 알림(성조 패턴 · 0/50)이 탭을 가리던 문제
+ *  - 단어/표현/문법 탭 라벨이 세로 중앙에 오지 않던 문제
+ *  - 학습 페이지 하단 고정 도크가 콘텐츠를 가리던 문제 (인라인 카드로 전환)
+ *  - 분석 페이지 핵심 지표 타일이 과대했던 문제
+ *  - 12주 학습 리듬 히트맵이 카드 폭의 절반만 쓰던 문제
+ * ==========================================================================*/
+
+/* ── 0. 토큰 보정 ── */
+:root {
+  --kind-vocab: var(--primary, #3b82f6);
+  --kind-expr: var(--expr, #38bdf8);
+  --kind-grammar: var(--cems932-grammar, #34d399);
+  --surface-raise: color-mix(in srgb, var(--card) 88%, #ffffff 4%);
+  --ring: color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+/* ── 1. 상단 고정 세션 알림 제거 ── */
+#session-engine-status, .session-engine-status { display: none !important; }
+
+/* ── 2. 단어 / 표현 / 문법 탭 ── */
+.type-tabs {
+  display: flex;
+  gap: 7px;
+  margin: 2px 0 14px;
+  padding: 4px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 14px;
+}
+.type-tab {
+  flex: 1;
+  display: flex;                 /* 라벨 세로 중앙 정렬 */
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 0 8px;
+  line-height: 1.15;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
+}
+.type-tab:active { transform: scale(.985); }
+.type-tab.active {
+  color: var(--kind-vocab);
+  background: color-mix(in srgb, var(--kind-vocab) 12%, transparent);
+  border-color: color-mix(in srgb, var(--kind-vocab) 55%, transparent);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--kind-vocab) 18%, transparent);
+}
+.type-tab.expr.active {
+  color: var(--kind-expr);
+  background: color-mix(in srgb, var(--kind-expr) 12%, transparent);
+  border-color: color-mix(in srgb, var(--kind-expr) 55%, transparent);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--kind-expr) 18%, transparent);
+}
+.type-tab.grammar.active {
+  color: var(--kind-grammar);
+  background: color-mix(in srgb, var(--kind-grammar) 13%, transparent);
+  border-color: color-mix(in srgb, var(--kind-grammar) 55%, transparent);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--kind-grammar) 18%, transparent);
+}
+
+/* ── 3. 카드·버튼 공통 다듬기 ── */
+.card {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+}
+.card-title { letter-spacing: -0.01em; }
+.btn { border-radius: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.btn-primary {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--primary) 96%, #ffffff 6%),
+    var(--primary));
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+.btn-primary:active { box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 22%, transparent); }
+
+/* ── 4. 카드덱·필터 설정 (기존 c86 하단 고정 도크 → 인라인) ── */
+#page-study { padding-bottom: 24px !important; }   /* 도크용 122px 여백 회수 */
+.c86-study-dock {
+  position: static !important;
+  left: auto !important; right: auto !important; bottom: auto !important;
+  z-index: auto !important;
+  margin: 0 0 14px;
+  background: var(--card) !important;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 16px !important;
+  padding: 13px !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+}
+.c86-study-dock::before,
+.c86-study-dock::after { content: none !important; display: none !important; }
+.c86-dock-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.c86-dock-copy strong { font-size: 13px; letter-spacing: -0.01em; }
+.c86-dock-copy span { font-size: 10.5px; color: var(--muted); line-height: 1.45; }
+.c86-dock-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.c86-count-stepper {
+  display: inline-flex; align-items: center; gap: 2px;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 11px; padding: 3px;
+}
+.c86-count-stepper button {
+  width: 30px; height: 30px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--text); font-size: 15px; font-weight: 700;
+}
+.c86-count-stepper button:active { background: color-mix(in srgb, var(--primary) 14%, transparent); }
+.c86-count-stepper output { min-width: 30px; text-align: center; font-weight: 800; font-size: 13px; }
+.c86-start-btn { flex: 1; min-height: 40px; }
+body.cems82-keyboard .c86-study-dock { display: flex !important; }  /* 인라인이므로 키보드 시 숨길 필요 없음 */
+
+/* 카드덱 버튼 */
+.cems932-dock-button {
+  order: -1;
+  width: auto !important;
+  min-height: 40px; height: auto;
+  padding: 0 13px !important;
+  border-radius: 11px !important;
+  font-size: 12px !important;
+  font-weight: 800;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px dashed color-mix(in srgb, var(--kind-grammar) 45%, var(--border)) !important;
+  background: color-mix(in srgb, var(--kind-grammar) 7%, transparent) !important;
+  color: var(--text) !important;
+}
+.cems932-dock-button.active {
+  border-style: solid !important;
+  border-color: color-mix(in srgb, var(--kind-grammar) 62%, transparent) !important;
+  background: color-mix(in srgb, var(--kind-grammar) 15%, transparent) !important;
+}
+.cems932-dock-icon { font-size: 14px; }
+.cems932-dock-label { display: inline !important; }
+
+/* 홈의 카드덱 버튼도 같은 언어로 */
+.cems932-home-scope {
+  border: 1.5px dashed color-mix(in srgb, var(--kind-grammar) 45%, var(--border));
+  background: color-mix(in srgb, var(--kind-grammar) 7%, transparent);
+  border-radius: 10px; padding: 4px 9px; font-size: 11px; font-weight: 800;
+  display: inline-flex; align-items: center; gap: 4px; color: var(--text);
+}
+.cems932-home-scope.active,
+.cems932-home-scope[data-active="1"] {
+  border-style: solid;
+  background: color-mix(in srgb, var(--kind-grammar) 15%, transparent);
+}
+
+/* ── 5. 홈 오늘 학습 카드: 3분할 ── */
+#daily-goal-card .cems941-goal-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px;
+}
+#daily-goal-card .cems941-goal-cell {
+  text-align: center; padding: 8px 4px 7px;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 10px;
+}
+#daily-goal-card .cems941-goal-cell .t { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+#daily-goal-card .cems941-goal-cell .v { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+#daily-goal-card .cems941-goal-cell .progress-bar { height: 3px; margin-top: 5px; }
+
+/* ── 6. 분석: 핵심 지표 타일 압축 ── */
+.c83-kpis { gap: 7px; }
+.c83-kpi { padding: 8px 9px; min-height: 0; border-radius: 12px; }
+.c83-kpi-icon { width: 21px; height: 21px; border-radius: 7px; }
+.c83-kpi-icon svg { width: 12px; height: 12px; }
+.c83-kpi strong { font-size: 16px; margin-top: 4px; }
+.c83-kpi span { font-size: 9.5px; margin-top: 2px; }
+.c83-card { padding: 13px; }
+.c83-card-head { margin-bottom: 9px; }
+
+/* ── 7. 분석: 12주 히트맵을 카드 폭 전체로 ── */
+.c83-heat-wrap { overflow: visible; padding-bottom: 0; }
+.c83-heatmap { display: flex; gap: 4px; min-width: 0; width: 100%; }
+.c83-heat-week { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.c83-heat-cell { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 4px; }
+
+/* ── 8. 분석 문법 패널 ── */
+.cems941-grammar-stats { display: none; }
+.cems941-grammar-stats.show { display: block; }
+.cems941-grammar-stats .stat-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px;
+}
+.cems941-gs-note { font-size: 10px; color: var(--muted); line-height: 1.5; margin-top: 9px; }
+
+/* ── 9. 하단 내비 다듬기 ── */
+.bottom-nav, nav.bottom-nav {
+  border-top: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-item.active { color: var(--primary); }
+
+/* ── 10. 접근성·기타 ── */
+.type-tab:focus-visible,
+.cems932-dock-button:focus-visible,
+.cems932-home-scope:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (max-width: 370px) {
+  .type-tab { font-size: 12px; min-height: 40px; }
+  .c86-dock-actions { gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-tab, .btn { transition: none; }
+}

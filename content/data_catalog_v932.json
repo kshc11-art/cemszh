@@ -1,0 +1,142 @@
+{
+  "version": "9.3.2",
+  "generatedAt": "2026-08-22T00:00:00Z",
+  "language": "zh",
+  "summary": {
+    "vocabulary": 9447,
+    "expressions": 686,
+    "grammar": 992,
+    "allExpressionStore": 1678,
+    "examples": 5556,
+    "lessons": 71,
+    "sources": 9
+  },
+  "sources": [
+    {
+      "id": "cems-huayu8000",
+      "file": "CEMS_華語8000_어휘_문법_통합.json",
+      "sha256": "81e9c8968ad98a4bec9815f3888ec2584da6be52ae2ba2209c81445ecce1ba81",
+      "words": 7517,
+      "grammar": 496,
+      "description": "華語8000 어휘·TBCL 문법·HSK/TOCFL·빈도·사용역 통합"
+    },
+    {
+      "id": "ACC1_L01-L15_complete_study_pack",
+      "file": "ACC1_L01-L15_complete_study_pack.zip",
+      "sha256": "d942a6b3406d67f0a128eb44050d0fbb4ef0603057ee4dc12a91814fcde7358a",
+      "restoreFile": "ACC1_L01-L15_cems_restore.json",
+      "masterFile": "ACC1_L01-L15_master.json",
+      "words": 533,
+      "grammar": 79,
+      "dialogues": 298,
+      "readings": 0,
+      "grammarExamples": 767,
+      "lessons": 15
+    },
+    {
+      "id": "ACC2_L01-L04_study_pack",
+      "file": "ACC2_L01-L04_study_pack.zip",
+      "sha256": "feebed7bbb86c8690e828f2c55ad49dd532832db5ba2988f9b965a1aa6dfcf94",
+      "restoreFile": "ACC2_L01-L04_cems_restore.json",
+      "masterFile": "ACC2_L01-L04_master.json",
+      "words": 172,
+      "grammar": 22,
+      "dialogues": 65,
+      "readings": 12,
+      "grammarExamples": 252,
+      "lessons": 4
+    },
+    {
+      "id": "ACC2_L05-L08_study_pack",
+      "file": "ACC2_L05-L08_study_pack.zip",
+      "sha256": "1d22782e612986a78db302f33cb3b7ae6ecd408b6ecdd744678188c786ba28e1",
+      "restoreFile": "ACC2_L05-L08_cems_restore.json",
+      "masterFile": "ACC2_L05-L08_master.json",
+      "words": 170,
+      "grammar": 23,
+      "dialogues": 70,
+      "readings": 13,
+      "grammarExamples": 275,
+      "lessons": 4
+    },
+    {
+      "id": "ACC2_L09-L12_study_pack",
+      "file": "ACC2_L09-L12_study_pack.zip",
+      "sha256": "66d9ffd3d8f1acbd8b7dcaa93ef58e73741c3bf8937e4c8bbfe571b5a7a4064b",
+      "restoreFile": "ACC2_L09-L12_cems_restore.json",
+      "masterFile": "ACC2_L09-L12_master.json",
+      "words": 178,
+      "grammar": 24,
+      "dialogues": 82,
+      "readings": 15,
+      "grammarExamples": 281,
+      "lessons": 4
+    },
+    {
+      "id": "ACC3_L01-L12_complete_study_pack",
+      "file": "ACC3_L01-L12_complete_study_pack.zip",
+      "sha256": "6cc2151cba16f1fe95ebfdbe10b68c5d9373a9a78d44448cb2da7de4e4b3796c",
+      "restoreFile": "ACC3_L01-L12_cems_restore.json",
+      "masterFile": "ACC3_L01-L12_master.json",
+      "words": 842,
+      "grammar": 87,
+      "dialogues": 227,
+      "readings": 47,
+      "grammarExamples": 569,
+      "lessons": 12
+    },
+    {
+      "id": "ACC4_L01-L12_complete_study_pack",
+      "file": "ACC4_L01-L12_complete_study_pack.zip",
+      "sha256": "2ea6636654ff78f7aef1645d422744cbaee2aefdee0af7f3cc24ab044126932d",
+      "restoreFile": "ACC4_L01-L12_cems_restore.json",
+      "masterFile": "ACC4_L01-L12_master.json",
+      "words": 991,
+      "grammar": 96,
+      "dialogues": 240,
+      "readings": 54,
+      "grammarExamples": 709,
+      "lessons": 12
+    },
+    {
+      "id": "ACC5_L01-L10_complete_study_pack",
+      "file": "ACC5_L01-L10_complete_study_pack.zip",
+      "sha256": "20af5fd86892a4c030146e499e8070022918b9357aeff486ec51bf952deab23a",
+      "restoreFile": "ACC5_L01-L10_cems_restore.json",
+      "masterFile": "ACC5_L01-L10_master.json",
+      "words": 925,
+      "grammar": 86,
+      "dialogues": 0,
+      "readings": 105,
+      "grammarExamples": 178,
+      "lessons": 10
+    },
+    {
+      "id": "ACC6_L01-L10_complete_study_pack",
+      "file": "ACC6_L01-L10_complete_study_pack.zip",
+      "sha256": "1bd956f177c03f1e8de92942a3098acca77dbea419b2f164623ac730fc6dd36c",
+      "restoreFile": "ACC6_L01-L10_cems_restore.json",
+      "masterFile": "ACC6_L01-L10_master.json",
+      "words": 956,
+      "grammar": 106,
+      "dialogues": 0,
+      "readings": 130,
+      "grammarExamples": 212,
+      "lessons": 10
+    }
+  ],
+  "recognition": {
+    "status": "complete",
+    "allUploadedSourcesIncluded": true,
+    "strategy": "normalized seed import with source-level provenance"
+  },
+  "kinds": {
+    "vocabulary": 9447,
+    "expression": 686,
+    "grammar": 992,
+    "examples": 5556
+  },
+  "appVersion": "9.3.2",
+  "build": "9.3.2-r4-integrated-hub",
+  "dataSchema": "cems-zh-932-r3-legacy-unified"
+}

@@ -1,0 +1,100 @@
+{
+  "count": 9447,
+  "start": {
+    "len": 5,
+    "active": "page-flashcard"
+  },
+  "icons": [
+    {
+      "id": "fc-prev-btn",
+      "cls": "btn btn-secondary btn-sm c943-icon-button c944-r2-action-btn c944-final-action",
+      "action": "prev",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M15.4 5.6 9 12l6.4 6.4-1.8 1.8L5.4 12l8.2-8.2z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    },
+    {
+      "id": "fc-next-btn",
+      "cls": "btn btn-secondary btn-sm c943-icon-button c944-r2-action-btn c944-final-action",
+      "action": "next",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m8.6 18.4 6.4-6.4-6.4-6.4 1.8-1.8 8.2 8.2-8.2 8.2z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    },
+    {
+      "id": "fc-speak-btn",
+      "cls": "btn btn-secondary btn-sm c943-icon-button c944-r2-action-btn c944-final-action",
+      "action": "speak",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 9h4l5-4v14l-5-4H3zm11.5-.9a5 5 0 0 1 0 7.8l1.5 1.8a7.3 7.3 0 0 0 0-11.4zm3-3.5a10 10 0 0 1 0 14.8l1.5 1.8a12.4 12.4 0 0 0 0-18.4z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    },
+    {
+      "id": "fc-bookmark-btn",
+      "cls": "btn btn-secondary btn-sm c943-icon-button c944-r2-action-btn c944-final-action",
+      "action": "bookmark",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h14v19l-7-4.5L5 22zm2 2v13.3l5-3.2 5 3.2V5z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    },
+    {
+      "id": "fc-edit-btn",
+      "cls": "btn btn-secondary btn-sm c943-icon-button c944-r2-action-btn c944-final-action",
+      "action": "edit",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m4 16.8 11-11 4.2 4.2-11 11H4zm12.4-12.4 1.4-1.4L22 7.2l-1.4 1.4zM6 18.8h1.4l9-9-1.4-1.4-9 9z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    },
+    {
+      "id": "fc-exit-btn",
+      "cls": "btn btn-secondary btn-sm c943-study-exit c944-r2-action-btn c944-final-action cems932-flashcard-end",
+      "action": "close",
+      "display": "block",
+      "w": "21px",
+      "h": "21px",
+      "mask": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m5.7 4.3 6.3 6.3 6.3-6.3 1.4 1.4-6.3 6.3 6.3 6.3-1.4 1.4-6.3-6.3-6.3 6.3-1.4-1.4 6.3-6.3-6.3-6.3z'/%3E%3C/svg%3E\")",
+      "bg": "rgb(245, 247, 250)",
+      "color": "rgb(245, 247, 250)",
+      "rect": {
+        "w": 52,
+        "h": 44
+      }
+    }
+  ],
+  "errors": []
+}

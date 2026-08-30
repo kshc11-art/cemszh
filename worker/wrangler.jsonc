@@ -1,0 +1,60 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cems-gemini-grader-v944",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-08-01",
+
+  // B-2: 공개 *.workers.dev URL 을 막는다.
+  // 이 URL 이 열려 있으면 ALLOWED_ORIGIN 과 무관하게 누구나 토큰 추측을 시도하고,
+  // 성공 시 Gemini 크레딧을 그대로 태울 수 있다.
+  // 배포는 커스텀 도메인(또는 라우트)으로만 노출한다. 설정 방법:
+  //   1) Cloudflare 대시보드 > Workers & Pages > 이 Worker > Settings > Domains & Routes
+  //      에서 "Add > Custom Domain" 으로 예: grader.example.com 을 연결한다.
+  //   2) 또는 아래 routes 블록의 주석을 풀고 실제 zone 값을 채운다.
+  //   3) 연결한 주소를 PWA 설정의 "Worker 주소" 에 입력한다.
+  // "routes": [
+  //   { "pattern": "grader.example.com", "custom_domain": true }
+  // ],
+  "workers_dev": false,
+
+  // B-3: 로그·메트릭을 켜서 남용(토큰 추측, 비정상 호출량)을 사후 탐지할 수 있게 한다.
+  // 확인: `wrangler tail` 또는 대시보드 > Workers & Pages > 이 Worker > Logs.
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  // B-4: CPU 시간 상한. 이 Worker 는 JSON 파싱 + SHA-256 + 업스트림 fetch 뿐이라
+  // 실제 CPU 사용은 수 ms 다(업스트림 대기 시간은 CPU 시간에 포함되지 않는다).
+  // 낮게 묶어 두면 예기치 못한 폭주 요청의 과금 상한이 된다.
+  "limits": {
+    "cpu_ms": 10000
+  },
+
+  // B-5 / A-4: Rate Limiting 바인딩. src/index.mjs 의 env.GRADE_RATE_LIMITER 가 이것이다.
+  // namespace_id 는 이 계정/Worker 안에서만 유일하면 되는 임의의 숫자 문자열이다.
+  // period 는 10 또는 60 만 허용된다. 아래는 IP 당 60초에 30회.
+  // 바인딩이 없으면 코드가 조용히 통과시키고 console.warn 만 남기므로
+  // `wrangler dev` 로컬 개발은 이 선언 없이도 동작한다.
+  "ratelimits": [
+    {
+      "name": "GRADE_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 30,
+        "period": 60
+      }
+    }
+  ],
+
+  "vars": {
+    // B-1: ⚠ 배포 전 반드시 교체할 것. 플레이스홀더 그대로 배포하면
+    // 어떤 브라우저 오리진도 CORS 를 통과하지 못해 채점이 전부 실패한다.
+    // 값은 PWA 가 실제로 서비스되는 오리진이다(경로·끝 슬래시 없이 스킴+호스트만).
+    // 예: "https://myname.github.io"  ← GitHub Pages 는 사용자 도메인이 오리진이다.
+    // 여러 개면 콤마로 구분한다. 배포 후 GET /health 의 warnings 배열이 비어야 정상.
+    "ALLOWED_ORIGIN": "https://YOUR-PWA-ORIGIN.example",
+    "GEMINI_MODEL": "gemini-3.1-flash-lite",
+    "GEMINI_TIMEOUT_MS": "8000"
+  }
+}

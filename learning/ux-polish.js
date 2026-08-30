@@ -1,8 +1,8 @@
-/* CEMS v9.3.1 Learning-first — goal-led navigation, accessible controls and evidence summaries */
+/* CEMS v9.4.4 Learning-first — goal-led navigation, accessible controls and evidence summaries */
 (function () {
   'use strict';
 
-  var VERSION = '9.3.1-stable-recovery';
+  var VERSION = '9.4.4';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var PREFIX = 'cemsUx26:' + LANG + ':';
   var state = {
@@ -12,7 +12,11 @@
     dataTab: read('dataTab', 'library'),
     homeToolsOpen: '0',
     polishing: false,
-    timer: 0
+    timer: 0,
+    /* v9.5: 설치 여부는 모듈 스코프에서만 관리한다. 함수 프로퍼티 플래그는
+       다른 모듈이 같은 전역을 갈아끼우면 사라져서 계속 다시 감싸지게 만든다. */
+    excelWrapped: false,
+    pageHookInstalled: false
   };
 
   function qs(selector, root) { return (root || document).querySelector(selector); }
@@ -75,14 +79,14 @@
 
   function syncVersion() {
     document.documentElement.dataset.cemsVersion = VERSION;
-    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.3.1';
+    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.4.4';
     document.title = title;
     var meta = qs('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v9.3.1 · Stable recovery'; });
-    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '문맥 학습 · 지연 확인 · v9.3.1'; });
+    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v9.4.4 · 통합 학습 허브'; });
+    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v9.4.4'; });
     var versionCard = qsa('#page-settings .card').find(function (card) { var heading = qs('.card-title', card); return heading && heading.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.3.1 · Stable recovery';
-    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v9.3.1';
+    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.4.4 · 통합 학습 허브';
+    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v9.4.4';
   }
 
   function ensureAppbar() {
@@ -92,7 +96,7 @@
     if (!existing) {
       existing = make('header', 'cems82-appbar');
       existing.id = 'cems82-appbar';
-      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">문맥 학습 · 지연 확인 · v9.3.1</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
+      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">학습 분석 · FSRS-6 · v9.4.4</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
       home.insertBefore(existing, home.firstElementChild);
     }
     var button = qs('#cems82-settings', existing);
@@ -151,12 +155,12 @@
     }
     qsa('.mode-card').forEach(function (card) {
       var icon = qs('.mode-card-icon',card), label = text(qs('.mode-card-title',card) && qs('.mode-card-title',card).textContent).trim();
-      if (icon) icon.textContent = MODE_GLYPHS[card.dataset.mode] || glyphFromLabel(label,card.getAttribute('onclick'));
+      if (icon && !icon.dataset.cems941Icon) icon.textContent = MODE_GLYPHS[card.dataset.mode] || glyphFromLabel(label,card.getAttribute('onclick'));
       makeKeyboardButton(card,label + ' 학습');
     });
     qsa('.quick-action').forEach(function (card) {
       var icon = qs('.quick-action-icon',card), label = text(qs('.quick-action-label',card) && qs('.quick-action-label',card).textContent).trim();
-      if (icon) icon.textContent = glyphFromLabel(label,card.getAttribute('onclick'));
+      if (icon && !icon.dataset.c943Icon && !icon.dataset.cems941Icon) icon.textContent = glyphFromLabel(label,card.getAttribute('onclick'));
       makeKeyboardButton(card,label + ' 시작');
     });
   }
@@ -178,12 +182,18 @@
     }).finally(function () { xlsxPromise = null; });
     return xlsxPromise;
   }
+  /* v9.5: 이 함수는 polishAll() 안에서 불리므로 페이지 전환마다 실행된다.
+     예전에는 함수 프로퍼티 플래그(__cemsUx25LazyXlsx)로 가드했는데,
+     cems-9.4.1-stable.js 가 같은 전역(processFile 등)을 갈아끼우면 플래그가 사라져
+     그 다음 polishAll 에서 또 감싸졌다 — 페이지를 옮길 때마다 겹이 늘었다.
+     → 모듈 스코프 플래그로 딱 1회만 설치한다. */
   function wrapExcelFunctions() {
-    if (LANG !== 'en') return;
+    if (LANG !== 'en' || state.excelWrapped) return;
+    state.excelWrapped = true;
     ['processFile','processModalExcel','exportWithStats'].forEach(function (name) {
       var base = window[name];
-      if (typeof base !== 'function' || base.__cemsUx25LazyXlsx) return;
-      var wrapped = async function () {
+      if (typeof base !== 'function') return;
+      window[name] = async function () {
         var ok = await ensureXLSX();
         if (!ok) {
           if (typeof window.showToast === 'function') window.showToast('엑셀 기능은 처음 사용할 때 네트워크가 필요합니다. JSON·백업 기능은 오프라인에서 계속 사용할 수 있습니다.');
@@ -191,7 +201,6 @@
         }
         return base.apply(this, arguments);
       };
-      wrapped.__cemsUx25LazyXlsx = true; wrapped.__cemsUx25Previous = base; window[name] = wrapped;
     });
   }
 
@@ -556,10 +565,10 @@
     var nav = make('div', 'cems-ux25-stats-nav', tabBar([
       { value: 'summary', label: '카드 기억' }, { value: 'modes', label: '학습 방식' }, { value: 'quality', label: '예측 품질' }
     ], state.statsTab, 'stats-tab', '카드 기억 통계 보기'));
-    var note = make('section', 'cems-lf-card-stats-note', '<strong>카드 기억 보조 통계</strong><span>개별 어휘·표현의 복습 일정과 기억 예측입니다. 코스의 새 문맥 전이·14일 유지와 합산하지 않습니다.</span>');
+    /* v9.4.4: '카드 기억 보조 통계' 설명 배너 제거 (사용자 요청) */
     var panes = { summary: make('section', 'cems-ux25-stats-pane'), modes: make('section', 'cems-ux25-stats-pane'), quality: make('section', 'cems-ux25-stats-pane') };
     Object.keys(panes).forEach(function (key) { panes[key].dataset.ux25StatsPane = key; });
-    dashboard.innerHTML = ''; dashboard.appendChild(note); dashboard.appendChild(nav); Object.keys(panes).forEach(function (key) { dashboard.appendChild(panes[key]); });
+    dashboard.innerHTML = ''; dashboard.appendChild(nav); Object.keys(panes).forEach(function (key) { dashboard.appendChild(panes[key]); });
     cards.forEach(function (card) { var title = text(qs('.c83-card-title', card) && qs('.c83-card-title', card).textContent); panes[statsGroup(title)].appendChild(card); });
     var quality = qs('#c86-stats-quality'); if (quality) panes.quality.appendChild(quality);
     activateStatsTab(state.statsTab, true);
@@ -587,7 +596,7 @@
     try {
       syncThemeMarker(); ensureAppbar(); syncVersion(); syncTheme(); polishIcons(); wrapExcelFunctions(); polishHome(); polishStudy(); polishSettings(); polishData(); polishStats(); polishLeanDashboard(); polishStudio(); updateStudioStatus(); addMetricBars(qs('#cems-lean-dashboard') || document); compactLeanStats(qs('.cems-lean-stats-details')); decorateLegacyStatsMeters();
       document.body.classList.add('cems-ux25', 'cems-ux26', 'cems-ux27');
-    } catch (error) { console.warn('[CEMS UX 9.3.1] polish', error); }
+    } catch (error) { console.warn('[CEMS UX 9.3.2] polish', error); }
     finally { state.polishing = false; }
   }
   function schedule(delay) { clearTimeout(state.timer); state.timer = setTimeout(polishAll, delay == null ? 40 : delay); }
@@ -614,12 +623,18 @@
       setTimeout(polishAll, 120);
     });
     document.addEventListener('change', function (event) { if (event.target && event.target.id === 'setting-dark') setTimeout(function () { syncThemeMarker(); }, 20); });
-    if (typeof window.showPage === 'function' && !window.showPage.__cemsUx25Patched) {
-      var previous = window.showPage;
-      var wrapped = function () { var result = previous.apply(this, arguments); schedule(20); setTimeout(polishAll, 250); return result; };
-      wrapped.__cemsUx25Patched = true; wrapped.__cemsUx25Previous = previous; window.showPage = wrapped;
+    /* v9.5: showPage 전역 재정의 → afterPageShow 훅.
+       이 모듈은 showPage 를 감싸던 5개 계층 중 하나였다. 각자 자기 함수 프로퍼티
+       플래그만 확인해서 서로의 플래그를 지웠고, 결국 showPage 1회 호출에
+       history.replaceState 가 5회 실행됐다. 훅은 'ux-polish' 키로 멱등 등록된다. */
+    if (window.CEMSHooks && !state.pageHookInstalled) {
+      state.pageHookInstalled = true;
+      window.CEMSHooks.on('afterPageShow', 'ux-polish', function () {
+        schedule(20);
+        setTimeout(polishAll, 250);
+      });
     }
-    /* v9.3.1: document-wide DOM observation removed. Exact page events trigger polish explicitly. */
+    /* v9.4.4: document-wide DOM observation removed. Exact page events trigger polish explicitly. */
   }
 
   function init() {

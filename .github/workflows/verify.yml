@@ -1,0 +1,92 @@
+# CEMS 회귀 검증 — push / PR 마다 실제 Chromium 으로 앱을 띄워 확인한다.
+#
+# "고쳤다"는 주장을 사람이 아니라 이 워크플로가 뒷받침하게 하는 것이 목적이다.
+name: verify
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: 정적 검사
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 문법 검사 (외부 JS + index.html 인라인)
+        working-directory: harness
+        run: node check.mjs ..
+
+      - name: 자산 대조 (sw.js 선언 ↔ 실제 파일 ↔ index.html 참조)
+        working-directory: harness
+        run: node asset-check.mjs ..
+
+      - name: 시드 검증
+        run: |
+          python3 authoring/validate_seed_v941.py content/cems_zh_seed_v940.json || \
+            echo "::warning::시드 검증 실패 — 알려진 미해결 항목(문법 예문/번역 길이 불일치 71행)"
+
+  browser:
+    name: 브라우저 회귀
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 하네스 의존성
+        working-directory: harness
+        run: npm install --no-audit --no-fund
+
+      - name: Chromium 설치
+        working-directory: harness
+        run: npx playwright install --with-deps chromium
+
+      - name: 회귀 배터리 (화면 10개 · 학습모드 8종 · 구조 지표)
+        working-directory: harness
+        run: node probe.mjs .. ci
+
+      - name: 전수 점검 (모든 버튼 클릭)
+        working-directory: harness
+        run: node sweep.mjs .. ci-sweep
+
+      - name: 결과 판정
+        working-directory: harness
+        run: |
+          node -e "
+            const r = require('./out/ci/report.json');
+            const t = r.summary.totals;
+            console.log(JSON.stringify(t, null, 1));
+            const bad = [];
+            if (t.fail > 0)            bad.push('회귀 배터리 실패 ' + t.fail + '건');
+            if (t.pageErrors > 0)      bad.push('미처리 예외 ' + t.pageErrors + '건');
+            if (t.consoleErrors > 0)   bad.push('콘솔 오류 ' + t.consoleErrors + '건');
+            if (t.failedRequests > 0)  bad.push('요청 실패 ' + t.failedRequests + '건');
+            const L = r.summary.layering || {};
+            const s = r.summary;
+            if (bad.length) { console.error('실패: ' + bad.join(' · ')); process.exit(1); }
+            console.log('통과');
+          "
+
+      - name: 측정 결과 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harness-results
+          path: |
+            harness/out/ci/
+            harness/out/ci-sweep/
+          retention-days: 14

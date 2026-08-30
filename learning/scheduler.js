@@ -1,4 +1,10 @@
-/* CEMS v9.2.8 Learning-first — goal-aligned courses, delayed checks, repairs and FSRS */
+/* CEMS v9.2.8 Learning-first — goal-aligned courses, delayed checks, repairs and
+ * fixed-interval scheduling.
+ *
+ * v9.5 정정: 예전 헤더는 "FSRS" 라고 적혀 있었지만 이 파일에는 FSRS 의 안정성/난이도
+ * 파라미터도, 기억 확률 모델도 없다. 실제 구현은 고정 지연 스케줄(단계별로 미리 정해 둔
+ * 간격으로 다음 복습일을 잡는 방식)이다. 잘못된 이름이 "FSRS 를 손보면 된다"는
+ * 오해를 만들어 왔다. */
 (function () {
   'use strict';
 
@@ -45,11 +51,19 @@
   async function legacyDueSummary(language) {
     var now = progress && progress.nowMs ? progress.nowMs() : Date.now();
     var groups = [];
-    try {
-      if (typeof getAllWords === 'function') groups.push({ type: 'vocab', mode: 'flashcard', label: language === 'zh' ? '단어' : '어휘', rows: await getAllWords() });
-      if (language === 'en' && typeof getAllPV === 'function') groups.push({ type: 'phrasal', mode: 'pv-flashcard', label: '구동사', rows: await getAllPV() });
-      if (typeof getAllExpr === 'function') groups.push({ type: 'expr', mode: 'expr-fc', label: '표현', rows: await getAllExpr() });
-    } catch (_) {}
+    /* v9.5: 예전에는 세 조회를 하나의 try/catch 로 묶고 catch 를 비워 뒀다.
+       단어 조회가 실패하면 표현·구동사는 시도조차 못 한 채 groups 가 부분만 채워지고,
+       호출자는 그것을 "오늘 복습할 카드가 이만큼뿐"이라는 정상 결과로 받아들였다.
+       → 종류별로 따로 감싸고, 실패한 종류는 콘솔에 남겨 원인을 알 수 있게 한다. */
+    async function collect(type, mode, label, loader) {
+      try { groups.push({ type: type, mode: mode, label: label, rows: await loader() }); }
+      catch (error) {
+        console.warn('[CEMS scheduler] ' + type + ' 목록을 읽지 못해 오늘 계획에서 제외합니다:', error && error.message ? error.message : error);
+      }
+    }
+    if (typeof getAllWords === 'function') await collect('vocab', 'flashcard', language === 'zh' ? '단어' : '어휘', getAllWords);
+    if (language === 'en' && typeof getAllPV === 'function') await collect('phrasal', 'pv-flashcard', '구동사', getAllPV);
+    if (typeof getAllExpr === 'function') await collect('expr', 'expr-fc', '표현', getAllExpr);
     groups.forEach(function (group) {
       var rows = group.rows || [];
       group.due = rows.filter(function (item) { return isDue(item, now); }).length;
@@ -281,7 +295,10 @@
     var selected = legacy.selected, count = Math.min(8, Math.max(1, selected.available));
     var inputIds = selected.type === 'phrasal' ? ['pv-study-count', 'study-count'] : selected.type === 'expr' ? ['expr-study-count', 'study-count'] : ['study-count'];
     inputIds.forEach(function (id) { var input = document.getElementById(id); if (input) input.value = String(count); });
-    try { localStorage.setItem('defaultCount', String(count)); } catch (_) {}
+    /* v9.5: localStorage.setItem('defaultCount', ...) 제거.
+       index.html 이 이 키를 학습 개수의 전역 기본값으로 42곳에서 읽는다.
+       Lean 실행 1회가 사용자의 설정을 최대 8로 영구히 덮어써서, 이후 모든 일반 학습이
+       8개짜리로 줄어들었다. 이번 실행에만 쓰이는 값이므로 입력 필드만 세팅한다. */
     var starter = function () { return typeof quickStartMode === 'function' ? quickStartMode(selected.type, selected.mode) : false; };
     if (typeof safeStart === 'function') safeStart(starter); else starter();
     return true;
