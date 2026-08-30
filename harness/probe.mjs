@@ -264,6 +264,30 @@ const step = (name, status, detail) => {
     leak.err || `전 ${leak.baseline} → 후 ${leak.after}${leak.leaked ? '  ← 오염됨' : ''}`);
   report.summary.exprLeak = leak;
 
+  // ── 7a. 강제 종료가 세션을 올바른 종류로 기록하는가 ──────────
+  //  forceEndCurrentStudy 의 받아쓰기 분기만 currentListeningType 을 쓰고 있었다.
+  const forcedEnd = await page.evaluate(async () => {
+    try {
+      const words = await getAllWords(), exprs = await getAllExpr();
+      window.showPage('study', true); await new Promise((r) => setTimeout(r, 250));
+      startListening(words.slice(0, 3), words, 'vocab');          // currentListeningType = 'vocab'
+      await new Promise((r) => setTimeout(r, 600));
+      window.showPage('study', true); await new Promise((r) => setTimeout(r, 350));
+      startDictation(exprs.slice(0, 3), exprs, 'expr');           // currentDictationType = 'expr'
+      await new Promise((r) => setTimeout(r, 800));
+      dictationState.correct = 1; dictationState.wrong = 0;
+      await forceEndCurrentStudy();
+      await new Promise((r) => setTimeout(r, 800));
+      const dict = (await getSessions()).filter((x) => x.mode === 'dictation').slice(-1)[0];
+      return { saved: !!dict, type: dict ? dict.type : null };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('강제 종료 세션 종류', forcedEnd.err ? 'fail' : (forcedEnd.saved && forcedEnd.type === 'expr' ? 'pass' : 'fail'),
+    forcedEnd.err || `표현 받아쓰기를 화면 이동으로 종료 → 기록된 type="${forcedEnd.type}" (기대 expr)`);
+  report.summary.forcedEnd = forcedEnd;
+  await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
+  await page.waitForTimeout(300);
+
   // ── 7b. 데이터 필터 렌즈가 다른 컬렉션까지 걸러내는가 ────────
   //  CEMS_LENS 콜백은 kind 를 봐야 한다. 보지 않으면 "최근 7일" 필터가 걸린 동안
   //  다른 모듈의 getAllExpr / getAllPV 까지 같이 걸러진다.

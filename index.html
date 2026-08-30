@@ -3053,10 +3053,13 @@ if(page==='flashcard'){
     await saveSession({start:listeningState.start,total:ans,correct:listeningState.correct,wrong:listeningState.wrong,accuracy:acc,mode:'listening',type:currentListeningType,duration:Math.round((Date.now()-listeningState.start)/1000),uniqueTotal:listeningState.originalCount,firstTryCorrect:listeningState.firstTryCorrect,firstTryWrong:listeningState.firstTryWrong});
   }
 }else if(page==='dictation'){
+  /* 9.5.1: 여기만 currentListeningType 을 썼다. 받아쓰기의 대상 종류는 currentDictationType 이며
+     정상 종료 경로(endDictation)도 그쪽을 쓴다. 표현 받아쓰기를 화면 이동으로 끝내면
+     직전 리스닝 세션의 종류(기본 'vocab')로 기록돼 종류별 통계가 어긋났다. */
   const ans=dictationState.correct+dictationState.wrong;
   if(ans>0){
     const acc=Math.round((dictationState.correct/ans)*100);
-    await saveSession({start:dictationState.start,total:ans,correct:dictationState.correct,wrong:dictationState.wrong,accuracy:acc,mode:'dictation',type:currentListeningType,duration:Math.round((Date.now()-dictationState.start)/1000),uniqueTotal:dictationState.originalCount,firstTryCorrect:dictationState.firstTryCorrect,firstTryWrong:dictationState.firstTryWrong});
+    await saveSession({start:dictationState.start,total:ans,correct:dictationState.correct,wrong:dictationState.wrong,accuracy:acc,mode:'dictation',type:currentDictationType,duration:Math.round((Date.now()-dictationState.start)/1000),uniqueTotal:dictationState.originalCount,firstTryCorrect:dictationState.firstTryCorrect,firstTryWrong:dictationState.firstTryWrong});
   }
 }else if(page==='cloze'){
   const ans=clozeState.correct+clozeState.wrong;
