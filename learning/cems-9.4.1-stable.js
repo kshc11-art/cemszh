@@ -1474,7 +1474,7 @@
   function syncVersion931() {
     /* 9.5.1: 화면 버전 문자열의 출처는 <html data-cems-version> 하나다.
        CEMS943.VERSION 은 v944 레이어의 빌드 식별자여서 앱 버전과 다르다. */
-    var visibleVersion = document.documentElement.dataset.cemsVersion || '9.5.0';
+    var visibleVersion = document.documentElement.dataset.cemsVersion || '9.5.1';
     document.title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + visibleVersion;
     var meta=qs('meta[name="app-version"]');if(meta)meta.content=visibleVersion;
     qsa('.splash-sub').forEach(function(node){node.textContent='v'+visibleVersion+' · 통합 학습 허브';});

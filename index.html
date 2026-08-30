@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html data-cems-accent="graphite" data-cems-version="9.5.0" lang="ko">
+<html data-cems-accent="graphite" data-cems-version="9.5.1" lang="ko">
 <head>
 <meta charset="utf-8"/>
 <script>
@@ -239,7 +239,7 @@ window.CEMS_LANG="zh";
 /* CEMS v9.1 — content safety, migration, accessibility and release hardening */
 (function(){
   'use strict';
-  var VERSION='9.5.0';
+  var VERSION='9.5.1';
   var nativeInner=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
   var nativeInsert=Element.prototype.insertAdjacentHTML;
   var forbidden='script,iframe,object,embed,base,meta,link,style,svg,math,img,picture,video,audio,source,track';
@@ -423,7 +423,7 @@ window.CEMS_LANG="zh";
   }
 
   var CEMSHooks = {
-    VERSION: '9.5.0',
+    VERSION: '9.5.1',
 
     /** 훅 등록. 같은 key 로 다시 부르면 교체된다(멱등). */
     on: function(channel, key, fn){
@@ -525,7 +525,7 @@ window.CEMS_LANG="zh";
 <meta content="중국어 학습" name="apple-mobile-web-app-title"/>
 <meta content="yes" name="mobile-web-app-capable"/>
 <meta content="telephone=no" name="format-detection"/>
-<title>中文學習 v9.5.0</title>
+<title>中文學習 v9.5.1</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 :root{--cems-accent:#c7cdd4;--cems-accent-strong:#5f6770;--cems-accent-secondary:#9aa2ab;--cems-accent-contrast:#ffffff;--primary:#c7cdd4;--primary-strong:#5f6770;--primary-soft:#e5e9ed;--accent-secondary:#9aa2ab;--accent-contrast:#ffffff;--success:#4ade80;--warning:#fbbf24;--danger:#fb7185;--bg:#0d0f12;--bg2:#15181c;--card:#1a1e23;--text:#f5f7fa;--muted:#a1a8b0;--border:#343a43;--phrasal:#f59e0b;--expr:#60a5fa}
@@ -683,11 +683,11 @@ body.keyboard-open .app{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 <link href="./learning/cems-9.4.1-theme.css" rel="stylesheet"/>
 <meta content="9.4.4" name="cems-version"/>
 <meta content="9.4.4-final2" name="cems-build"/>
-<link href="v944/cems-v9.4.4.css?v=9.5.0" rel="stylesheet"/>
-<link href="v944/cems-v9.4.4-final.css?v=9.5.0" rel="stylesheet"/>
+<link href="v944/cems-v9.4.4.css?v=9.5.1" rel="stylesheet"/>
+<link href="v944/cems-v9.4.4-final.css?v=9.5.1" rel="stylesheet"/>
 </head>
 <body>
-<div id="splash"><div class="splash-icon">📚</div><div class="splash-title">中文學習</div><div class="splash-sub">v9.5.0 · 통합 학습 허브</div><div class="splash-loader"></div></div>
+<div id="splash"><div class="splash-icon">📚</div><div class="splash-title">中文學習</div><div class="splash-sub">v9.5.1 · 통합 학습 허브</div><div class="splash-loader"></div></div>
 <div class="app">
 <!-- 홈 -->
 <div class="page active" id="page-home">
@@ -12849,14 +12849,14 @@ function phase8InstallLifecycle(){
 
 function phase8InstallHealthUI(){
   const grid=document.querySelector('#phase7-health-card .phase7-health-grid');if(grid&&!document.getElementById('phase8-build-status')){
-    const build=document.createElement('div');build.className='phase7-health-item';build.innerHTML='<div class="phase7-health-label">앱 빌드</div><div class="phase7-health-value phase8-status-good" id="phase8-build-status">v'+(document.documentElement.dataset.cemsVersion||'9.5.0')+'</div>';grid.append(build);
+    const build=document.createElement('div');build.className='phase7-health-item';build.innerHTML='<div class="phase7-health-label">앱 빌드</div><div class="phase7-health-value phase8-status-good" id="phase8-build-status">v'+(document.documentElement.dataset.cemsVersion||'9.5.1')+'</div>';grid.append(build);
     const excel=document.createElement('div');excel.className='phase7-health-item';excel.innerHTML='<div class="phase7-health-label">Excel 기능</div><div class="phase7-health-value" id="phase8-excel-status">확인 중</div>';grid.append(excel);
   }
   const actions=document.querySelector('#phase7-health-card .phase7-action-grid');if(actions&&!document.getElementById('phase8-persist-btn')){const button=document.createElement('button');button.id='phase8-persist-btn';button.className='btn btn-secondary';button.textContent='🔐 저장소 보호 요청';button.onclick=phase8RequestPersistence;actions.append(button);}
   const card=document.getElementById('phase7-health-card');if(card&&!card.querySelector('.phase8-health-note')){const note=document.createElement('div');note.className='phase8-health-note';note.textContent='업데이트 전 학습 위치를 자동 저장하며, 복원 시 같은 세션 기록은 중복 추가하지 않습니다.';card.append(note);}
   const settings=document.getElementById('page-settings'),version=[...settings?.querySelectorAll('.card')||[]].find(x=>x.querySelector('.card-title')?.textContent.includes('버전 정보'));if(version)version.innerHTML='<div class="card-title">ℹ️ 버전 정보</div><p style="font-size:13px;color:var(--muted);line-height:1.8"><strong>중국어 학습 v8.6.1 · Final Stability</strong><br>• 🧠 Review learningStep 감사 오류 교정<br>• ♻️ 세션 중복 없는 백업 복원 v4<br>• ⬆️ 학습 체크포인트 후 안전 업데이트<br>• 🗄️ IndexedDB 버전 변경·탭 폐기 복구<br>• 🔐 저장소 영구 보존 요청<br>• 📑 Excel 로더 장애 복구와 상태 표시<br>• 📱 키보드 오탐·텍스트 선택·터치 UX 보정</p>';
   phase8UpdateExcelStatus();phase7EnhanceControls(card||document);phase8EnhanceInputs();
-  phase8GetSWVersion().then(version=>{const el=document.getElementById('phase8-build-status');if(el&&version)el.textContent=`v${document.documentElement.dataset.cemsVersion||'9.5.0'} · SW ${version.replace('cems-zh-v9-','').replace('chinese-fsrs-','')}`;});
+  phase8GetSWVersion().then(version=>{const el=document.getElementById('phase8-build-status');if(el&&version)el.textContent=`v${document.documentElement.dataset.cemsVersion||'9.5.1'} · SW ${version.replace('cems-zh-v9-','').replace('chinese-fsrs-','')}`;});
 }
 
 // 진단 버전 교체
@@ -13242,7 +13242,7 @@ const CEMS85=(()=>{
     const rc=Number.isFinite(Number(s?.correct))?Number(s.correct):Number.isFinite(Number(s?.known))?Number(s.known):null;const rw=Number.isFinite(Number(s?.wrong))?Number(s.wrong):Number.isFinite(Number(s?.unknown))?Number(s.unknown):null;const raw=Math.max(0,(rc||0)+(rw||0))||Math.max(0,Number(s?.total)||0);const attempts=first||raw||Math.max(0,Number(s?.uniqueTotal)||0);const c0=first?Number(s.firstTryCorrect)||0:(rc!==null?rc:Math.round(attempts*(Number(s?.accuracy)||0)/100));const correct=Math.min(attempts,Math.max(0,c0));const duration=Math.max(0,Number(s?.duration)||0);return{date,attempts,correct,duration,valid:!!date&&date.getTime()<=Date.now()+300000&&attempts>0&&duration<=43200,accuracy:attempts?correct/attempts*100:0};
   }
   function updateVisibleTerms(){
-    document.querySelectorAll('.cems82-brand-sub').forEach(x=>x.textContent='학습 분석 · FSRS-6 · v'+(document.documentElement.dataset.cemsVersion||'9.5.0'));
+    document.querySelectorAll('.cems82-brand-sub').forEach(x=>x.textContent='학습 분석 · FSRS-6 · v'+(document.documentElement.dataset.cemsVersion||'9.5.1'));
     const guide=document.getElementById('c84-terms');if(guide){const title=guide.querySelector('.card-title');if(title)title.textContent='📘 통계 용어 · 오류 진단';const terms=guide.querySelector('.c84-term-grid');if(terms)terms.innerHTML='<div class="c84-term"><strong>정답률</strong><span>첫 시도 기록을 우선 사용합니다. 플래시카드는 보통·쉬움을 성공으로 집계합니다.</span></div><div class="c84-term"><strong>예측 기억률</strong><span>FSRS가 현재 기억하고 있을 가능성을 계산한 값입니다.</span></div><div class="c84-term"><strong>FSRS 안정도</strong><span>기억이 유지되는 기간을 나타내는 스케줄링 지표입니다.</span></div><div class="c84-term"><strong>뜻·인지 숙달 · 취약</strong><span>최상위 뜻·인지 기록에 따른 참고 분류이며 전체 언어 숙련도 판정이 아닙니다.</span></div>'}
   }
   function selfTest(){
@@ -13380,7 +13380,7 @@ const CEMS86=(()=>{
   function updateDataCard(scan=lastScan){const card=document.getElementById('cems-ux-data');if(!card)return;const last=validDate(storeGet('cemsUxLastHealth')),backup=validDate(storeGet('cemsUxLastBackup'));let status='아직 점검하지 않았습니다.';let cls='';if(scan){const total=scan.safe.length+scan.manual.length+scan.missing.length;status=total?`수정 가능 ${scan.safe.length}건 · 직접 확인 ${scan.manual.length}건 · 데이터 부족 ${scan.missing.length}건`:'문제가 발견되지 않았습니다.';cls=total?'warn':'good'}else if(last)status=`마지막 점검 ${last.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}`;card.innerHTML=`<div class="c86-data-title"><div class="c86-data-icon">🗂️</div><div class="c86-data-copy"><strong>데이터 점검 및 백업</strong><span>학습 기록과 카드 형식의 이상 여부를 확인합니다.</span></div></div><div class="c86-data-status ${cls}">${safeText(status)}<br>마지막 JSON 백업: ${backup?backup.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'없음'}</div><div class="c86-data-actions"><button class="btn btn-secondary" id="c86-scan">데이터 점검</button><button class="btn btn-primary" id="c86-backup">JSON 백업</button></div><div class="c86-data-note">자동 수정은 날짜·통계 범위·태그 형식만 대상으로 합니다. 뜻·병음·예문처럼 내용 판단이 필요한 항목은 목록만 보여줍니다.</div>`;card.querySelector('#c86-scan').onclick=scanData;card.querySelector('#c86-backup').onclick=()=>{storeSet('cemsUxLastBackup',new Date().toISOString());try{exportAllData()}finally{updateDataCard()}}}
   function installDataCard(){let card=document.getElementById('cems-ux-data');if(!card){const page=document.getElementById('page-data');if(!page)return;card=document.createElement('div');card.id='cems-ux-data';card.className='card';const management=[...page.querySelectorAll('.card')].find(c=>c.querySelector('.card-title')?.textContent.includes('데이터 관리'));(management||page.lastElementChild)?.insertAdjacentElement('beforebegin',card)}updateDataCard()}
   async function updateStatsQuality(){const dash=document.getElementById('cems83-dashboard');if(!dash||typeof db==='undefined'||!db)return;let card=document.getElementById('c86-stats-quality');if(!card){card=document.createElement('section');card.id='c86-stats-quality';card.className='c86-stats-quality';dash.insertAdjacentElement('afterend',card)}try{const raw=await getSessions(),norm=(raw||[]).map(s=>window.CEMS85?.normalizeSessionRecord?CEMS85.normalizeSessionRecord(s):null).filter(Boolean),valid=norm.filter(x=>x.valid),first=(raw||[]).filter(s=>(Number(s.firstTryCorrect)||0)+(Number(s.firstTryWrong)||0)>0).length;const groups=[await getAllWords(),...(!isChinese&&typeof getAllPV==='function'?[await getAllPV()]:[]),await getAllExpr()];let logs=0;groups.flat().forEach(item=>(Array.isArray(item.reviewLog)?item.reviewLog:[]).forEach(l=>{if(l.calibrationEligible===true&&l.wasDueBefore===true)logs++}));const ratio=raw.length?Math.round(first/raw.length*100):0;const level=valid.length>=10&&ratio>=70?'good':valid.length>=3?'normal':'low';const label=level==='good'?'충분':level==='normal'?'보통':'부족';card.innerHTML=`<div class="c86-quality-head"><div><strong>통계 기록 품질</strong><p>통계가 어떤 기록을 바탕으로 계산됐는지 보여줍니다.</p></div><span class="c86-quality-badge ${level==='good'?'good':''}">${label}</span></div><div class="c86-quality-grid"><div class="c86-quality-cell"><strong>${valid.length}</strong><span>유효 세션</span></div><div class="c86-quality-cell"><strong>${ratio}%</strong><span>첫 시도 기록 비율</span></div><div class="c86-quality-cell"><strong>${logs}</strong><span>FSRS 예측 표본</span></div></div><div class="c86-quality-foot">정답률은 첫 시도 기록을 우선 사용합니다. FSRS 예측 정확도는 예정일이 도래한 정규 복습만 포함하며, 표본이 적으면 수치 변동이 큽니다.</div>`}catch(e){card.innerHTML='<div class="c86-quality-foot">통계 기록 품질을 계산하지 못했습니다.</div>'}}
-  function cleanVisibleTerms(){const appVer=document.documentElement.dataset.cemsVersion||'9.5.0';document.querySelectorAll('.cems82-brand-sub').forEach(x=>x.textContent='학습 분석 · FSRS-6 · v'+appVer);document.querySelectorAll('.splash-sub').forEach(x=>x.textContent='v'+appVer+' · 통합 학습 허브');document.querySelectorAll('*').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(t==='데이터 점검')el.textContent='데이터 점검';else if(t==='데이터 점검 및 백업')el.textContent='데이터 점검 및 백업'});const guide=document.querySelector('#c84-terms .card-title');if(guide)guide.textContent='📘 통계 용어 · 문제 기록'}
+  function cleanVisibleTerms(){const appVer=document.documentElement.dataset.cemsVersion||'9.5.1';document.querySelectorAll('.cems82-brand-sub').forEach(x=>x.textContent='학습 분석 · FSRS-6 · v'+appVer);document.querySelectorAll('.splash-sub').forEach(x=>x.textContent='v'+appVer+' · 통합 학습 허브');document.querySelectorAll('*').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(t==='데이터 점검')el.textContent='데이터 점검';else if(t==='데이터 점검 및 백업')el.textContent='데이터 점검 및 백업'});const guide=document.querySelector('#c84-terms .card-title');if(guide)guide.textContent='📘 통계 용어 · 문제 기록'}
   function init(){
     installDataSheet();installDock();for(const t of isChinese?['vocab','expr']:['vocab','phrasal','expr']){try{installFilterPresets(t);installAdvancedFilters(t);const input=document.getElementById(countId(t));if(input)input.max='50'}catch(e){console.warn('[CEMS86 init filter]',t,e)}}installDataCard();cleanVisibleTerms();scheduleUpdate();setTimeout(updateStatsQuality,350);
     document.addEventListener('click',e=>{const p=e.target.closest('[data-c86-preset]');if(p){setPreset(p.dataset.type,p.dataset.c86Preset);return}const c=e.target.closest('[data-c86-clear]');if(c){setPreset(c.dataset.c86Clear,'all');return}if(e.target.closest('#page-study .chip,#page-study .mode-card,#study-type-tabs .type-tab'))scheduleUpdate();if(e.target.closest('#page-stats,[data-c83-period],[data-c83-scope],[data-c83-action="refresh"]'))setTimeout(updateStatsQuality,250)});
@@ -15032,10 +15032,10 @@ if (document.readyState === 'loading') {
 <script src="./learning/learning-ui.js"></script>
 <script src="./learning/ux-polish.js"></script>
 <script src="./learning/cems-9.4.1-stable.js"></script>
-<script src="./learning/cems-9.4.1-deck-groups.js?v=9.5.0"></script>
+<script src="./learning/cems-9.4.1-deck-groups.js?v=9.5.1"></script>
 <script src="./learning/cems-9.4.1-learning-hub.js"></script>
 <script src="./learning/cems-9.4.1-ui.js"></script>
-<script defer="" src="v944/cems-v9.4.4.js?v=9.5.0"></script>
-<script defer="" src="v944/cems-v9.4.4-final.js?v=9.5.0"></script>
+<script defer="" src="v944/cems-v9.4.4.js?v=9.5.1"></script>
+<script defer="" src="v944/cems-v9.4.4-final.js?v=9.5.1"></script>
 </body>
 </html>

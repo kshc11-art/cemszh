@@ -27,6 +27,36 @@ if (!window.foo.__myFlag) { ... window.foo.__myFlag = true; }
 
 전부 제거됐습니다. `window[name] = fn` 으로 충분하고, 향후 CSP 도입을 막습니다.
 
+### 관찰자(MutationObserver)의 콜백에서 그 관찰 대상을 다시 쓰지 않는다
+
+```js
+// 금지 — 무한 마이크로태스크 루프. 앱 전체가 영구 정지한다.
+mo = new MutationObserver(relabel);
+mo.observe(overlay, {attributes:true, attributeFilter:['class']});
+function relabel(){ ... overlay.classList.add('x'); }   // ← 관찰 중인 class 를 다시 씀
+```
+
+**Chromium 은 이미 있는 토큰을 `classList.add` 해도, 같은 값으로 `setAttribute` 해도
+MutationRecord 를 쌓는다**(하네스로 실측 확인). 마이크로태스크 체크포인트는 큐가 빌 때까지
+태스크 루프로 돌아가지 않으므로, 콜백이 자기 관찰 대상을 건드리면 그 자리에서 앱이 멈춘다.
+v9.5.0 의 "확인 대화상자를 여는 순간 앱 정지"가 정확히 이것이었다.
+
+세 가지를 같이 지킨다.
+
+1. 값이 실제로 달라질 때만 쓴다 — `if(!el.classList.contains(x)) el.classList.add(x)`
+2. 콜백에 재진입 가드를 둔다 (모듈 스코프 변수)
+3. 콜백 끝에서 `observer.takeRecords()` 로 **자기가 만든 레코드를 버린다**
+
+`harness/modals.mjs` 가 이 계열을 잡는다. 핵심은 모든 `page.evaluate` 에 타임아웃을 거는 것이다
+— 멈춘 페이지의 evaluate 는 resolve 도 reject 도 하지 않으므로, 타임아웃이 곧 "앱 정지" 신호다.
+
+### 잠금을 얻었으면 모든 조기 반환에서 푼다
+
+`phase3BeginSubmit(state)` 를 통과했으면 그 함수의 **모든** 경로가 `phase3EndSubmit(state)`
+로 끝나야 한다. `commitAnswer` 는 예외만 던지는 게 아니라 `{ok:false}` 로도 돌아온다
+(`missing-card` · `no-pending-rating` · 이미 커밋된 토큰). 그때 잠금을 남기면 그 학습 모드의
+확인·평가 버튼이 조용히 전부 먹통이 된다.
+
 ### 캡처 단계에서 앱의 원래 경로를 죽이지 않는다
 
 `stopImmediatePropagation()` 으로 `onclick` 핸들러를 가로채면, 그 핸들러가 하던 다른 일(카운터 갱신 등)이 조용히 죽습니다. 예외는 `#file-input` 의 `.json` 라우팅 하나뿐입니다(JSON 이 Excel 파서로 가면 안 되므로).
@@ -82,6 +112,12 @@ const id = CEMS_LENS.push(fn);   // 해제하려면 CEMS_LENS.pop(id)
 
 렌즈 콜백의 두 번째 인자 `kind` 는 `'vocab' | 'expr' | 'phrasal'` 입니다. **반드시 확인하세요** — 확인하지 않으면 의도하지 않은 컬렉션까지 걸러집니다.
 
+실제로 났던 일: 데이터 화면의 "최근 7일" 필터가 `kind` 를 보지 않아, 렌즈가 걸려 있는
+약 2초 동안 앱 어디서 부르든 `getAllExpr` 이 어휘용 날짜 규칙으로 걸러진 결과를 돌려줬다
+(표현 1678 → 1278). **시드를 방금 넣은 프로필에서는 보이지 않는다** — 모든 행의
+`addedDate` 가 오늘이라 필터가 아무것도 걸러내지 않기 때문이다. 재현하려면 일부 행의
+추가일을 과거로 돌려야 한다(`harness/probe.mjs` 의 `데이터 필터 렌즈 격리` 가 그렇게 한다).
+
 렌즈를 타지 않는 원본이 필요하면 `getAllFromStore(storeName)` 을 직접 부르세요.
 
 ### 가드는 모듈 스코프 변수로
@@ -136,10 +172,20 @@ IndexedDB 스토어가 완전히 분리돼 있어 쓰기 충돌이 없습니다.
 
 ```bash
 cd harness && npm install && npx playwright install chromium
+#  브라우저를 새로 못 받는 환경이면: export CEMS_CHROMIUM_PATH=/경로/chromium
+
+npm run all                              # 아래 전부
 
 node check.mjs        ..                 # 문법 검사 (외부 JS + index.html 인라인)
 node asset-check.mjs  ..                 # sw.js 선언 ↔ 실제 파일 ↔ index.html 참조 대조
-node probe.mjs        .. before          # 회귀 배터리 (화면 10개 · 학습모드 8종 · 구조 지표)
+                                         #  + CEMS_IMPORT_CORE 두 사본 바이트 대조
+node probe.mjs        .. before          # 회귀 배터리 (화면·학습모드·구조 지표 + 아래 4종)
+                                         #  빈 답 채점 · 탭 복귀 타이머 · 렌즈 격리
+                                         #  · 강제 종료 세션 종류 · DB versionchange 복구
+node modals.mjs       .. before          # 확인 대화상자 · 학습 종료 전 경로 (실제 DOM 클릭)
+node version.mjs      ..                 # 화면 버전 문구 ↔ VERSION
+node ai-grader.mjs    .. before          # AI 채점 전 경로 (모의 Worker, 키 불필요)
+node sanitizer.mjs                       # 저장 정규화 동치성
 node sweep.mjs        .. before          # 전수 점검 (모든 버튼 클릭)
 node latency.mjs      ..                 # 화면별 렌더 지연
 
@@ -147,6 +193,22 @@ node latency.mjs      ..                 # 화면별 렌더 지연
 
 node probe.mjs .. after && node sweep.mjs .. after
 ```
+
+### 대조군을 함께 재세요
+
+"고쳤다" 를 증명하는 가장 확실한 방법은 **수정 전 트리에서 같은 검사를 돌려 FAIL 이 나는 것을
+보이는 것**입니다. 검사가 수정 후에만 통과하는지, 원래부터 통과했는지는 그렇게만 갈립니다.
+
+```bash
+git archive <수정전커밋> | (mkdir -p /tmp/ctrl && tar -x -C /tmp/ctrl)
+node probe.mjs /tmp/ctrl ctrl && node probe.mjs .. after
+```
+
+### probe / sweep 이 못 보는 곳
+
+`probe.mjs` 와 `sweep.mjs` 는 학습 **세션 화면**(page-flashcard 등)에 들어가지 않고
+함수를 직접 부릅니다. v9.5.0 의 "확인 대화상자를 여는 순간 앱 정지"를 둘 다 놓친 이유입니다.
+그 경로는 `modals.mjs` 가 실제 DOM 클릭으로 봅니다.
 
 ### CSS 를 고칠 때
 
@@ -168,29 +230,50 @@ python3 cdiff.py ctrl after
 
 ## 6. 릴리스 체크리스트
 
-버전을 올릴 때 함께 바꿔야 하는 곳:
+**화면에 보이는 버전의 출처는 `index.html` 의 `<html data-cems-version>` 하나입니다.**
+`learning/ux-polish.js` · `learning/learning-ui.js` · `learning/cems-9.4.1-stable.js` ·
+`v944/cems-v9.4.4.js` 는 전부 그 값을 읽기만 합니다. 각자 자기 상수를 쓰던 v9.5.0 에서는
+9.5.0 빌드가 사용자에게 "v9.4.4" 로 보였고, 여섯 모듈이 같은 속성을 서로 다른 값으로 써서
+`data-cems-version` 이 계속 되돌려 쓰였습니다(측정 63회). 그 구조를 다시 만들지 마세요.
+
+버전을 올릴 때 바꿀 곳:
 
 - `VERSION`, `REVISION`
 - `manifest.webmanifest` 의 `version`, `name`
-- `v944/build-info.json`
-- `sw.js` 의 `CACHE_VERSION`
-- `index.html` 의 `data-cems-version`, 인라인 `VERSION` 상수
-- `learning/learning-ui.js` · `learning/ux-polish.js` 의 `VERSION` 상수 (화면에 표시됨)
+- `v944/build-info.json` 의 `version` · `revision` · `build` · `cacheVersion`
+- `sw.js` 의 `CACHE_VERSION` (과 `LOG_TAG`)
+- `index.html` 의 `data-cems-version`, 인라인 `VERSION` 상수, `<title>`, `.splash-sub`
 - **캐시버스팅 쿼리 `?v=` 6곳** — index.html 5곳 + `v944/cems-v9.4.4.js` 의 `WORKER_URL` 1곳, 그리고 `sw.js` 의 대응 선언
+- 각 레이어의 `dataset.cemsVersion || '<폴백>'` 폴백 문자열 3곳 (dataset 이 없을 때만 쓰임)
 
-`node harness/asset-check.mjs .` 가 이 불일치를 잡아냅니다. 릴리스 전 반드시 실행하세요.
+`node harness/asset-check.mjs .` 가 선언 자산·쿼리 불일치를 잡고,
+`node harness/version.mjs ..` 가 **실제 브라우저에서 화면 문구가 `VERSION` 과 같은지** 확인합니다.
+둘 다 릴리스 전에 돌리세요.
+
+### 버전을 안 올리면 수정이 사용자에게 가지 않습니다
+
+`sw.js` 의 `CACHE_VERSION` 이 그대로면 서비스워커가 기존 캐시를 계속 씁니다.
+코드를 고쳤는데 버전을 안 올리면 배포해도 구 자산이 그대로 서빙됩니다.
 
 ---
 
 ## 7. 남은 과제
 
-### Lean 학습 화면 진입 약 60초 (최우선)
+### Lean 학습 화면 진입 — 해결됨 (v9.5.1)
 
-`showPage('lean')` 후 화면이 채워지기까지 실측 **61초**. v9.4.4-final2 에서도 **57.5초**로 동일한 기존 문제입니다.
+원인은 DB 조회도, `buildTodayPlan` 도 아니었습니다. `phase7UpdateA11yState()` 가
+문서 전체를 훑는데 **DOM 노드가 하나 늘어날 때마다** 불렸습니다
+(`phase7EnhanceControls` 본문 끝 + `childObserver` 가 추가 노드마다 그것을 호출).
 
-- `getAllExpr` 자체는 50ms, `getAllWords` 는 2.2초로 정상입니다 → DB 조회가 원인이 아닙니다.
-- `scheduler.buildTodayPlan()` 은 캐시가 더워진 뒤 측정하면 693ms 입니다 → 첫 호출의 무언가가 메인 스레드를 수십 초 막습니다.
-- 다음 단계: `harness/latency.mjs` 로 재현한 뒤 Chrome DevTools Performance 트레이스를 떠서 블로킹 구간을 특정하세요. `listUnitStates` / `dueBenchmarks` / `renderDashboard` 가 후보입니다.
+실측(진입 1회): 24,638회 실행 · `document.querySelectorAll` 98,792회 ·
+`setAttribute` 12,606,531회 · `inert` 설정 542,036회. CPU 프로파일 기준 지연의 87%.
+
+수정: 프레임당 1회로 합치고(rAF + 배경 탭용 200ms 백업), 값이 달라질 때만 씁니다.
+`harness/latency.mjs` 기준 **39,761ms → 5,338ms**.
+
+교훈: "문서 전체를 훑는 함수"를 노드 단위 훅에서 부르지 마세요. 재측정은
+`node harness/latency.mjs ..` 로 합니다. 프로파일이 필요하면 CDP `Profiler` 로 뜹니다
+(DevTools UI 없이도 됩니다).
 
 ### 시드 콘텐츠 품질
 

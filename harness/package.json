@@ -1,6 +1,6 @@
 {
   "name": "cems-harness",
-  "version": "9.5.0",
+  "version": "9.5.1",
   "private": true,
   "type": "module",
   "description": "CEMS 회귀 테스트 하네스 — 실제 Chromium 으로 앱을 띄워 동작을 검증한다",
@@ -9,8 +9,13 @@
     "assets": "node asset-check.mjs ..",
     "probe": "node probe.mjs ..",
     "sweep": "node sweep.mjs ..",
+    "modals": "node modals.mjs ..",
+    "version": "node version.mjs ..",
+    "ai": "node ai-grader.mjs ..",
+    "sanitizer": "node sanitizer.mjs",
     "latency": "node latency.mjs ..",
-    "postinstall": "echo '다음: npx playwright install chromium'"
+    "all": "node check.mjs .. && node asset-check.mjs .. && node probe.mjs .. all && node modals.mjs .. all && node sweep.mjs .. all && node version.mjs .. && node ai-grader.mjs .. all && node sanitizer.mjs",
+    "postinstall": "echo '다음: npx playwright install chromium  (미리 설치된 브라우저를 쓰려면 CEMS_CHROMIUM_PATH 환경변수)'"
   },
   "devDependencies": {
     "playwright": "^1.49.0"

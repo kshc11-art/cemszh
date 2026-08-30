@@ -1,4 +1,4 @@
-/* CEMS v9.5.0 service worker (Chinese)
+/* CEMS v9.5.1 service worker (Chinese)
  * ---------------------------------------------------------------------------
  * v9.3.2 대비 구조
  *  1) 프리캐시를 CRITICAL / SHELL_OPTIONAL / DEFERRED_CONTENT 3단계로 분리했다.
@@ -18,7 +18,7 @@
  *  C-6 index.html 이 두 URL 로 중복 프리캐시되던 2.1MB 낭비.
  *  C-7 무제한 캐시 증식: 선언 목록 밖 항목에 상한을 두고 FIFO 로 정리한다.
  *  C-8 복구 파일(v944/cems-v9.4.4-recovery.json)을 지연 캐시 목록에 추가.
- *  C-9 캐시 버전 9.5.0.
+ *  C-9 캐시 버전 9.5.1.
  *
  * 동일 오리진 GET 만 다룬다. Gemini Worker 호출과 모든 교차 출처는 항상 네트워크.
  * ==========================================================================*/
@@ -29,8 +29,8 @@ const APP_CACHE_PREFIX = 'cems-zh-v9-';
    'cems' 로 시작하는 이 앱 계열 캐시는 현재 버전만 남기고 전부 지운다.
    다른 앱의 캐시를 건드리지 않도록 접두사 자체는 좁게 유지한다. */
 const LEGACY_CACHE_PREFIX = 'cems';
-const CACHE_VERSION = APP_CACHE_PREFIX + '9.5.0';
-const LOG_TAG = '[CEMS SW 9.5.0]';
+const CACHE_VERSION = APP_CACHE_PREFIX + '9.5.1';
+const LOG_TAG = '[CEMS SW 9.5.1]';
 const BASE_URL = new URL('./', self.location.href).href;
 const APP_SHELL = new URL('index.html', BASE_URL).href;
 
@@ -54,7 +54,7 @@ const CRITICAL = [
   abs('learning/learning-ui.js'),
   abs('learning/ux-polish.js'),
   abs('learning/cems-9.4.1-stable.js'),
-  abs('learning/cems-9.4.1-deck-groups.js?v=9.5.0'),
+  abs('learning/cems-9.4.1-deck-groups.js?v=9.5.1'),
   abs('learning/cems-9.4.1-learning-hub.js'),
   abs('learning/learning.css'),
   abs('learning/ux-polish.css'),
@@ -64,10 +64,10 @@ const CRITICAL = [
   abs('learning/cems-9.4.1-learning-hub.css'),
   abs('learning/cems-9.4.1-theme.css'),
   abs('learning/cems-9.4.1-ui.js'),
-  abs('v944/cems-v9.4.4.css?v=9.5.0'),
-  abs('v944/cems-v9.4.4-final.css?v=9.5.0'),
-  abs('v944/cems-v9.4.4.js?v=9.5.0'),
-  abs('v944/cems-v9.4.4-final.js?v=9.5.0')
+  abs('v944/cems-v9.4.4.css?v=9.5.1'),
+  abs('v944/cems-v9.4.4-final.css?v=9.5.1'),
+  abs('v944/cems-v9.4.4.js?v=9.5.1'),
+  abs('v944/cems-v9.4.4-final.js?v=9.5.1')
 ];
 
 /* 있으면 좋지만 없어도 앱은 뜬다. 실패해도 install 은 계속. */
@@ -79,7 +79,7 @@ const SHELL_OPTIONAL = [
   abs('icons/icon-192.png'),
   abs('icons/icon-512.png'),
   abs('icons/icon-maskable-512.png'),
-  abs('v944/cems-v9.4.4-import-worker.js?v=9.5.0'),
+  abs('v944/cems-v9.4.4-import-worker.js?v=9.5.1'),
   abs('v944/zh-tw-travel-day3.json'),
   abs('content/data_catalog_v932.json'),
   abs('content/lean_unit.json'),

@@ -122,7 +122,7 @@
   const APP_VERSION = document.documentElement.dataset.cemsVersion || VERSION;
   const SCRIPT_URL = document.currentScript?.src || new URL('v944/cems-v9.4.4.js', location.href).href;
   const ASSET_BASE = new URL('.', SCRIPT_URL);
-  const WORKER_URL = new URL('cems-v9.4.4-import-worker.js?v=9.5.0', ASSET_BASE).href;
+  const WORKER_URL = new URL('cems-v9.4.4-import-worker.js?v=9.5.1', ASSET_BASE).href;
   const ROUTINE_URL = new URL('zh-tw-travel-day3.json', ASSET_BASE).href;
   const DB_NAME = 'cemsExternalLibrary942';
   const DB_VERSION = 3;

@@ -12,7 +12,7 @@
   /* 9.5.1: ux-polish.js 와 같은 DOM 에 버전 문자열을 쓰므로 출처를 하나로 맞춘다
      (<html data-cems-version>). 두 상수가 어긋나 있으면 아래 protectLeanVersion 의
      관찰자와 ux-polish 의 syncVersion 이 서로 값을 되돌려 쓴다. */
-  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.0';
+  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.1';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var initPromise = null;
   var state = {

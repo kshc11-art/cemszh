@@ -1,6 +1,6 @@
 {
   "id": "./",
-  "name": "CEMS Chinese · v9.5.0",
+  "name": "CEMS Chinese · v9.5.1",
   "short_name": "中文學習",
   "description": "교과서·실전 회화·대용량 JSON 라이브러리, 전체 정보 카드와 FSRS 복습을 통합한 오프라인 중국어 학습 PWA",
   "lang": "ko-KR",
@@ -103,5 +103,5 @@
       ]
     }
   ],
-  "version": "9.5.0"
+  "version": "9.5.1"
 }

@@ -6,7 +6,7 @@
      이 상수와 learning-ui.js 의 상수가 서로 다른 값을 같은 DOM 에 쓰고 있어서
      9.5.0 빌드가 사용자에게 "v9.4.4" 로 보였고, data-cems-version 이 두 값 사이를
      오갔다(learning-ui 의 관찰자가 되돌려 쓰는 구조). 릴리스 시 바꿀 곳도 줄어든다. */
-  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.0';
+  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.1';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var PREFIX = 'cemsUx26:' + LANG + ':';
   var state = {
