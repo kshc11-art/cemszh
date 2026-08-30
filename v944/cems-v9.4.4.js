@@ -852,8 +852,12 @@
     $$('.modal-overlay').forEach((overlay) => {
       const modal = $('.modal', overlay);
       if (!modal) return;
-      overlay.classList.add('c943-native-modal-overlay');
-      modal.classList.add('c943-native-modal');
+      /* 9.5.1: classList.add 는 이미 있는 토큰이어도 class 속성을 다시 써서
+         MutationRecord 를 만든다(Chromium 실측 확인). #confirm-modal 의 class 를
+         보는 관찰자가 이 함수를 부르므로, 조건 없이 쓰면 관찰자가 자기 변경에
+         다시 깨어나 마이크로태스크 루프가 된다. 이미 있으면 쓰지 않는다. */
+      if (!overlay.classList.contains('c943-native-modal-overlay')) overlay.classList.add('c943-native-modal-overlay');
+      if (!modal.classList.contains('c943-native-modal')) modal.classList.add('c943-native-modal');
       modal.setAttribute('role', 'dialog');
       modal.setAttribute('aria-modal', 'true');
       const header = $('.modal-header', modal);
@@ -909,6 +913,7 @@
      CEMSHooks 에 모달 채널이 없어서 훅 대신 좁은 MutationObserver 를 쓴다
      (문서 전체가 아니라 이 모달 하나의 class 속성만 본다). */
   let confirmObserver = null;
+  let relabelingConfirm = false;
 
   function confirmButtonLabel(title) {
     const text = cleanText(title);
@@ -919,18 +924,37 @@
     return '확인';
   }
 
+  /* 9.5.1 치명: 이 콜백은 자신이 관찰하는 속성(#confirm-modal 의 class)을 다시 쓴다.
+     Chromium 은 같은 값을 다시 써도 MutationRecord 를 쌓으므로, 콜백 → 변경 →
+     콜백 … 이 마이크로태스크 체크포인트 안에서 무한히 돈다. 체크포인트는 큐가 빌
+     때까지 태스크 루프로 돌아가지 않으므로 메인 스레드가 영구히 멈춘다.
+     증상: 확인 대화상자(학습 종료 → "종료하기", 삭제/초기화/복원)가 열리는 순간 앱 정지.
+     ① 재진입 가드로 중첩 실행을 막고,
+     ② 본문이 만든 레코드는 takeRecords() 로 버려 관찰자가 자기 변경에 깨어나지 않게 한다.
+     본문은 동기 실행이라 이 구간에 쌓인 레코드는 전부 우리가 만든 것이다. */
   function relabelConfirmModal() {
-    const overlay = $('#confirm-modal');
-    if (!overlay || !overlay.classList.contains('show')) return;
-    const title = cleanText($('#confirm-title', overlay)?.textContent);
-    const confirmButton = $('#confirm-btn', overlay);
-    const cancelButton = $('.c943-modal-actions button:not(#confirm-btn), .modal button:not(#confirm-btn):not(.modal-close)', overlay);
-    const label = confirmButtonLabel(title);
-    if (confirmButton && cleanText(confirmButton.textContent) !== label) confirmButton.textContent = label;
-    if (cancelButton && /학습 종료|퀴즈 종료/.test(title) && cleanText(cancelButton.textContent) !== '계속 학습') {
-      cancelButton.textContent = '계속 학습';
+    if (relabelingConfirm) return;
+    relabelingConfirm = true;
+    try {
+      const overlay = $('#confirm-modal');
+      if (!overlay || !overlay.classList.contains('show')) return;
+      const title = cleanText($('#confirm-title', overlay)?.textContent);
+      const confirmButton = $('#confirm-btn', overlay);
+      const cancelButton = $('.c943-modal-actions button:not(#confirm-btn), .modal button:not(#confirm-btn):not(.modal-close)', overlay);
+      const label = confirmButtonLabel(title);
+      if (confirmButton && cleanText(confirmButton.textContent) !== label) confirmButton.textContent = label;
+      /* 9.5.1: 예전에는 '계속 학습' 으로 바꾸기만 하고 되돌리지 않았다. 학습 종료 대화상자를
+         한 번 띄우고 나면 그 뒤의 삭제·초기화·복원 대화상자까지 취소 버튼이 계속
+         "계속 학습" 으로 남았다(실측 확인). 제목에 맞는 문구로 항상 맞춘다. */
+      if (cancelButton) {
+        const cancelLabel = /학습 종료|퀴즈 종료/.test(title) ? '계속 학습' : '취소';
+        if (cleanText(cancelButton.textContent) !== cancelLabel) cancelButton.textContent = cancelLabel;
+      }
+      enhanceNativeModals();
+    } finally {
+      confirmObserver?.takeRecords();
+      relabelingConfirm = false;
     }
-    enhanceNativeModals();
   }
 
   function installConfirmEnhancer() {

@@ -27,7 +27,7 @@ const srv = http.createServer((q, s) => {
 });
 await new Promise((r) => srv.listen(0, '127.0.0.1', r));
 
-const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+const browser = await chromium.launch({ executablePath: process.env.CEMS_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 const page = await (await browser.newContext({ viewport: { width: 430, height: 932 }, locale: 'ko-KR' })).newPage();
 const pageErrors = [];
 page.on('pageerror', (e) => pageErrors.push(String(e.message).slice(0, 200)));

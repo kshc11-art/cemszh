@@ -320,7 +320,7 @@ const short = (v) => {
   const base = `http://127.0.0.1:${port}`;
   console.log(`\n[css-${LABEL}] ${APP_DIR}  →  ${base}`);
 
-  const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+  const browser = await chromium.launch({ executablePath: process.env.CEMS_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
   const ctx = await browser.newContext({
     viewport: { width: 430, height: 932 }, locale: 'ko-KR',
     deviceScaleFactor: 1, reducedMotion: 'reduce',

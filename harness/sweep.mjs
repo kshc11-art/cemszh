@@ -33,7 +33,7 @@ const find = (sev, area, what, detail) => { R.findings.push({ sev, area, what, d
 (async () => {
   const { s, port } = await serve(APP_DIR);
   const base = `http://127.0.0.1:${port}`;
-  const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+  const browser = await chromium.launch({ executablePath: process.env.CEMS_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
   const ctx = await browser.newContext({ viewport: { width: 430, height: 932 }, locale: 'ko-KR' });
   const page = await ctx.newPage();
   page.on('console', (m) => { if (m.type() === 'error') R.console.push(m.text().slice(0, 300)); });

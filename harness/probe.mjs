@@ -59,6 +59,7 @@ const step = (name, status, detail) => {
   console.log(`\n[${LABEL}] ${APP_DIR}  →  ${base}\n`);
 
   const browser = await chromium.launch({
+    executablePath: process.env.CEMS_CHROMIUM_PATH || undefined,
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
   });
   const ctx = await browser.newContext({ viewport: { width: 430, height: 932 }, locale: 'ko-KR' });
