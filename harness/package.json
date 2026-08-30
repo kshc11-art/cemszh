@@ -14,8 +14,9 @@
     "ai": "node ai-grader.mjs ..",
     "sanitizer": "node sanitizer.mjs",
     "latency": "node latency.mjs ..",
-    "all": "node check.mjs .. && node asset-check.mjs .. && node probe.mjs .. all && node modals.mjs .. all && node sweep.mjs .. all && node version.mjs .. && node ai-grader.mjs .. all && node sanitizer.mjs",
-    "postinstall": "echo '다음: npx playwright install chromium  (미리 설치된 브라우저를 쓰려면 CEMS_CHROMIUM_PATH 환경변수)'"
+    "all": "node check.mjs .. && node asset-check.mjs .. && node probe.mjs .. all && node modals.mjs .. all && node play.mjs .. all && node sweep.mjs .. all && node version.mjs .. && node ai-grader.mjs .. all && node sanitizer.mjs",
+    "postinstall": "echo '다음: npx playwright install chromium  (미리 설치된 브라우저를 쓰려면 CEMS_CHROMIUM_PATH 환경변수)'",
+    "play": "node play.mjs .."
   },
   "devDependencies": {
     "playwright": "^1.49.0"

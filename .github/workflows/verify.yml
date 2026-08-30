@@ -64,6 +64,10 @@ jobs:
         working-directory: harness
         run: node modals.mjs .. ci-modals
 
+      - name: 학습 모드 12종 플레이스루
+        working-directory: harness
+        run: node play.mjs .. ci-play
+
       - name: 화면 버전 문구 ↔ VERSION
         working-directory: harness
         run: node version.mjs ..
@@ -117,6 +121,7 @@ jobs:
           path: |
             harness/out/ci/
             harness/out/ci-modals/
+            harness/out/ci-play/
             harness/out/ci-ai/
             harness/out/ci-sweep/
           retention-days: 14

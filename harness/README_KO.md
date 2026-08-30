@@ -45,6 +45,9 @@ CEMS_CHROMIUM_PATH=/opt/pw-browsers/chromium node probe.mjs .. before
   이 스크립트는 실제 DOM 클릭으로 그 경로만 본다. 핵심 장치는 **모든 `page.evaluate`
   에 타임아웃을 거는 것** — 메인 스레드가 멈추면 evaluate 는 영원히 resolve 되지
   않으므로, 타임아웃 = 앱 정지 = FAIL 이다.
+- **play.mjs** — `probe` 는 화면이 뜨는지, `sweep` 은 버튼이 눌리는지, `modals` 는 종료
+  경로를 본다. 그 사이에 비어 있던 것 — **실제로 문제를 풀 수 있는가** — 를 본다.
+  모드마다 정답/오답을 번갈아 내고, 문항이 실제로 넘어가는지와 미처리 예외가 없는지를 본다.
 - **version.mjs** — 화면 문구를 쓰는 모듈이 여섯이었고 각자 자기 상수를 썼다.
   9.5.0 빌드가 사용자에게 "v9.4.4" 로 보이던 문제를 잡는다.
 - **ai-grader.mjs** — `worker/CONTRACT.md` 를 지키는 모의 Worker 를 띄운다.

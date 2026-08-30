@@ -11590,7 +11590,14 @@ rateCard = async function rateCardV82(grade) {
     const result=await commitAnswer({state:fcState,item,type,mode:'flashcard',grade,correct:Number(grade)>=2,isOutput:false,scheduleRetry:Number(grade)===0,trackRating:true});
     if(!result.ok){fcState.transitioning=false;phase3EndSubmit(fcState);return;}
     vibrate(Number(grade)>=2?10:[50,30,50]);
-    ANSWER_PIPELINE_V3.schedule(fcState,'advance',()=>{fcState.idx++;fcState.transitioning=false;phase3EndSubmit(fcState);showCard();},180,token);
+    /* 9.5.1: 성공 경로의 잠금 해제를 타이머 콜백 밖으로 뺐다. ANSWER_PIPELINE_V3.arm 은
+       예약된 콜백을 조건부로 버린다(문서가 숨겨졌거나, 예약 당시 토큰과 현재 카드의 토큰이
+       다를 때). ← / → 로 카드를 옮기면 정확히 그 토큰 불일치가 나므로, 커밋이 도는 동안
+       카드를 한 칸 옮기면 콜백이 통째로 버려지고 __phase3Submitting 이 영원히 true 로
+       남았다. 그 뒤로는 네 개의 평가 버튼이 전부 조용히 먹통이 된다(실측 재현).
+       중복 평가는 위의 isCommitted 검사와 fcState.transitioning 이 이미 막는다. */
+    phase3EndSubmit(fcState);
+    ANSWER_PIPELINE_V3.schedule(fcState,'advance',()=>{fcState.idx++;fcState.transitioning=false;showCard();},180,token);
   }catch(error){fcState.transitioning=false;phase3HandleFailure(error,fcState);}
 };
 rateExprCard = async function rateExprCardV82(grade) {
@@ -11603,7 +11610,8 @@ rateExprCard = async function rateExprCardV82(grade) {
     const result=await commitAnswer({state:exprState,item,type:'expr',mode:'expr-fc',grade,correct:Number(grade)>=2,isOutput:false,scheduleRetry:Number(grade)===0,trackRating:true});
     if(!result.ok){exprState.transitioning=false;phase3EndSubmit(exprState);return;}
     vibrate(Number(grade)>=2?10:[50,30,50]);
-    ANSWER_PIPELINE_V3.schedule(exprState,'advance',()=>{exprState.idx++;exprState.transitioning=false;phase3EndSubmit(exprState);showExprCard();},180,token);
+    phase3EndSubmit(exprState);   /* 위 rateCardV82 와 같은 이유 — 해제를 타이머 밖에서 한다 */
+    ANSWER_PIPELINE_V3.schedule(exprState,'advance',()=>{exprState.idx++;exprState.transitioning=false;showExprCard();},180,token);
   }catch(error){exprState.transitioning=false;phase3HandleFailure(error,exprState);}
 };
 

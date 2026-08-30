@@ -264,6 +264,38 @@ const step = (name, status, detail) => {
     leak.err || `전 ${leak.baseline} → 후 ${leak.after}${leak.leaked ? '  ← 오염됨' : ''}`);
   report.summary.exprLeak = leak;
 
+  // ── 6d. 평가 도중 카드를 옮기면 평가가 영영 죽는가 ───────────
+  //  rateCard 는 제출 잠금을 'advance' 타이머 콜백 안에서만 풀었다. 그 콜백은
+  //  ANSWER_PIPELINE_V3.arm 이 조건부로 버린다(예약 시점 토큰 ≠ 현재 카드 토큰).
+  //  커밋이 도는 동안 ← 를 누르면 정확히 그 상황이 되고, 이후 네 개의 평가 버튼이
+  //  세션 내내 조용히 먹통이 된다.
+  const rateLock = await page.evaluate(async () => {
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    try {
+      const words = await getAllWords();
+      window.showPage('study', true); await sleep(300);
+      startFC(words.slice(0, 6), words, 'vocab'); await sleep(1200);
+      const cur = () => document.getElementById('fc-current')?.textContent;
+      rateCard(3); await sleep(900);
+      rateCard(3); await sleep(900);
+      rateCard(3);            // await 하지 않는다 — 커밋 중에 ← 를 누르는 상황
+      await sleep(40);
+      prevCard();
+      await sleep(1500);
+      const stuck = !!fcState.__phase3Submitting;
+      /* 아직 평가하지 않은 카드로 옮겨서 평가가 먹히는지 본다 */
+      nextCardNav(); await sleep(400); nextCardNav(); await sleep(400); nextCardNav(); await sleep(400);
+      const before = cur();
+      rateCard(3); await sleep(1200);
+      return { stuck, before, after: cur() };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('평가 중 카드 이동 후 평가', rateLock.err ? 'fail' : (!rateLock.stuck && rateLock.before !== rateLock.after ? 'pass' : 'fail'),
+    rateLock.err || `잠금 잔류=${rateLock.stuck} · 진행 ${rateLock.before} → ${rateLock.after}${rateLock.before === rateLock.after ? '  ← 평가 버튼이 먹통' : ''}`);
+  report.summary.rateLock = rateLock;
+  await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
+  await page.waitForTimeout(300);
+
   // ── 7a. 강제 종료가 세션을 올바른 종류로 기록하는가 ──────────
   //  forceEndCurrentStudy 의 받아쓰기 분기만 currentListeningType 을 쓰고 있었다.
   const forcedEnd = await page.evaluate(async () => {
