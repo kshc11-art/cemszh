@@ -364,6 +364,13 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
+  /* 9.5.1: 같은 오리진 GET 을 전부 stale-while-revalidate 로 캐시하면,
+     호출부가 cache:'no-store' 로 명시한 요청까지 캐시된 응답이 돌아간다.
+     상태 조회처럼 최신값이 목적인 요청은 오래된 값을 진짜로 착각하게 만든다
+     (모의 Worker 의 /health 로 실측: 두 번째 응답이 달라졌는데 첫 응답이 나왔다).
+     내비게이션은 오프라인 셸 폴백이 필요하므로 그대로 둔다. */
+  if (request.mode !== 'navigate' && (request.cache === 'no-store' || request.cache === 'reload')) return;
+
   /* C-1: 지연 캐시가 비어 있으면 기회적으로 재개한다.
      respondWith 와 별개인 waitUntil 이라 이 요청의 응답을 늦추지 않으며,
      동시에 SW 가 유휴 종료되지 않도록 수명을 붙잡아 준다. */

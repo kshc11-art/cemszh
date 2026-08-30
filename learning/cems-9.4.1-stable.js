@@ -1086,8 +1086,27 @@
       ]);
       var body = await response.json().catch(function () { return {}; });
       if (!response.ok) throw new Error(body.message || body.error || 'HTTP ' + response.status);
-      setAiState('연결 성공 · Worker 정상 · 요청 모델 ' + (body.model || DEFAULT_MODEL), 'ok');
-    } catch (error) { setAiState('연결 실패 · ' + (error.code === 'timeout' ? '7초 시간 초과' : error.message), 'error'); }
+      /* 9.5.1: 예전에는 /health 가 200 이기만 하면 "연결 성공" 이라고 했다.
+         그런데 채점을 실제로 막는 조건은 /health 로 드러나는 다른 값들이다.
+         채점기 버전이 다르면 모든 /grade-answer 가 409 로 거부되고, API 키가 없으면
+         전부 실패한다. 실제로 v9.5.0 직전 배포가 이 상태였고 버튼은 계속 "연결 성공"
+         이라고 답했다. 이제 채점을 막는 조건을 그대로 검사한다. */
+      var remoteGrader = text(body.graderVersion);
+      if (remoteGrader && remoteGrader !== GRADER_VERSION) {
+        setAiState('연결됨 · 그러나 채점 불가 — Worker 채점기 ' + remoteGrader + ' ≠ 앱 ' + GRADER_VERSION + '. Worker 를 다시 배포하세요.', 'error');
+        return;
+      }
+      if (body.configured === false) {
+        setAiState('연결됨 · 그러나 채점 불가 — Worker 에 Gemini API 키가 없습니다.', 'error');
+        return;
+      }
+      var warnings = Array.isArray(body.warnings) ? body.warnings.filter(Boolean) : [];
+      if (warnings.length) {
+        setAiState('연결 성공 · 요청 모델 ' + (body.model || DEFAULT_MODEL) + ' · 확인 필요: ' + warnings.join(' / '), 'warn');
+        return;
+      }
+      setAiState('연결 성공 · 채점기 ' + (remoteGrader || GRADER_VERSION) + ' · 요청 모델 ' + (body.model || DEFAULT_MODEL), 'ok');
+    } catch (error) { setAiState('연결 실패 · ' + (error.code === 'timeout' ? '7초 시간 초과' : aiErrorMessage(error)), 'error'); }
   }
 
   /* ---------- Local-first free sentence checker ---------- */
@@ -1168,8 +1187,49 @@
     var previous = state.aiInFlight || Promise.resolve();
     var next = previous.catch(function () {}).then(task);
     state.aiInFlight = next;
-    next.finally(function () { if (state.aiInFlight === next) state.aiInFlight = null; });
+    /* 9.5.1: 예전에는 next.finally(...) 를 썼다. finally 는 파생 프로미스를 새로 만들고,
+       그 프로미스는 next 의 거부를 그대로 물려받는데 아무도 받지 않는다. 호출자는
+       next 를 받아 처리하므로, Worker 가 한 번 실패할 때마다 unhandledrejection 이
+       하나씩 떠서 phase7LogCrash 가 앱 크래시로 기록했다(모의 Worker 로 실측).
+       then(정리, 정리) 는 거부를 흡수하므로 파생 프로미스가 거부되지 않는다. */
+    var settle = function () { if (state.aiInFlight === next) state.aiInFlight = null; };
+    next.then(settle, settle);
     return next;
+  }
+
+  /* 9.5.1: Worker 는 오류를 기계용 코드로 돌려준다(upstream_error, gemini_timeout …).
+     클라이언트가 body.error 를 그대로 화면에 붙여서 사용자가 "upstream_error" 를 봤다.
+     아는 코드는 한국어로 옮기고, 모르는 코드는 원문을 괄호로 덧붙여 진단은 남긴다. */
+  var AI_ERROR_KO = {
+    grader_version_mismatch: '앱과 Worker 의 채점기 버전이 다릅니다. Worker 를 다시 배포하세요.',
+    invalid_access_token: '접근 토큰이 올바르지 않습니다. 설정에서 토큰을 확인하세요.',
+    worker_token_not_configured: 'Worker 에 접근 토큰이 설정되지 않았습니다.',
+    gemini_key_not_configured: 'Worker 에 Gemini API 키가 설정되지 않았습니다.',
+    gemini_auth_failed: 'Gemini 인증에 실패했습니다. Worker 의 API 키를 확인하세요.',
+    gemini_rate_limited: 'Gemini 사용량 한도에 걸렸습니다. 잠시 뒤 다시 시도하세요.',
+    gemini_timeout: 'Gemini 응답이 제한 시간을 넘었습니다.',
+    gemini_network_error: 'Worker 가 Gemini 에 연결하지 못했습니다.',
+    gemini_invalid_json: 'Gemini 응답을 해석하지 못했습니다.',
+    gemini_schema_mismatch: 'Gemini 응답 형식이 계약과 다릅니다.',
+    rate_limited: '요청이 너무 잦습니다. 잠시 뒤 다시 시도하세요.',
+    payload_too_large: '보낸 문장이 너무 깁니다.',
+    accepted_answer_too_long: '정답 후보 문장이 너무 깁니다.',
+    accepted_answers_too_large: '정답 후보가 너무 많습니다.',
+    invalid_json_body: '요청 형식이 올바르지 않습니다.',
+    not_found: 'Worker 주소가 올바르지 않습니다.',
+    upstream_error: 'Worker 가 채점에 실패했습니다.',
+    worker_error: 'Worker 가 채점에 실패했습니다.',
+    timeout: 'AI 응답이 8초를 넘었습니다.',
+    circuit_open: '일시 오류가 반복되어 2분간 AI 판독을 쉬고 있습니다.',
+    disabled: 'AI 판독이 설정되지 않았습니다.',
+    local_daily_cap: '이 기기의 오늘 AI 소프트 한도에 도달했습니다.'
+  };
+  function aiErrorMessage(error) {
+    var code = text(error && error.code), raw = text(error && error.message);
+    if (AI_ERROR_KO[code]) return AI_ERROR_KO[code];
+    if (AI_ERROR_KO[raw]) return AI_ERROR_KO[raw];
+    if (/^[a-z0-9_]+$/.test(raw)) return 'AI 판독에 실패했습니다. (' + raw + ')';
+    return raw || 'AI 판독에 실패했습니다.';
   }
   async function callGeminiGrader(row, learner) {
     var cfg = await aiConfig();
@@ -1263,9 +1323,15 @@
       else setGradeStatus(Object.assign({},ai,{verdict:'uncertain',reason:(ai.reason||'')+' 신뢰도가 낮아 직접 판정이 필요합니다.'}),learner);
     } catch(error){
       if(gradeToken!==state.sentenceGradeToken||state.currentSentence!==row||state.currentSentenceScored)return;
-      setGradeStatus({verdict:'uncertain',source:'local',reason:(error.code==='timeout'?'AI 응답이 8초를 넘었습니다.':error.message)+' 학습은 계속할 수 있으며, 이 답을 오답으로 자동 기록하지 않습니다.'},learner);
+      setGradeStatus({verdict:'uncertain',source:'local',reason:aiErrorMessage(error)+' 학습은 계속할 수 있으며, 이 답을 오답으로 자동 기록하지 않습니다.'},learner);
     } finally{
-      if(gradeToken===state.sentenceGradeToken&&state.currentSentence===row&&!state.currentSentenceScored){qs('#cems931-sentence-submit').disabled=false;}
+      /* 9.5.1: 예전에는 !state.currentSentenceScored 일 때만 버튼을 되살렸다.
+         그런데 AI 판독이 성공하면 recordSentenceOutcome 이 그 플래그를 세우므로,
+         채점에 성공할 때마다 "다음 문장" 버튼이 disabled 로 남아 다음 문장으로
+         넘어갈 수 없었다(모의 Worker 로 실측 확인). 로컬 판정 경로는 애초에
+         버튼을 끄지 않아서 이 막다른 길은 AI 경로에서만 났다.
+         더 새 요청이 시작됐거나 문장이 바뀐 경우에만 손대지 않는다. */
+      if(gradeToken===state.sentenceGradeToken&&state.currentSentence===row){qs('#cems931-sentence-submit').disabled=false;}
     }
   }
   async function manualSentence(correct) {
@@ -1477,7 +1543,11 @@
       else if(action==='test-ai')testAiConnection();
     });
     document.addEventListener('input',function(event){if(event.target&&event.target.id==='cems931-example-search')filterExampleRepository();if(event.target&&/^cems931-(proxy|ai-|weekly)/.test(event.target.id)){clearTimeout(settingsTimer);settingsTimer=setTimeout(saveAiSettingsUi,500);}});
-    document.addEventListener('change',function(event){if(event.target&&event.target.id==='cems931-example-filter')filterExampleRepository();if(event.target&&['cems931-ai-enabled','cems931-ai-daily-cap','cems931-weekly-goal'].includes(event.target.id))saveAiSettingsUi();});
+    /* 9.5.1: Worker 주소·토큰 입력칸이 이 목록에 없어서, 토글을 먼저 켜고 주소를 나중에
+       입력하면 두 값이 저장되지 않았다. 그러면 aiConfig().url/token 이 비어 AI 채점이
+       조용히 로컬 판정으로만 떨어진다("설정 탭에서 Worker를 연결하거나..."). 저장 경로가
+       "연결 확인" 버튼 하나뿐이었던 셈이다. */
+    document.addEventListener('change',function(event){if(event.target&&event.target.id==='cems931-example-filter')filterExampleRepository();if(event.target&&['cems931-ai-enabled','cems931-proxy-url','cems931-proxy-token','cems931-ai-daily-cap','cems931-weekly-goal'].includes(event.target.id))saveAiSettingsUi();});
     document.addEventListener('keydown',function(event){if(event.target&&event.target.id==='cems931-sentence-input'&&(event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();submitSentence();}});
   }
   async function initStable() {
