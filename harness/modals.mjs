@@ -149,6 +149,53 @@ const MODES = [
       r === FROZEN ? '앱 정지' : `콜백=${r.cb} 닫힘=${r.open === false}${cancelErr ? ' ' + cancelErr : ''}`);
   }
 
+  /* ── 1b. 학습모드 선택기가 확인 버튼을 실제로 감추는가 ────────────
+     showStudyModeModal 계열은 같은 #confirm-modal 을 재사용하면서 확인 버튼을
+     인라인 display:none 으로 감추려 했지만, v944 CSS 의 !important 규칙이 이를
+     이겨서 버튼이 계속 보였다. 게다가 그 버튼에는 직전 확인 대화상자의 onclick 이
+     그대로 남아 있어, 선택기에서 확인을 누르면 엉뚱한 동작이 조용히 실행됐다.
+     (예: 직전에 취소한 "학습 종료" 가 여기서 실행된다.)
+     되돌리기가 "시작" 버튼에만 있던 문제도 함께 본다 — ✕ 로 닫은 뒤 다음 대화상자. */
+  if (!frozen) {
+    const picker = await ev(page, async () => {
+      if (typeof window.showStudyModeModal !== 'function') return { skipped: true };
+      window.__stale = 0;
+      window.showConfirm('학습 종료', '직전 대화상자', () => { window.__stale++; });
+      await new Promise((r) => setTimeout(r, 250));
+      document.querySelector('#confirm-modal .modal-close')?.click();
+      await new Promise((r) => setTimeout(r, 250));
+      window.showStudyModeModal('학습 모드 선택', 3, 'vocab', [], []);
+      await new Promise((r) => setTimeout(r, 350));
+      const btn = document.getElementById('confirm-btn');
+      const visible = btn.offsetParent !== null;
+      btn.click();
+      await new Promise((r) => setTimeout(r, 300));
+      return { visible, stale: window.__stale, pickerOpen: document.getElementById('confirm-modal').classList.contains('show') };
+    }, null, 12000);
+
+    if (picker === FROZEN) step('선택기 확인 버튼', 'fail', '앱 정지');
+    else if (picker.skipped) step('선택기 확인 버튼', 'info', 'showStudyModeModal 없음 — 건너뜀');
+    else {
+      step('선택기 확인 버튼', !picker.visible && picker.stale === 0 && picker.pickerOpen ? 'pass' : 'fail',
+        `보임=${picker.visible}(기대 false) 직전콜백실행=${picker.stale}(기대 0) 선택기유지=${picker.pickerOpen}(기대 true)`);
+
+      /* ✕ 로 닫은 뒤 다음 확인 대화상자에서 버튼이 되살아나야 한다 */
+      let xErr = null;
+      try { await page.click('#confirm-modal .modal-close', { timeout: 6000 }); } catch (e) { xErr = String(e.message).split('\n')[0].slice(0, 90); }
+      await ev(page, () => { window.__cb2 = 0; window.showConfirm('학습 종료', '선택기 이후 확인', () => { window.__cb2++; }); }, null, 8000);
+      const vis = await ev(page, () => {
+        const b = document.getElementById('confirm-btn');
+        return { display: b ? getComputedStyle(b).display : null, offset: b ? b.offsetParent !== null : false };
+      }, null, 8000);
+      let cErr = null;
+      try { await page.click('#confirm-btn', { timeout: 6000 }); } catch (e) { cErr = String(e.message).split('\n')[0].slice(0, 90); }
+      const fired = await ev(page, () => window.__cb2, null, 8000);
+      step('선택기 ✕ 이후 확인 버튼 복구', vis !== FROZEN && vis.offset && !cErr && fired === 1 ? 'pass' : 'fail',
+        `display=${vis === FROZEN ? '정지' : vis.display} 보임=${vis === FROZEN ? '-' : vis.offset} 콜백=${fired}${xErr ? ' ✕:' + xErr : ''}${cErr ? ' 확인:' + cErr : ''}`);
+      await ev(page, () => { document.querySelectorAll('.modal-overlay.show').forEach((o) => o.classList.remove('show')); }, null, 8000);
+    }
+  }
+
   /* ── 2. 학습 모드 진입 → 학습 종료 → 종료하기 ─────────────── */
   for (const [mode, type, pageId] of MODES) {
     if (frozen) { step(`모드 ${mode} 종료`, 'fail', '앞 단계에서 정지'); continue; }

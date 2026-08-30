@@ -2331,7 +2331,21 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
     if(e.target===overlay)closeModal(overlay.id);
   });
 });
-function showConfirm(title,msg,fn){const titleEl=document.getElementById('confirm-title');const msgEl=document.getElementById('confirm-msg');const btnEl=document.getElementById('confirm-btn');if(titleEl)titleEl.textContent=title;if(msgEl)msgEl.textContent=msg;if(btnEl)btnEl.onclick=()=>{closeModal('confirm-modal');fn();};showModal('confirm-modal');}
+/* 9.5.1: showStudyModeModal / showGapStudyModal / showBoxStudyModal 은 같은
+   #confirm-modal 을 학습모드 선택기로 재사용하면서 #confirm-btn 을 display:none 으로
+   감춘다. 되돌리는 코드는 그 안의 "시작" 버튼(startPendingFC 등)에만 있어서,
+   사용자가 ✕ 나 Esc 로 닫으면 확인 버튼이 세션 내내 숨은 채로 남았다.
+   그 뒤로는 학습 종료·삭제·초기화 등 모든 확인 대화상자에 확인 버튼이 아예 없다.
+   되돌릴 책임을 모든 닫기 경로에 흩뿌리지 않고, 대화상자를 여는 이 한 곳이 진다. */
+function hideConfirmAction(){const b=document.getElementById('confirm-btn');if(!b)return;
+  /* 앞선 대화상자가 남긴 onclick 을 반드시 지운다. 남겨두면 선택기에서 확인을 눌렀을 때
+     엉뚱한 동작(직전 대화상자의 콜백)이 조용히 실행된다. */
+  b.onclick=null;
+  /* v944 CSS 의 body.cems-v944 .modal-overlay.c943-native-modal-overlay .c943-modal-actions .btn
+     { display:inline-flex !important } 이 인라인 display:none 을 이긴다. 우선순위를 맞춘다. */
+  b.style.setProperty('display','none','important');}
+function restoreConfirmAction(){document.getElementById('confirm-btn')?.style.removeProperty('display');}
+function showConfirm(title,msg,fn){const titleEl=document.getElementById('confirm-title');const msgEl=document.getElementById('confirm-msg');const btnEl=document.getElementById('confirm-btn');if(titleEl)titleEl.textContent=title;if(msgEl)msgEl.textContent=msg;if(btnEl){restoreConfirmAction();btnEl.onclick=()=>{closeModal('confirm-modal');fn();};}showModal('confirm-modal');}
 function getChip(id){return document.querySelector('#'+id+' .chip.active')?.dataset.value||'all';}
 // ★ 다중 선택 필터 함수들
 function getMultiChip(id){
@@ -5389,7 +5403,7 @@ document.getElementById('confirm-msg').innerHTML=`<strong>${count}개</strong> �
 <button class="btn btn-primary" onclick="startPendingQuiz()" style="flex:1;min-width:45%">❓ 퀴즈</button>
 <button class="btn" onclick="startPendingTyping()" style="flex:1;min-width:45%;background:var(--success);color:white">⌨️ 타이핑</button>
 </div>`;
-document.getElementById('confirm-btn').style.display='none';
+hideConfirmAction();
 showModal('confirm-modal');
 }
 function showGapStudyModal(title,count,type,items,all){
@@ -5400,21 +5414,21 @@ document.getElementById('confirm-msg').innerHTML=`<strong>${count}개</strong> �
 <button class="btn" onclick="startPendingTyping()" style="flex:1;background:var(--success);color:white">⌨️ 타이핑 (권장)</button>
 <button class="btn btn-secondary" onclick="startPendingFC()" style="flex:1">🃏 플래시카드</button>
 </div>`;
-document.getElementById('confirm-btn').style.display='none';
+hideConfirmAction();
 showModal('confirm-modal');
 }
 function startPendingFC(){
-closeModal('confirm-modal');document.getElementById('confirm-btn').style.display='';
+closeModal('confirm-modal');restoreConfirmAction();
 startFC(pendingStudyItems,pendingStudyAll,pendingStudyType);
 }
 function startPendingQuiz(){
-closeModal('confirm-modal');document.getElementById('confirm-btn').style.display='';
+closeModal('confirm-modal');restoreConfirmAction();
 if(pendingStudyType==='vocab')startQuiz(pendingStudyItems,pendingStudyAll,'meaning');
 else if(pendingStudyType==='phrasal')startPVQ(pendingStudyItems,pendingStudyAll,'meaning');
 else if(pendingStudyType==='expr')startExprQuiz(pendingStudyItems,pendingStudyAll);
 }
 function startPendingTyping(){
-closeModal('confirm-modal');document.getElementById('confirm-btn').style.display='';
+closeModal('confirm-modal');restoreConfirmAction();
 if(pendingStudyType==='vocab')startTyping(pendingStudyItems,pendingStudyAll);
 else if(pendingStudyType==='phrasal'){
   // PV typing이 있다면 사용, 없으면 dictation
@@ -5430,12 +5444,12 @@ document.getElementById('confirm-msg').innerHTML=`<strong>${count}개</strong> $
 <button class="btn btn-secondary" onclick="startBoxFC(${box},'${type}')" style="flex:1">🃏 플래시카드</button>
 <button class="btn btn-primary" onclick="startBoxQuiz(${box},'${type}')" style="flex:1">❓ 퀴즈</button>
 </div>`;
-document.getElementById('confirm-btn').style.display='none';
+hideConfirmAction();
 showModal('confirm-modal');
 }
 async function startBoxFC(box,type){
 closeModal('confirm-modal');
-document.getElementById('confirm-btn').style.display='';
+restoreConfirmAction();
 const count=parseInt(localStorage.getItem('defaultCount')||'20');
 if(type==='phrasal'){
 const p=await getAllPV();
@@ -5449,7 +5463,7 @@ startFC(items,w,'vocab');
 }
 async function startBoxQuiz(box,type){
 closeModal('confirm-modal');
-document.getElementById('confirm-btn').style.display='';
+restoreConfirmAction();
 const count=parseInt(localStorage.getItem('defaultCount')||'20');
 if(type==='phrasal'){
 const p=await getAllPV();
