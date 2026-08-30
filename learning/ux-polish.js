@@ -2,7 +2,11 @@
 (function () {
   'use strict';
 
-  var VERSION = '9.4.4';
+  /* 9.5.1: 화면에 보이는 버전 문자열의 출처를 <html data-cems-version> 하나로 모았다.
+     이 상수와 learning-ui.js 의 상수가 서로 다른 값을 같은 DOM 에 쓰고 있어서
+     9.5.0 빌드가 사용자에게 "v9.4.4" 로 보였고, data-cems-version 이 두 값 사이를
+     오갔다(learning-ui 의 관찰자가 되돌려 쓰는 구조). 릴리스 시 바꿀 곳도 줄어든다. */
+  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.0';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var PREFIX = 'cemsUx26:' + LANG + ':';
   var state = {
@@ -78,15 +82,15 @@
   }
 
   function syncVersion() {
-    document.documentElement.dataset.cemsVersion = VERSION;
-    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.4.4';
+    if (document.documentElement.dataset.cemsVersion !== VERSION) document.documentElement.dataset.cemsVersion = VERSION;
+    var title = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
     document.title = title;
     var meta = qs('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v9.4.4 · 통합 학습 허브'; });
-    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v9.4.4'; });
+    qsa('.splash-sub').forEach(function (node) { node.textContent = 'v' + VERSION + ' · 통합 학습 허브'; });
+    qsa('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v' + VERSION; });
     var versionCard = qsa('#page-settings .card').find(function (card) { var heading = qs('.card-title', card); return heading && heading.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.4.4 · 통합 학습 허브';
-    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v9.4.4';
+    var strong = versionCard && qs('strong', versionCard); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v' + VERSION + ' · 통합 학습 허브';
+    var build = qs('#phase8-build-status'); if (build) build.textContent = 'v' + VERSION;
   }
 
   function ensureAppbar() {
@@ -96,7 +100,7 @@
     if (!existing) {
       existing = make('header', 'cems82-appbar');
       existing.id = 'cems82-appbar';
-      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">학습 분석 · FSRS-6 · v9.4.4</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
+      existing.innerHTML = '<div class="cems82-brand"><div class="cems82-logo' + (LANG === 'zh' ? ' chinese' : '') + '"></div><div class="cems82-brand-copy"><div class="cems82-brand-title">' + (LANG === 'zh' ? '中文學習' : 'CEMS English') + '</div><div class="cems82-brand-sub">학습 분석 · FSRS-6 · v' + VERSION + '</div></div></div><button type="button" class="btn btn-secondary cems82-icon-btn" id="cems82-settings" aria-label="설정 열기"></button>';
       home.insertBefore(existing, home.firstElementChild);
     }
     var button = qs('#cems82-settings', existing);

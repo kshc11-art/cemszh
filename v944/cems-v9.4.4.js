@@ -115,6 +115,11 @@
   'use strict';
 
   const VERSION = '9.4.4';
+  /* 9.5.1: VERSION 은 이 레이어의 빌드 식별자이지 앱 버전이 아니다.
+     화면에 보이는 앱 버전의 출처는 <html data-cems-version> 하나뿐이다.
+     여기서 자기 상수를 쓰는 바람에 9.5.0 빌드가 "v9.4.4" 로 보였고,
+     같은 속성을 6개 모듈이 서로 다른 값으로 써서 계속 되돌려 쓰고 있었다. */
+  const APP_VERSION = document.documentElement.dataset.cemsVersion || VERSION;
   const SCRIPT_URL = document.currentScript?.src || new URL('v944/cems-v9.4.4.js', location.href).href;
   const ASSET_BASE = new URL('.', SCRIPT_URL);
   const WORKER_URL = new URL('cems-v9.4.4-import-worker.js?v=9.5.0', ASSET_BASE).href;
@@ -353,18 +358,20 @@
   }
 
   function updateVersionLabels() {
-    document.documentElement.dataset.cemsVersion = VERSION;
-    document.documentElement.dataset.cemsBuild = VERSION;
-    document.documentElement.setAttribute('data-cems-version', VERSION);
-    document.querySelector('meta[name="cems-version"]')?.setAttribute('content', VERSION);
-    document.querySelector('meta[name="app-version"]')?.setAttribute('content', VERSION);
-    document.title = document.title.replace(/v?9\.4\.[0-9]+/g, `v${VERSION}`);
-    const splashCopy = `v${VERSION} · 통합 학습 허브`;
-    const brandCopy = `학습 분석 · FSRS-6 · v${VERSION}`;
+    /* data-cems-version 은 index.html 이 소유한다. 여기서는 읽기만 한다. */
+    if (document.documentElement.dataset.cemsBuild !== VERSION) document.documentElement.dataset.cemsBuild = VERSION;
+    document.querySelector('meta[name="cems-version"]')?.setAttribute('content', APP_VERSION);
+    document.querySelector('meta[name="app-version"]')?.setAttribute('content', APP_VERSION);
+    /* 브랜드 문구는 index.html 의 <title> 이 소유한다. 뒤의 버전만 갈아끼운다.
+       예전 코드는 /v?9\.4\.[0-9]+/ 로 치환해서 9.5.0 은 아예 매치되지 않았다. */
+    const titleCopy = document.title.replace(/\s*v\d+(?:\.\d+)+(?:-[A-Za-z0-9.]+)?\s*$/, '') + ' v' + APP_VERSION;
+    if (document.title !== titleCopy) document.title = titleCopy;
+    const splashCopy = `v${APP_VERSION} · 통합 학습 허브`;
+    const brandCopy = `학습 분석 · FSRS-6 · v${APP_VERSION}`;
     $$('.splash-sub').forEach((node) => { if (node.textContent !== splashCopy) node.textContent = splashCopy; });
     $$('.cems82-brand-sub').forEach((node) => { if (node.textContent !== brandCopy) node.textContent = brandCopy; });
     const build = $('#phase8-build-status');
-    if (build && !build.textContent.includes(VERSION)) build.textContent = `v${VERSION}`;
+    if (build && !build.textContent.includes(APP_VERSION)) build.textContent = `v${APP_VERSION}`;
   }
 
   function scopeIconFor(kind) {
@@ -3084,7 +3091,6 @@ function cemsImportSourceId(info) {
     compactPanels();
     modernizeLeadingEmoji();
     syncCountFromDeck();
-    document.documentElement.dataset.cemsVersion = VERSION;
   }
 
   function keyFromRecord(record, keyPath, fallbackNames) {

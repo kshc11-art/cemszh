@@ -1731,7 +1731,8 @@
     applyKindUi();
     ensureLegacyFlashcardControls();
     await renderAll();
-    document.documentElement.dataset.cemsVersion = BUILD;
+    /* 9.5.1: BUILD 는 이 레이어의 식별자다. 앱 버전 속성(data-cems-version)은
+       index.html 이 소유하므로 여기서 덮어쓰지 않는다. */
     document.documentElement.dataset.cemsBuild = BUILD;
     var bodyObserverToken = 0;
     var bodyObserver = new MutationObserver(function (records) {

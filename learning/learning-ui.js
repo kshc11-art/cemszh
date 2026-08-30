@@ -9,7 +9,10 @@
   var progress = modules.progress;
   var scheduler = modules.scheduler;
   var studio = modules.studio;
-  var VERSION = '9.5.0';
+  /* 9.5.1: ux-polish.js 와 같은 DOM 에 버전 문자열을 쓰므로 출처를 하나로 맞춘다
+     (<html data-cems-version>). 두 상수가 어긋나 있으면 아래 protectLeanVersion 의
+     관찰자와 ux-polish 의 syncVersion 이 서로 값을 되돌려 쓴다. */
+  var VERSION = document.documentElement.dataset.cemsVersion || '9.5.0';
   var LANG = (window.CEMS_LANG === 'zh' || (window.CEMS9 && CEMS9.LANG === 'zh') || (typeof DB_NAME !== 'undefined' && /ChineseVocab/.test(String(DB_NAME)))) ? 'zh' : 'en';
   var initPromise = null;
   var state = {
@@ -1061,19 +1064,20 @@
     });
   }
   function syncLeanVersion() {
-    document.documentElement.dataset.cemsVersion = VERSION;
-    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.4.4';
+    /* 값이 같아도 속성을 다시 쓰면 MutationRecord 가 쌓여 아래 관찰자가 매번 깨어난다. */
+    if (document.documentElement.dataset.cemsVersion !== VERSION) document.documentElement.dataset.cemsVersion = VERSION;
+    var visible = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
     document.title = visible;
     var meta = document.querySelector('meta[name="app-version"]'); if (meta) meta.content = VERSION;
-    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v9.4.4 · 통합 학습 허브'; });
-    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v9.4.4'; });
+    document.querySelectorAll('.splash-sub').forEach(function (node) { node.textContent = 'v' + VERSION + ' · 통합 학습 허브'; });
+    document.querySelectorAll('.cems82-brand-sub').forEach(function (node) { node.textContent = '학습 분석 · FSRS-6 · v' + VERSION; });
     var versionCard = Array.from(document.querySelectorAll('#page-settings .card')).find(function (card) { var title = card.querySelector('.card-title'); return title && title.textContent.indexOf('버전 정보') >= 0; });
-    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v9.4.4 · 통합 학습 허브';
-    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v9.4.4';
+    var strong = versionCard && versionCard.querySelector('strong'); if (strong) strong.textContent = (LANG === 'zh' ? '중국어 학습' : 'CEMS English') + ' v' + VERSION + ' · 통합 학습 허브';
+    var buildStatus = document.getElementById('phase8-build-status'); if (buildStatus) buildStatus.textContent = 'v' + VERSION;
   }
   function protectLeanVersion() {
     if (state.versionObserver) return;
-    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v9.4.4';
+    var expectedTitle = (LANG === 'zh' ? '中文學習' : 'CEMS English') + ' v' + VERSION;
     var titleNode = document.querySelector('title');
     state.versionObserver = new MutationObserver(function () {
       if (document.title !== expectedTitle || document.documentElement.dataset.cemsVersion !== VERSION) setTimeout(syncLeanVersion, 0);
