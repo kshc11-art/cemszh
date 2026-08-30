@@ -266,6 +266,38 @@ if (manifest) {
   }
 }
 
+/* --- CEMS_IMPORT_CORE 사본 대조 -------------------------------------------
+   v944/cems-v9.4.4.js 와 v944/cems-v9.4.4-import-worker.js 의 공통 코어는
+   바이트 단위로 같아야 한다. Worker 는 별도 스레드라 import 를 쓸 수 없어
+   복사해 둔 것이고, 한쪽만 고치면 같은 파일을 Worker 경로와 폴백 경로로 넣었을 때
+   정규화·mergeKey 가 갈려 동일 항목이 둘로 나뉜다. 사람 눈에 안 보이는 종류의
+   결함이라 여기서 기계로 본다. */
+{
+  const CORE_HEAD = '* CEMS 9.4.4 — JSON 가져오기 공통 정규화 코어 (CEMS_IMPORT_CORE)';
+  const CORE_TAIL = '/* ===================== 공통 정규화 코어 끝 (CEMS_IMPORT_CORE) ============= */';
+  const extract = (rel) => {
+    const abs = path.join(APP_DIR, rel);
+    if (!fs.existsSync(abs)) { fail(`CEMS_IMPORT_CORE: 파일 없음 ${rel}`); return null; }
+    const src = fs.readFileSync(abs, 'utf8');
+    const a = src.indexOf(CORE_HEAD), b = src.indexOf(CORE_TAIL);
+    if (a < 0 || b < 0 || b <= a) { fail(`CEMS_IMPORT_CORE 블록을 ${rel} 에서 찾지 못했다`); return null; }
+    return src.slice(a, b);
+  };
+  const a = extract('v944/cems-v9.4.4.js');
+  const b = extract('v944/cems-v9.4.4-import-worker.js');
+  if (a !== null && b !== null) {
+    if (a === b) {
+      console.log(`CEMS_IMPORT_CORE : 두 사본 일치 (${a.split('\n').length}줄)`);
+    } else {
+      const la = a.split('\n'), lb = b.split('\n');
+      let firstDiff = -1;
+      for (let i = 0; i < Math.max(la.length, lb.length); i++) if (la[i] !== lb[i]) { firstDiff = i; break; }
+      fail(`CEMS_IMPORT_CORE 두 사본이 다르다 (블록 내 ${firstDiff + 1}번째 줄부터). `
+        + `main="${(la[firstDiff] || '(없음)').trim().slice(0, 70)}" worker="${(lb[firstDiff] || '(없음)').trim().slice(0, 70)}"`);
+    }
+  }
+}
+
 /* --- 보고 ----------------------------------------------------------------- */
 const versionQueries = new Set(declared.map(queryOf).filter(Boolean));
 console.log(`앱 디렉터리      : ${APP_DIR}`);
