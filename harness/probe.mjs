@@ -221,6 +221,32 @@ const step = (name, status, detail) => {
   await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
   await page.waitForTimeout(300);
 
+  // ── 6c. 탭을 벗어났다 돌아오면 학습 타이머가 다시 도는가 ────
+  //  숨길 때 cleanupAllTimers 가 표시용 인터벌까지 지우는데 복구하는 쪽이 없었다.
+  const visTimer = await page.evaluate(async () => {
+    try {
+      window.showPage('study', true); await new Promise((r) => setTimeout(r, 300));
+      await window.quickStartMode('vocab', 'flashcard');
+      await new Promise((r) => setTimeout(r, 2200));
+      const read = () => document.getElementById('fc-timer')?.textContent;
+      const a = read(); await new Promise((r) => setTimeout(r, 2200)); const b = read();
+      const setHidden = (v) => {
+        Object.defineProperty(document, 'hidden', { configurable: true, get: () => v });
+        Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (v ? 'hidden' : 'visible') });
+        document.dispatchEvent(new Event('visibilitychange'));
+      };
+      setHidden(true); await new Promise((r) => setTimeout(r, 1000));
+      setHidden(false); await new Promise((r) => setTimeout(r, 600));
+      const c = read(); await new Promise((r) => setTimeout(r, 2400)); const d = read();
+      return { before: a !== b, after: c !== d, a, b, c, d };
+    } catch (e) { return { err: e.message }; }
+  });
+  step('탭 복귀 후 학습 타이머', visTimer.err ? 'fail' : (visTimer.before && visTimer.after ? 'pass' : 'fail'),
+    visTimer.err || `숨김 전 ${visTimer.a}→${visTimer.b} · 복귀 후 ${visTimer.c}→${visTimer.d}${visTimer.after ? '' : '  ← 복귀 뒤 멈춰 있음'}`);
+  report.summary.visibilityTimer = visTimer;
+  await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
+  await page.waitForTimeout(300);
+
   // ── 7. getAllExpr 누수 재현 (C4) ───────────────────────────
   const leak = await page.evaluate(async () => {
     try {

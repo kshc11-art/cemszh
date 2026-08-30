@@ -3186,7 +3186,16 @@ function cleanupAllTimers(){
 }
 // ★ 탭 비활성화 시 타이머 정리 (배터리/메모리 절약)
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cleanupAllTimers();}
+  if(document.hidden){cleanupAllTimers();return;}
+  /* 9.5.1: 숨길 때 표시용 타이머까지 지워놓고 되돌아올 때 아무것도 복구하지 않아,
+     학습 중 탭을 한 번만 벗어나도 경과 시간 표시가 그대로 멈춰 있었다(실측:
+     0:22 에서 고정). 경과 시간 자체는 SESSION_ENGINE_V2 가 따로 세므로 표시만
+     다시 살리면 되고, 학습 화면에 있을 때만 되살린다. */
+  try{
+    const active=document.querySelector('.page.active')?.id;
+    if(active==='page-flashcard'&&fcState&&fcState.words&&fcState.words.length&&typeof startTimer==='function')startTimer();
+    else if(active==='page-expr-fc'&&exprState&&exprState.words&&exprState.words.length&&typeof startExprTimer==='function')startExprTimer();
+  }catch(_){}
 });
 function clearSearchInputs(){
 const inputs=['quick-search-input','pv-quick-search-input','expr-search-input'];
