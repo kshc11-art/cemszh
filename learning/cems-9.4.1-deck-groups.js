@@ -1758,6 +1758,10 @@
        deck-groups 가 문법을 'expr' 전환으로 바꿔 실행하므로 훅 인자만으로는 알 수 없다.
        전역 함수를 감싸는 대신 현재 표시 종류를 읽을 수 있게 노출한다. */
     uiKind: function () { return state.uiKind; },
+    /* 9.5.1: activateKind 가 switchGlobalType 으로 전환을 중계하는 동안만 true.
+       cems-9.4.1-ui.js 의 afterTypeSwitch 소비자가 "지금 uiKind 를 믿어도 되는가" 를
+       이걸로 판단한다. 노출하지 않았을 때는 문법 탭을 벗어나는 클릭이 통째로 무시됐다. */
+    kindRelay: function () { return !!state.kindRelay; },
     installFlashcardCompatibility:installFlashcardCompatibility, flipCardCompat:flipCardCompat, flipExprCardCompat:flipExprCardCompat
   };
 

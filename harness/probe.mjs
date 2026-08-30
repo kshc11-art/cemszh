@@ -296,6 +296,40 @@ const step = (name, status, detail) => {
   await page.evaluate(() => { try { window.showPage('study', true); } catch (_) {} });
   await page.waitForTimeout(300);
 
+  // ── 6e. 종류 탭이 클릭 1회로 전환되는가 ─────────────────────
+  //  cems-9.4.1-ui.js 의 afterTypeSwitch 소비자가 deck-groups 것보다 먼저 등록되어,
+  //  아직 갱신되지 않은 uiKind('grammar')로 인자를 덮어썼다. 문법 탭을 벗어나는
+  //  클릭이 통째로 무시됐다.
+  const kindTabs = await page.evaluate(async () => {
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    try {
+      window.showPage('data', true); await sleep(1200);
+      const tabs = () => [...document.querySelectorAll('#page-data > .type-tabs .type-tab')];
+      if (!tabs().length) return { skipped: '종류 탭 없음' };
+      const active = () => (tabs().find((t) => t.classList.contains('active'))?.textContent || '').trim();
+      const click = async (label) => {
+        const t = tabs().find((x) => (x.textContent || '').includes(label));
+        if (!t) return 'no-tab';
+        t.click(); await sleep(1500); return active();
+      };
+      const seq = [];
+      seq.push(['시작', active()]);
+      seq.push(['문법', await click('문법')]);
+      seq.push(['표현', await click('표현')]);
+      seq.push(['문법', await click('문법')]);
+      seq.push(['단어', await click('단어')]);
+      return { seq };
+    } catch (e) { return { err: e.message }; }
+  });
+  if (kindTabs.err || kindTabs.skipped) {
+    step('종류 탭 1회 전환', kindTabs.err ? 'fail' : 'info', kindTabs.err || kindTabs.skipped);
+  } else {
+    const bad = kindTabs.seq.filter(([want, got], i) => i > 0 && !String(got).includes(want));
+    step('종류 탭 1회 전환', bad.length ? 'fail' : 'pass',
+      kindTabs.seq.map(([w, g]) => `${w}→${g}`).join(' · ') + (bad.length ? '  ← 클릭이 무시된 전환 있음' : ''));
+  }
+  report.summary.kindTabs = kindTabs;
+
   // ── 7a. 강제 종료가 세션을 올바른 종류로 기록하는가 ──────────
   //  forceEndCurrentStudy 의 받아쓰기 분기만 currentListeningType 을 쓰고 있었다.
   const forcedEnd = await page.evaluate(async () => {

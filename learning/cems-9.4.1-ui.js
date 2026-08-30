@@ -99,9 +99,18 @@
      들고 있는 uiKind 를 먼저 확인한다. */
   function resolveKind(kind) {
     var decks = window.CEMS932Decks;
-    var deckKind = null;
+    var deckKind = null, relaying = false, canRelay = false;
     try { if (decks && typeof decks.uiKind === 'function') deckKind = decks.uiKind(); } catch (_) {}
-    if (deckKind === 'grammar') return 'grammar';
+    try { if (decks && typeof decks.kindRelay === 'function') { canRelay = true; relaying = !!decks.kindRelay(); } } catch (_) {}
+    /* 9.5.1: 이 소비자는 deck-groups 의 소비자보다 먼저 등록된다(이쪽은 DOMContentLoaded,
+       저쪽은 360ms 뒤). 그래서 여기서 uiKind() 를 읽으면 아직 갱신되기 전 값이다.
+       문법 탭에서 표현/단어로 나갈 때 옛 uiKind('grammar')가 인자('expr')를 덮어써
+       state.kind 가 그대로 남고, markTabs 가 방금 바뀐 탭 표시까지 문법으로 되돌렸다.
+       결과적으로 클릭 1회가 통째로 무시되고 목록도 문법으로 남았다(실측: 문법 → 표현
+       클릭 후에도 활성 탭이 "문법").
+       deck-groups 가 activateKind('grammar') 때문에 유도한 전환일 때만 uiKind 를 믿는다.
+       kindRelay 를 노출하지 않는 옛 deck-groups 빌드에서는 예전 동작을 유지한다. */
+    if (deckKind === 'grammar' && (relaying || !canRelay)) return 'grammar';
     if (kind === 'grammar' && decks) return 'grammar';
     return ['vocab', 'phrasal', 'expr'].indexOf(kind) >= 0 ? kind : state.kind;
   }
